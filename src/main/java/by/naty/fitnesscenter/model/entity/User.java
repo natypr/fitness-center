@@ -1,0 +1,134 @@
+package by.naty.fitnesscenter.model.entity;
+
+public class User {
+    private long idUser;
+    private String role;
+    private String name;
+    private String surname;
+    private String sex;
+    private int yearOld;
+    private String email;
+    private String password;
+
+    public User() {
+    }
+
+    public User(long idUser, String role, String name, String surname, String sex, int yearOld, String email, String password) {
+        this.idUser = idUser;
+        this.role = role;
+        this.name = name;
+        this.surname = surname;
+        this.sex = sex;
+        this.yearOld = yearOld;
+        this.email = email;
+        this.password = password;
+    }
+
+    public long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getYearOld() {
+        return yearOld;
+    }
+
+    public void setYearOld(int yearOld) {
+        this.yearOld = yearOld;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (idUser != user.idUser) return false;
+        if (yearOld != user.yearOld) return false;
+        if (role != null ? !role.equals(user.role) : user.role != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        if (sex != null ? !sex.equals(user.sex) : user.sex != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        return password != null ? password.equals(user.password) : user.password == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (idUser ^ (idUser >>> 32));
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + yearOld;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", role='" + role + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", yearOld=" + yearOld +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+}
