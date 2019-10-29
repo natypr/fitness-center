@@ -5,15 +5,11 @@
 <fmt:setBundle basename="messages" var="var" />
 <html>
 <head>
-    <title><fmt:message key="title.main" bundle="${ var }" /></title>
+    <title><fmt:message key="title.sendresult" bundle="${ var }" /></title>
 </head>
 <body>
-    <h3><fmt:message key="text.main.welcome" bundle="${ var }" /></h3>
-    <br/>
-    <fmt:message key="text.main.hellouser" bundle="${ var }" />
-    ${user}
-    <br/><br/>
-    <a href="controller?command=logout"><fmt:message key="text.main.logout" bundle="${ var }" /></a>
+    <p><fmt:message key="text.sendresult.senging" bundle="${ var }" /></p>
+    <a href="mail.jsp"><fmt:message key="text.sendresult.return" bundle="${ var }" /></a>
     <c:import url="/jsp/util/footer.jsp" />
 </body>
 </html>
