@@ -8,13 +8,15 @@ import java.util.Optional;
 
 public interface UserDAO {
 
-    void create(User user) throws DAOfcException;
+    void createUser(User user) throws DAOfcException;
 
     List<User> findAllUsers() throws DAOfcException;
 
-    Optional<User> findUserByEmail(String email) throws DAOfcException;
+    Optional<User> findUserById(long id) throws DAOfcException;
 
-    User updateUserByUser(User user) throws DAOfcException;
+    User findUserBySurnameAndName(String surname, String name) throws DAOfcException;
 
-    void deleteUser(long id) throws DAOfcException;
+    User updateUser(User user) throws DAOfcException;
+
+    void deleteUserById(long id) throws DAOfcException;
 }

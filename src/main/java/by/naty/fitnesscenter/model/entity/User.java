@@ -5,21 +5,17 @@ public class User {
     private String role;
     private String name;
     private String surname;
-    private String sex;
-    private int yearOld;
     private String email;
     private String password;
 
     public User() {
     }
 
-    public User(long idUser, String role, String name, String surname, String sex, int yearOld, String email, String password) {
+    public User(long idUser, String role, String name, String surname, String email, String password) {
         this.idUser = idUser;
         this.role = role;
         this.name = name;
         this.surname = surname;
-        this.sex = sex;
-        this.yearOld = yearOld;
         this.email = email;
         this.password = password;
     }
@@ -56,22 +52,6 @@ public class User {
         this.surname = surname;
     }
 
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public int getYearOld() {
-        return yearOld;
-    }
-
-    public void setYearOld(int yearOld) {
-        this.yearOld = yearOld;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -96,11 +76,9 @@ public class User {
         User user = (User) o;
 
         if (idUser != user.idUser) return false;
-        if (yearOld != user.yearOld) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
-        if (sex != null ? !sex.equals(user.sex) : user.sex != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
     }
@@ -111,8 +89,6 @@ public class User {
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + yearOld;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
@@ -120,15 +96,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "idUser=" + idUser +
-                ", role='" + role + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", sex='" + sex + '\'' +
-                ", yearOld=" + yearOld +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("idUser=").append(idUser);
+        sb.append(", role=").append(role);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", surname='").append(surname).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

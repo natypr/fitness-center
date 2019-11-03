@@ -16,28 +16,41 @@ import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static final String CREATE_USER_WITH_ID = "INSERT INTO `user` " +
-            "(`role`, `name`, `surname`, `sex`, `years_old`, `email`, `password`)" +
-            " VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String CREATE_USER = "INSERT INTO `user` " +
+            "(`role`, `name`, `surname`, `email`, `password`)" +
+            " VALUES (?, ?, ?, ?, ?);";
 
-    private static final String FIND_ALL_USERS = "SELECT `iduser`, `name`, `surname`, " +
-            "`years_old`, `sex`, `email`, `password`, `role_name` AS `role` " +
-            "FROM `user` LEFT JOIN `role` ON `user`.`role` = `role` ORDER BY `user`.`iduser`;";
+    private static final String FIND_ALL_USERS = "SELECT `id_user`, `role_name` AS `role`, " +
+            "`name`, `surname`, `email`, `password`,  " +
+            "FROM `user` LEFT JOIN `role_legend` " +
+            "ON `user`.`role` = `role_legend`.`role` ORDER BY `user`.`iduser`;";
 
-    private static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE `iduser`;";   //FIXME =id
+    private static final String FIND_USER_BY_ID = "SELECT `user`.`id_user`, `role_name` AS `role`, " +
+            "`user`.`name`, `user`.`surname`, `user`.`email`, `user`.`password`,  " +
+            "FROM `user` LEFT JOIN `role_legend` " +
+            "ON `user`.`role` = `role_legend`.`role` WHERE `user`.`id_user`=?;";
+
+    private static final String FIND_USER_BY_SURNAME_AND_NAME = "SELECT `id_user`, `role_name` AS `role`, " +
+            "`name`, `surname`, `email`, `password` " +
+            "FROM `user` LEFT JOIN `role_legend` " +
+            "ON `user`.`role` = `role_legend`.`role` WHERE `surname`=? AND `name`=?;";
+
+    private static final String UPDATE_USER = "UPDATE `user` SET `id_user`=?, `role`=?, " +
+            "`name`=?, `surname`=?, `email`=?, `password`=?, WHERE `id_user`=?;";
+
+    private static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE `id_user`=?;";
+
 
     @Override
-    public void create(User user) throws DAOfcException {
+    public void createUser(User user) throws DAOfcException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE_USER_WITH_ID)) {
+             PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
 
             statement.setString(1, user.getRole());
             statement.setString(2, user.getName());
             statement.setString(3, user.getSurname());
-            statement.setString(4, user.getSex());
-            statement.setInt(5, user.getYearOld());
-            statement.setString(6, user.getEmail());
-            statement.setString(7, user.getPassword());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPassword());
             statement.executeUpdate();
         } catch (SQLException | PoolFCException e) {
             throw new DAOfcException(e);
@@ -64,27 +77,90 @@ public class UserDAOImpl implements UserDAO {
     private User createUserFromResult(ResultSet resultSet) throws SQLException {
         User user = new User(resultSet.getLong(DAOConstant.ID_USER), resultSet.getString(DAOConstant.ROLE),
                 resultSet.getString(DAOConstant.NAME), resultSet.getString(DAOConstant.SURNAME),
-                resultSet.getString(DAOConstant.SEX), resultSet.getInt(DAOConstant.YEARS_OLD),
                 resultSet.getString(DAOConstant.EMAIL), resultSet.getString(DAOConstant.PASSWORD));
         return user;
     }
 
     @Override
-    public Optional<User> findUserByEmail(String email) throws DAOfcException {
-        return Optional.empty();
+    public Optional<User> findUserById(long id) throws DAOfcException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID)) {
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            Optional<User> userOptionalById = Optional.empty();
+            if (resultSet.next()) {
+                User user = createUserFromResult(resultSet);
+                userOptionalById = Optional.of(user);
+            }
+            return userOptionalById;
+        } catch (SQLException | PoolFCException e) {
+            throw new DAOfcException(e);
+        }
     }
 
     @Override
-    public User updateUserByUser(User user) throws DAOfcException {
-        return null;
+    public User findUserBySurnameAndName(String surname, String name) throws DAOfcException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_SURNAME_AND_NAME)){
+
+            User user = null;
+            statement.setString(1, surname);
+            statement.setString(2, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()){
+                user = new User();
+                setUserFromResultSet(resultSet, user);
+            }
+            return user;
+        } catch (SQLException | PoolFCException e) {
+            throw new DAOfcException(e);
+        }
+    }
+
+    void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
+        user.setIdUser(resultSet.getLong("id_user"));
+        user.setRole(resultSet.getString("role"));
+        user.setName(resultSet.getString("name"));
+        user.setSurname(resultSet.getString("surname"));
+        user.setEmail(resultSet.getString("email"));
+        user.setPassword(resultSet.getString("password"));
     }
 
     @Override
-    public void deleteUser(long id) throws DAOfcException {
+    public User updateUser(User user) throws DAOfcException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_USER)){
+
+            statement.setLong(1, user.getIdUser());
+            statement.setString(2, user.getName());
+            statement.setString(3, modifyRole(user.getRole()));
+            statement.setString(4,user.getSurname());
+            statement.setString(5, user.getEmail());
+            statement.setString(6, user.getPassword());
+            statement.executeUpdate();
+            return user;
+        } catch (SQLException | PoolFCException e) {
+            throw new DAOfcException(e);
+        }
+    }
+
+    private static String modifyRole(String string){
+        switch (string){
+            case "client":
+                return String.valueOf(2);
+            case "trainer":
+                return String.valueOf(1);
+        }
+        return string;
+    }
+
+    @Override
+    public void deleteUserById(long id) throws DAOfcException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
 
-            //...
+            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException | PoolFCException e) {
             throw new DAOfcException(e);
