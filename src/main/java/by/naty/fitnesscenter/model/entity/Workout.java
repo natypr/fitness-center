@@ -2,7 +2,7 @@ package by.naty.fitnesscenter.model.entity;
 
 public class Workout {
     private long idWorkout;
-    private WorkoutType typeWorkout;
+    private String typeWorkout;
     private String nameOfWorkout;
     private String equipment;
     private String description;
@@ -14,7 +14,7 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(long idWorkout, WorkoutType typeWorkout, String nameOfWorkout, String equipment,
+    public Workout(long idWorkout, String typeWorkout, String nameOfWorkout, String equipment,
                    String description, double costPerOneWorkout, int numberOfVisit, long idTrainer, long idOrder) {
         this.idWorkout = idWorkout;
         this.typeWorkout = typeWorkout;
@@ -35,11 +35,11 @@ public class Workout {
         this.idWorkout = idWorkout;
     }
 
-    public WorkoutType getTypeWorkout() {
+    public String getTypeWorkout() {
         return typeWorkout;
     }
 
-    public void setTypeWorkout(WorkoutType typeWorkout) {
+    public void setTypeWorkout(String typeWorkout) {
         this.typeWorkout = typeWorkout;
     }
 

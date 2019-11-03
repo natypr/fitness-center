@@ -9,18 +9,20 @@ import java.util.Optional;
 
 public interface ClientDAO {
 
-    void create(Client client) throws DAOfcException;
+    void createClient(Client client) throws DAOfcException;
 
     List<Client> findAllClients() throws DAOfcException;
 
     Optional<Client> findClientById(long id) throws DAOfcException;
 
-    Client updateClientByClient(Client client) throws DAOfcException;
+    Optional<Client> findClientByEmail(String email) throws DAOfcException;
 
-    void deleteClient(long id) throws DAOfcException;
+    Client updateClient(Client client) throws DAOfcException;
+
+    void deleteClientById(long id) throws DAOfcException;
 
 
-    List<Workout> findAllWorkoutForClientById(long idClient) throws DAOfcException;
+    List<Workout> findAllWorkoutByIdClient(long idClient) throws DAOfcException;
 
-    List<Client> findAllClientsOfThisTrainer(int idTrainer) throws DAOfcException;
+    List<Client> findAllClientsByIdTrainer(int idTrainer) throws DAOfcException;
 }

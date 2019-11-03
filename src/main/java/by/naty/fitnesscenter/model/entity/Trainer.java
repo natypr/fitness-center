@@ -16,7 +16,7 @@ public class Trainer extends User {
         this.blocked = blocked;
     }
 
-    public Trainer(long idUser, byte role, String name, String surname, String email, String password,
+    public Trainer(long idUser, String role, String name, String surname, String email, String password,
                    long idTrainer, String education, double costPerHour, boolean blocked) {
         super(idUser, role, name, surname, email, password);
         this.idTrainer = idTrainer;
