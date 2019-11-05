@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
 public class Workout {
-    private long idWorkout;
+    private long id;
     private String typeWorkout;
     private String nameOfWorkout;
     private String equipment;
@@ -14,9 +14,9 @@ public class Workout {
     public Workout() {
     }
 
-    public Workout(long idWorkout, String typeWorkout, String nameOfWorkout, String equipment,
+    public Workout(long id, String typeWorkout, String nameOfWorkout, String equipment,
                    String description, double costPerOneWorkout, int numberOfVisit, long idTrainer, long idOrder) {
-        this.idWorkout = idWorkout;
+        this.id = id;
         this.typeWorkout = typeWorkout;
         this.nameOfWorkout = nameOfWorkout;
         this.equipment = equipment;
@@ -27,12 +27,12 @@ public class Workout {
         this.idOrder = idOrder;
     }
 
-    public long getIdWorkout() {
-        return idWorkout;
+    public long getId() {
+        return id;
     }
 
-    public void setIdWorkout(long idWorkout) {
-        this.idWorkout = idWorkout;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTypeWorkout() {
@@ -106,7 +106,7 @@ public class Workout {
 
         Workout workout = (Workout) o;
 
-        if (idWorkout != workout.idWorkout) return false;
+        if (id != workout.id) return false;
         if (Double.compare(workout.costPerOneWorkout, costPerOneWorkout) != 0) return false;
         if (numberOfVisit != workout.numberOfVisit) return false;
         if (idTrainer != workout.idTrainer) return false;
@@ -122,7 +122,7 @@ public class Workout {
     public int hashCode() {
         int result;
         long temp;
-        result = (int) (idWorkout ^ (idWorkout >>> 32));
+        result = (int) (id ^ (id >>> 32));
         result = 31 * result + (typeWorkout != null ? typeWorkout.hashCode() : 0);
         result = 31 * result + (nameOfWorkout != null ? nameOfWorkout.hashCode() : 0);
         result = 31 * result + (equipment != null ? equipment.hashCode() : 0);
@@ -138,7 +138,7 @@ public class Workout {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Workout{");
-        sb.append("idWorkout=").append(idWorkout);
+        sb.append("idWorkout=").append(id);
         sb.append(", typeWorkout=").append(typeWorkout);
         sb.append(", nameOfWorkout='").append(nameOfWorkout).append('\'');
         sb.append(", equipment='").append(equipment).append('\'');

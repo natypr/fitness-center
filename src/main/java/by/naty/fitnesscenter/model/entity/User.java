@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
 public class User {
-    private long idUser;
+    private long id;
     private String role;
     private String name;
     private String surname;
@@ -11,8 +11,8 @@ public class User {
     public User() {
     }
 
-    public User(long idUser, String role, String name, String surname, String email, String password) {
-        this.idUser = idUser;
+    public User(long id, String role, String name, String surname, String email, String password) {
+        this.id = id;
         this.role = role;
         this.name = name;
         this.surname = surname;
@@ -20,12 +20,12 @@ public class User {
         this.password = password;
     }
 
-    public long getIdUser() {
-        return idUser;
+    public long getId() {
+        return id;
     }
 
-    public void setIdUser(long idUser) {
-        this.idUser = idUser;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getRole() {
@@ -75,7 +75,7 @@ public class User {
 
         User user = (User) o;
 
-        if (idUser != user.idUser) return false;
+        if (id != user.id) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
@@ -85,7 +85,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = (int) (idUser ^ (idUser >>> 32));
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
@@ -97,7 +97,7 @@ public class User {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("idUser=").append(idUser);
+        sb.append("idUser=").append(id);
         sb.append(", role=").append(role);
         sb.append(", name='").append(name).append('\'');
         sb.append(", surname='").append(surname).append('\'');

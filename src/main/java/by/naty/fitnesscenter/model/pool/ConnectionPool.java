@@ -7,44 +7,44 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     private static final Logger LOG = LogManager.getLogger();
 
     private static ConnectionPool instance;
-    private static ReentrantLock lock = new ReentrantLock();
-    private final int POOL_SIZE = Integer.parseInt(ConnectionCreator.poolSize);
     private BlockingQueue<ProxyConnection> pool;
 
-    private ConnectionPool() {
+    private ConnectionPool(PoolConfig config) {
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
         } catch (SQLException e) {
-            LOG.error("Driver not registered: " + e);
+            throw new RuntimeException(e);
         }
         try {
-            pool = new ArrayBlockingQueue<>(POOL_SIZE);
-            for (int i = 0; i < POOL_SIZE; i++) {
-                ProxyConnection connection = new ProxyConnection(ConnectionCreator.createConnection());
+            int poolSize = config.getPoolSize();
+            pool = new ArrayBlockingQueue<>(poolSize);
+            for (int i = 0; i < poolSize; i++) {
+                ProxyConnection connection = new ProxyConnection(createConnection(config));
                 pool.put(connection);
             }
         } catch (SQLException | InterruptedException e) {
-            LOG.fatal("No connections added: " + e);
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 
-    public static ConnectionPool getInstance() {
-        lock.lock();
-        try {
-            if (instance == null) {
-                instance = new ConnectionPool();
-            }
-        } finally {
-            lock.unlock();
+    private Connection createConnection(PoolConfig config) throws SQLException {
+        return DriverManager.getConnection(config.getUrl(), config.getUserName(),  config.getPassword());
+    }
+
+    public static synchronized ConnectionPool getInstance() {
+        if (instance == null) {
+            PropertyLoader propertyLoader = new PropertyLoader();
+            Properties properties = propertyLoader.loadFile("database.properties");
+//            PoolConfig config = new PoolConfig();     //FIXME get size from properties
+//            instance = new ConnectionPool(config.getPoolSize());
         }
         return instance;
     }
@@ -85,7 +85,7 @@ public class ConnectionPool {
                 ProxyConnection proxyConnection = (ProxyConnection) connection;
                 proxyConnection.reallyClose();
             }
-            pool = new ArrayBlockingQueue<>(POOL_SIZE);
+            //pool = new ArrayBlockingQueue<>(poolSize); //FIXME
         } catch (SQLException e) {
             LOG.error("All connections are not closed: " + e);
             throw new PoolFCException(e);

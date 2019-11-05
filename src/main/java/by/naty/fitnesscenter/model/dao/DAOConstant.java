@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.dao;
 
 public class DAOConstant {
-    public static final String ID_USER = "id_user";
+    public static final String ID = "id";
     public static final String ROLE = "role";
     public static final String NAME = "name";
     public static final String SURNAME = "surname";
@@ -12,7 +12,6 @@ public class DAOConstant {
     public static final String YEAR_OLD = "year_old";
     public static final String DISCOUNT = "discount";
 
-    public static final String ID_WORKOUT = "id_workout";
     public static final String TYPE_WORKOUT = "type_workout";
     public static final String NAME_OF_WORKOUT = "name_of_workout";
     public static final String EQUIPMENT = "equipment";
@@ -21,4 +20,7 @@ public class DAOConstant {
     public static final String NUMBER_OF_VISIT = "number_of_visit";
     public static final String ID_TRAINER = "id_trainer";
     public static final String ID_ORDER = "id_order";
+
+    public static final String EDUCATION = "education";
+    public static final String COST_PER_HOUR = "cost_per_hour";
 }

@@ -20,49 +20,52 @@ import java.util.Optional;
 
 public class ClientDAOImpl implements ClientDAO {
 
-    private static final String CREATE_CLIENT = "INSERT INTO `client` " +
-            "(`id_user`, `gender`, `year_old`, `discount`)  VALUES (?, ?, ?, ?);";
+    private static final String CREATE_CLIENT =
+            "INSERT INTO client (`id`, `gender`, `year_old`, `discount`) VALUES (?, ?, ?, ?);";
 
-    private static final String FIND_ALL_CLIENTS = "SELECT `user`.`id_user`, `role_name` AS `role`, " +
-            "`name`, `surname`, `email`, `password`, `gender`, `year_old`, `discount` " +
-            "FROM `user` RIGHT JOIN `client` ON `user`.`id_user`=`client`.`id_user`";
+    private static final String FIND_ALL_CLIENTS =
+            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+                    "FROM `user` RIGHT JOIN `client` ON `user`.id=client.id";
 
-    private static final String FIND_CLIENT_BY_ID = "SELECT `user`.`id_user`, `role_name` AS `role`, " +
-            "`name`, `surname`, `email`, `password`, `gender`, `year_old` `discount` " +
-            "FROM `user` JOIN `client` ON `user`.`id_user`=`client`.`id_user` WHERE `client`.`id_user` = ?;";
+    private static final String FIND_CLIENT_BY_ID =
+            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+                    "FROM `user` JOIN `client` ON `user`.`id_user`=`client`.`id_user` " +
+                    "WHERE `client`.`id_user` = ?;";
 
-    private static final String FIND_CLIENT_BY_EMAIL = "SELECT `user`.`id_user`, `role_name` AS `role`, " +
-            "`name`, `surname`, `email`, `password`, `gender`, `year_old` `discount` " +
-            "FROM `user` JOIN `client` ON `user`.`id_user`=`client`.`id_user` WHERE `user`.`email`=?;";
+    private static final String FIND_CLIENT_BY_EMAIL =
+            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+                    "FROM `user` JOIN `client` ON `user`.id=client.id " +
+                    "WHERE email=?;";
 
-    private static final String UPDATE_CLIENT= "UPDATE `client` SET `client`.`id_user`=?, `gender`=?, " +
-            "`year_old`=?, `client`.`discount`=?  WHERE `client`.`id_user`=?;";
+    private static final String UPDATE_CLIENT =
+            "UPDATE client SET client.id=?, gender=?, year_old=?, discount=? WHERE client.id=?;";
 
-    private static final String SELECT_USER_FROM_CLIENT_TABLE = "SELECT `user`.`id_user` FROM `client` WHERE `client`.`id_user`=?;";
+    private static final String SELECT_USER_FROM_CLIENT_TABLE = "SELECT `user`.id FROM client WHERE client.id=?;";
 
-    private static final String DELETE_CLIENT_BY_ID = "DELETE FROM `client` WHERE `client`.`id_user`=?;";
+    private static final String DELETE_CLIENT_BY_ID = "DELETE FROM client WHERE client.id=?;";
 
+    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT =
+            "SELECT `workout`.id, type_workout, name_of_workout, number_of_visit, id_trainer, id_order " +
+                    "FROM client " +
+                    "JOIN `order` ON client.id=`order`.id_client " +
+                    "JOIN workout ON `order`.id=workout.id_order " +
+                    "WHERE client.id=?;";
 
-    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT = "SELECT `id_workout`, `type_workout`, " +
-            "`name_of_workout`, `number_of_visit`, `id_trainer`, `id_order` " +
-            "FROM `workout` LEFT JOIN client ON `user`.`id_user`=`client`.`id_user` WHERE `client`.`id_user`=?;";
-
-    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT_TWO = "SELECT `name_of_workout`, `equipment`, " +
-            "`description`, `cost_per_one_workout` " +
-            "FROM `workout_info` LEFT JOIN client ON `user`.`id_user`=`client`.`id_user` WHERE `client`.`id_user`=?;";
-
-    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER = "SELECT `user`.`id_user`, `role_name` AS `role`, " +
-            "`name`, `surname`, `email`, `password` " +
-            "FROM `user` RIGHT JOIN `client` ON `user`.`id_user`=`client`.`id_user` " +
-            "LEFT JOIN `order` ON `client`.`id_client`=`order`.`client_idclient` WHERE `id_trainer`=?;";//FIXME
+    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
+            "SELECT `user`.id, role_name AS role, `name`, surname, email, password " +
+                    "FROM workout " +
+                    "JOIN `order` ON workout.id_order=`order`.id " +
+                    "JOIN `user` ON `order`.id_client=`user`.id " +
+                    "WHERE workout.id_trainer=?;";
 
     @Override
     public void createClient(Client client) throws DAOfcException {
         User user = createUserFromClient(client);
+        user = new UserDAOImpl().createUserWithMaxId(user);
         try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE_CLIENT)){
 
-            statement.setLong(1, user.getIdUser());
+            statement.setLong(1, user.getId());
             statement.setString(2, client.getGender());
             statement.setByte(3, client.getYearOld());
             statement.setDouble(4, client.getDiscount());
@@ -73,7 +76,7 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     private User createUserFromClient(Client client){
-        return new User(client.getIdUser(), client.getRole(), client.getName(), client.getSurname(),
+        return new User(client.getId(), client.getRole(), client.getName(), client.getSurname(),
                 client.getEmail(),client.getPassword());
     }
 
@@ -95,9 +98,9 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     private Client createClientFromResult(ResultSet resultSet) throws SQLException, DAOfcException {
-        long id = resultSet.getLong(DAOConstant.ID_USER);
+        long id = resultSet.getLong(DAOConstant.ID);
         Optional<User> user = new UserDAOImpl().findUserById(id);
-        Client client = new Client(user.get(), resultSet.getLong(DAOConstant.ID_USER),
+        Client client = new Client(user.get(), resultSet.getLong(DAOConstant.ID),
                 resultSet.getString(DAOConstant.GENDER), resultSet.getByte(DAOConstant.YEAR_OLD),
                 resultSet.getDouble(DAOConstant.DISCOUNT));
         return client;
@@ -146,7 +149,7 @@ public class ClientDAOImpl implements ClientDAO {
         try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE_CLIENT)){
 
-            statement.setLong(1, client.getIdClient());
+            statement.setLong(1, client.getId());
             statement.setString(2, client.getGender());
             statement.setByte(3, client.getYearOld());
             statement.setDouble(4, client.getDiscount());
@@ -160,7 +163,7 @@ public class ClientDAOImpl implements ClientDAO {
     @Override
     public void deleteClientById(long id) throws DAOfcException {
         User user = selectUserFromClientTable(id, SELECT_USER_FROM_CLIENT_TABLE);
-        new UserDAOImpl().deleteUserById(user.getIdUser());
+        new UserDAOImpl().deleteUserById(user.getId());
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CLIENT_BY_ID)) {
 
@@ -179,7 +182,7 @@ public class ClientDAOImpl implements ClientDAO {
             ResultSet resultSet = statement.executeQuery();
             User user = new User();
             if(resultSet.next()){
-                user.setIdUser(resultSet.getLong(DAOConstant.ID_USER));
+                user.setId(resultSet.getLong(DAOConstant.ID));
             }
             return user;
         }
@@ -206,7 +209,7 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     public Workout createWorkoutFromResult(ResultSet resultSet) throws SQLException {
-        Workout workout = new Workout(resultSet.getLong(DAOConstant.ID_WORKOUT),
+        Workout workout = new Workout(resultSet.getLong(DAOConstant.ID),
                 resultSet.getString(DAOConstant.TYPE_WORKOUT),
                 resultSet.getString(DAOConstant.NAME_OF_WORKOUT),
                 resultSet.getString(DAOConstant.EQUIPMENT),

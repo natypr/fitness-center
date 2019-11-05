@@ -9,15 +9,17 @@ import java.util.Optional;
 
 public interface TrainerDAO {
 
-    void create(Trainer trainer) throws DAOfcException;
+    void createTrainer(Trainer trainer) throws DAOfcException;
 
     List<Trainer> findAllTrainers() throws DAOfcException;
 
     Optional<Trainer> findTrainerById(long id) throws DAOfcException;
 
-    Trainer updateTrainerByTrainer(Trainer trainer) throws DAOfcException;
+    Optional<Trainer> findTrainerByEmail(String email) throws DAOfcException;
 
-    void deleteTrainer(long id) throws DAOfcException;
+    Trainer updateTrainer(Trainer trainer) throws DAOfcException;
+
+    void deleteTrainerById(long id) throws DAOfcException;
 
 
     Workout createWorkoutForClient(Workout workout) throws DAOfcException;

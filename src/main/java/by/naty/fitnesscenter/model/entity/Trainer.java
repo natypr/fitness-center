@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
 public class Trainer extends User {
-    private long idTrainer;
+    private long id;
     private String education;
     private double costPerHour;
     private boolean blocked;
@@ -9,28 +9,35 @@ public class Trainer extends User {
     public Trainer() {
     }
 
-    public Trainer(long idTrainer, String education, double costPerHour, boolean blocked) {
-        this.idTrainer = idTrainer;
+    public Trainer(User user, long id, String education, double costPerHour){
+        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+        this.id = id;
+        this.education = education;
+        this.costPerHour = costPerHour;
+    }
+
+    public Trainer(long id, String education, double costPerHour, boolean blocked) {
+        this.id = id;
         this.education = education;
         this.costPerHour = costPerHour;
         this.blocked = blocked;
     }
 
     public Trainer(long idUser, String role, String name, String surname, String email, String password,
-                   long idTrainer, String education, double costPerHour, boolean blocked) {
+                   long id, String education, double costPerHour, boolean blocked) {
         super(idUser, role, name, surname, email, password);
-        this.idTrainer = idTrainer;
+        this.id = id;
         this.education = education;
         this.costPerHour = costPerHour;
         this.blocked = blocked;
     }
 
-    public long getIdTrainer() {
-        return idTrainer;
+    public long getId() {
+        return id;
     }
 
-    public void setIdTrainer(long idTrainer) {
-        this.idTrainer = idTrainer;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEducation() {
@@ -65,7 +72,7 @@ public class Trainer extends User {
 
         Trainer trainer = (Trainer) o;
 
-        if (idTrainer != trainer.idTrainer) return false;
+        if (id != trainer.id) return false;
         if (Double.compare(trainer.costPerHour, costPerHour) != 0) return false;
         if (blocked != trainer.blocked) return false;
         return education != null ? education.equals(trainer.education) : trainer.education == null;
@@ -75,7 +82,7 @@ public class Trainer extends User {
     public int hashCode() {
         int result = super.hashCode();
         long temp;
-        result = 31 * result + (int) (idTrainer ^ (idTrainer >>> 32));
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (education != null ? education.hashCode() : 0);
         temp = Double.doubleToLongBits(costPerHour);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -86,7 +93,7 @@ public class Trainer extends User {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Trainer{");
-        sb.append("idTrainer=").append(idTrainer);
+        sb.append("idTrainer=").append(id);
         sb.append(", education='").append(education).append('\'');
         sb.append(", costPerHour=").append(costPerHour);
         sb.append(", blocked=").append(blocked);

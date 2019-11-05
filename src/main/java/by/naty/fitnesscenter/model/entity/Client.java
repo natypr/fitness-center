@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
 public class Client extends User {
-    private long idClient;
+    private long id;
     private String gender;
     private byte yearOld;
     private double discount;
@@ -10,16 +10,16 @@ public class Client extends User {
     public Client() {
     }
 
-    public Client(User user, long idClient, String gender, byte yearOld, double discount) {
-        super(user.getIdUser(),user.getRole(),user.getName(),user.getSurname(),user.getEmail(),user.getPassword());
-        this.idClient = idClient;
+    public Client(User user, long id, String gender, byte yearOld, double discount) {
+        super(user.getId(),user.getRole(),user.getName(),user.getSurname(),user.getEmail(),user.getPassword());
+        this.id = id;
         this.gender = gender;
         this.yearOld = yearOld;
         this.discount = discount;
     }
 
-    public Client(long idClient, String gender, byte yearOld, double discount, boolean blocked) {
-        this.idClient = idClient;
+    public Client(long id, String gender, byte yearOld, double discount, boolean blocked) {
+        this.id = id;
         this.gender = gender;
         this.yearOld = yearOld;
         this.discount = discount;
@@ -27,21 +27,21 @@ public class Client extends User {
     }
 
     public Client(long idUser, String role, String name, String surname, String email, String password,
-                  long idClient, String gender, byte yearOld, double discount, boolean blocked) {
+                  long id, String gender, byte yearOld, double discount, boolean blocked) {
         super(idUser, role, name, surname, email, password);
-        this.idClient = idClient;
+        this.id = id;
         this.gender = gender;
         this.yearOld = yearOld;
         this.discount = discount;
         this.blocked = blocked;
     }
 
-    public long getIdClient() {
-        return idClient;
+    public long getId() {
+        return id;
     }
 
-    public void setIdClient(long idClient) {
-        this.idClient = idClient;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getGender() {
@@ -84,7 +84,7 @@ public class Client extends User {
 
         Client client = (Client) o;
 
-        if (idClient != client.idClient) return false;
+        if (id != client.id) return false;
         if (yearOld != client.yearOld) return false;
         if (Double.compare(client.discount, discount) != 0) return false;
         if (blocked != client.blocked) return false;
@@ -95,7 +95,7 @@ public class Client extends User {
     public int hashCode() {
         int result = super.hashCode();
         long temp;
-        result = 31 * result + (int) (idClient ^ (idClient >>> 32));
+        result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (int) yearOld;
         temp = Double.doubleToLongBits(discount);
@@ -107,7 +107,7 @@ public class Client extends User {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Client{");
-        sb.append("idClient=").append(idClient);
+        sb.append("idClient=").append(id);
         sb.append(", gender='").append(gender).append('\'');
         sb.append(", yearOld='").append(yearOld).append('\'');
         sb.append(", discount=").append(discount);
