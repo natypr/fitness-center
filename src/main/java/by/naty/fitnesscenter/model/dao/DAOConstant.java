@@ -23,4 +23,6 @@ public class DAOConstant {
 
     public static final String EDUCATION = "education";
     public static final String COST_PER_HOUR = "cost_per_hour";
+
+    public static final String ID_CLIENT = "id_client";
 }

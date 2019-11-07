@@ -1,5 +1,7 @@
 package by.naty.fitnesscenter.model.pool;
 
+import java.util.Properties;
+
 public class PoolConfig {
 
     private final String driverName;
@@ -8,12 +10,15 @@ public class PoolConfig {
     private final String password;
     private final int poolSize;
 
-    public PoolConfig(String driverName, String url, String userName, String password, int poolSize) {
-        this.driverName = driverName;
-        this.url = url;
-        this.userName = userName;
-        this.password = password;
-        this.poolSize = poolSize;
+    public PoolConfig() {
+        PropertyLoader propertyLoader = new PropertyLoader();
+        Properties properties = propertyLoader.loadFile("config/database.properties");
+
+        this.driverName = properties.getProperty("db.driverClassName");
+        this.url = properties.getProperty("db.url");
+        this.userName = properties.getProperty("db.userName");
+        this.password = properties.getProperty("db.password");
+        this.poolSize = Integer.parseInt(properties.getProperty("db.poolSize"));
     }
 
     public String getDriverName(){

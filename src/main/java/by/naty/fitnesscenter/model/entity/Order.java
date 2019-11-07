@@ -1,23 +1,23 @@
 package by.naty.fitnesscenter.model.entity;
 
 public class Order {
-    private long idOrder;
+    private long id;
     private long idClient;
 
     public Order() {
     }
 
-    public Order(long idOrder, long idClient) {
-        this.idOrder = idOrder;
+    public Order(long id, long idClient) {
+        this.id = id;
         this.idClient = idClient;
     }
 
-    public long getIdOrder() {
-        return idOrder;
+    public long getId() {
+        return id;
     }
 
-    public void setIdOrder(long idOrder) {
-        this.idOrder = idOrder;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getIdClient() {
@@ -35,13 +35,13 @@ public class Order {
 
         Order order = (Order) o;
 
-        if (idOrder != order.idOrder) return false;
+        if (id != order.id) return false;
         return idClient == order.idClient;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (idOrder ^ (idOrder >>> 32));
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (int) (idClient ^ (idClient >>> 32));
         return result;
     }
@@ -49,7 +49,7 @@ public class Order {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
-        sb.append("idOrder=").append(idOrder);
+        sb.append("id=").append(id);
         sb.append(", idClient=").append(idClient);
         sb.append('}');
         return sb.toString();

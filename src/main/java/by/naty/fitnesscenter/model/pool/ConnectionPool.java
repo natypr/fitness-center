@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -19,8 +18,8 @@ public class ConnectionPool {
 
     private ConnectionPool(PoolConfig config) {
         try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-        } catch (SQLException e) {
+            Class.forName(config.getDriverName());
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         try {
@@ -41,10 +40,8 @@ public class ConnectionPool {
 
     public static synchronized ConnectionPool getInstance() {
         if (instance == null) {
-            PropertyLoader propertyLoader = new PropertyLoader();
-            Properties properties = propertyLoader.loadFile("database.properties");
-//            PoolConfig config = new PoolConfig();     //FIXME get size from properties
-//            instance = new ConnectionPool(config.getPoolSize());
+            PoolConfig config = new PoolConfig();
+            instance = new ConnectionPool(config);
         }
         return instance;
     }
@@ -85,7 +82,8 @@ public class ConnectionPool {
                 ProxyConnection proxyConnection = (ProxyConnection) connection;
                 proxyConnection.reallyClose();
             }
-            //pool = new ArrayBlockingQueue<>(poolSize); //FIXME
+            PoolConfig config = new PoolConfig();
+            pool = new ArrayBlockingQueue<>(config.getPoolSize());
         } catch (SQLException e) {
             LOG.error("All connections are not closed: " + e);
             throw new PoolFCException(e);
