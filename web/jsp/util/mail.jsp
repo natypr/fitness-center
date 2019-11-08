@@ -8,7 +8,7 @@
     <title><fmt:message key="title.mail" bundle="${ var }" /></title>
 </head>
 <body>
-<form action="MailServlet" method="POST">
+<form action="${pageContext.request.contextPath}/jsp/mailServlet" method="POST">
     <table>
         <tr>
             <td><fmt:message key="text.mail.sendto" bundle="${ var }" /></td>
