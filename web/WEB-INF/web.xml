@@ -21,13 +21,6 @@
         <location>/jsp/error/error.jsp</location>
     </error-page>
 
-    <resource-ref>
-        <description>MySQL DB Connection Pool Creator</description>
-        <res-ref-name>jdbc/fitnesscenter</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <res-auth>Container</res-auth>
-    </resource-ref>
-
     <context-param>
         <param-name>mail</param-name>
         <param-value>/WEB-INF/classes/config/mail.properties</param-value>

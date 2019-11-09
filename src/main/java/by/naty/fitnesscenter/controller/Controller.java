@@ -1,8 +1,15 @@
 package by.naty.fitnesscenter.controller;
 
-import by.naty.fitnesscenter.model.command.ActionCommand;
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.CommandRF;
+import by.naty.fitnesscenter.model.command.EmptyCommand;
 import by.naty.fitnesscenter.model.command.factory.ActionFactory;
+import by.naty.fitnesscenter.model.exception.CommandFCException;
+import by.naty.fitnesscenter.model.exception.PoolFCException;
+import by.naty.fitnesscenter.model.pool.ConnectionPool;
+import by.naty.fitnesscenter.model.pool.PoolConfig;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.resource.LocaleManager;
 import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/controller")
@@ -33,23 +41,50 @@ public class Controller extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String page = null;
-        LOG.info("Definition of a command coming from JSP. ");
-        ActionFactory client = new ActionFactory();
-        ActionCommand command = client.defineCommand(request);
+        try {
+            Optional<Command> commandOptional = ActionFactory.defineCommand(request.getParameter("command"));
+            Command command = commandOptional.orElse(new EmptyCommand());
 
-        LOG.info("Passing parameters to the handler class of a specific command. ");
-        page = command.execute(request);
+            String locale = (String) request.getSession().getAttribute("changeLanguage");
+            LocaleManager localeManager = LocaleManager.defineLocale(locale);
 
-        if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            LOG.info("Invocation page of the response to the request. ");
-            dispatcher.forward(request, response);
-        } else {
-            LOG.info("Setting page with error message. ");
-            page = ConfigurationManager.getProperty("path.page.index");
-            request.getSession().setAttribute("nullPage", MessageManager.getProperty("message.nullpage"));
-            response.sendRedirect(request.getContextPath() + page);
+            CommandRF commandRF = command.execute(request);
+
+            if (commandRF.getDispatchType() == CommandRF.DispatchType.FORWARD) {
+                RequestDispatcher dispatcher = request.getRequestDispatcher(commandRF.getPage());
+                dispatcher.forward(request, response);
+            } else {
+                String defaultPage = ConfigurationManager.getProperty("path.page.index");
+                if (commandRF.getPage().isEmpty()) {
+                    LOG.info("Null page.");
+                    request.getSession().setAttribute("nullPage", localeManager.getProperty("messages.nullpage"));
+                    response.sendRedirect(request.getContextPath() + defaultPage);
+                }
+
+                String page = commandRF.getPage();
+                request.getSession().setAttribute("pagePath", page);
+                response.sendRedirect(request.getContextPath() + page);
+            }
+        } catch (CommandFCException e) {
+            request.getSession().setAttribute("nullPage", MessageManager.getProperty("messages.nullpage"));
+            LOG.error("Command not defined. ", e);
+            String page = ConfigurationManager.getProperty("path.page.error");
+            request.getRequestDispatcher(page).forward(request, response);
+        }
+
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        PoolConfig config = new PoolConfig();
+        int poolSize = config.getPoolSize();
+        for (int i = 0; i < poolSize; i++) {
+            try {
+                connectionPool.closeConnection(connectionPool.getConnection());
+            } catch (PoolFCException e) {
+                LOG.error("Some connections aren't closed: ", e);
+            }
         }
     }
 }

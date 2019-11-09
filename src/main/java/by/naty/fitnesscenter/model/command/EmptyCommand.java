@@ -1,13 +1,14 @@
 package by.naty.fitnesscenter.model.command;
 
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.logic.DefaultLogic;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class EmptyCommand implements ActionCommand {
+public class EmptyCommand implements Command {
+    private DefaultLogic receiver = new DefaultLogic();
+
     @Override
-    public String execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty("path.page.login");
-        return page;
+    public CommandRF execute(HttpServletRequest request) {
+        return new CommandRF(CommandRF.DispatchType.FORWARD, receiver.getPath());
     }
 }

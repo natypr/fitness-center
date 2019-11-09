@@ -1,26 +1,28 @@
 package by.naty.fitnesscenter.model.command.factory;
 
-import by.naty.fitnesscenter.model.command.ActionCommand;
-import by.naty.fitnesscenter.model.command.EmptyCommand;
-import by.naty.fitnesscenter.model.command.client.CommandEnum;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.client.CommandType;
+import by.naty.fitnesscenter.model.exception.CommandFCException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class ActionFactory {
+    private static final Logger LOG = LogManager.getLogger();
 
-    public ActionCommand defineCommand(HttpServletRequest request) {
-        ActionCommand current = new EmptyCommand();
-        String action = request.getParameter("command");
-
-        if (action == null || action.isEmpty()) {
+    public static Optional<Command> defineCommand(String commandName) throws CommandFCException {
+        Optional<Command> current = Optional.empty();
+        if(commandName == null){
             return current;
         }
+
         try {
-            CommandEnum currentEnum = CommandEnum.valueOf(action.toUpperCase());
-            current = currentEnum.getCurrentCommand();
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("wrongAction", action + MessageManager.getProperty("message.wrongaction"));
+            CommandType commandType = CommandType.valueOf(commandName.toUpperCase());
+            current = Optional.of(commandType.getCommand());
+        } catch (IllegalArgumentException e){
+            LOG.error("Unknown command. It doesn't exist in CommandType. ", e);
+            throw new CommandFCException(e);
         }
         return current;
     }
