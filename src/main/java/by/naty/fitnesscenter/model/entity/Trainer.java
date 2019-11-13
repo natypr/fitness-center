@@ -9,6 +9,12 @@ public class Trainer extends User {
     public Trainer() {
     }
 
+    public Trainer(User user){
+        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+        this.education = "master";
+        this.costPerHour = 0.0;
+    }
+
     public Trainer(User user, long id, String education, double costPerHour){
         super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
         this.id = id;
