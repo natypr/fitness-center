@@ -14,7 +14,7 @@ public interface UserDAO {
 
     Optional<User> findUserById(long id) throws DAOfcException;
 
-    User findUserBySurnameAndName(String surname, String name) throws DAOfcException;
+    User findUserByEmailAndPassword(String email, String password) throws DAOfcException;
 
     User updateUser(User user) throws DAOfcException;
 

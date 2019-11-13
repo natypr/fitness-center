@@ -24,5 +24,5 @@ public interface ClientDAO {
 
     List<Workout> findAllWorkoutByIdClient(long idClient) throws DAOfcException;
 
-    List<Client> findAllClientsByIdTrainer(int idTrainer) throws DAOfcException;
+    List<Client> findAllClientsByIdTrainer(long idTrainer) throws DAOfcException;
 }

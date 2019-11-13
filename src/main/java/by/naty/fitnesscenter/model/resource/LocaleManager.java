@@ -18,6 +18,9 @@ public enum LocaleManager {
     }
 
     public static LocaleManager defineLocale(String locale){
+        if(locale == null){
+            return EN;
+        }
         return "ru_RU".equals(locale) ? RU : EN;
     }
 }

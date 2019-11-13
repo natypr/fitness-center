@@ -222,7 +222,7 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     @Override
-    public List<Client> findAllClientsByIdTrainer(int idTrainer) throws DAOfcException {
+    public List<Client> findAllClientsByIdTrainer(long idTrainer) throws DAOfcException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_CLIENTS_BY_ID_TRAINER)) {
 

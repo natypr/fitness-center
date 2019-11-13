@@ -32,10 +32,10 @@ public class UserDAOImpl implements UserDAO {
                     "FROM `user` LEFT JOIN role_legend ON `user`.role = role_legend.role " +
                     "WHERE `user`.id=?;";
 
-    private static final String FIND_USER_BY_SURNAME_AND_NAME =
+    private static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
             "SELECT id, role_name AS role, `name`, surname, email, password " +
                     "FROM `user` LEFT JOIN role_legend ON `user`.role = role_legend.role " +
-                    "WHERE surname=? AND `name`=?;";
+                    "WHERE email=? AND password=?;";
 
     private static final String UPDATE_USER =
             "UPDATE `user` SET id=?, role=?, `name`=?, surname=?, email=?, password=? WHERE id=?;";
@@ -122,13 +122,13 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User findUserBySurnameAndName(String surname, String name) throws DAOfcException {
+    public User findUserByEmailAndPassword(String email, String password) throws DAOfcException {
         try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_SURNAME_AND_NAME)){
+            PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL_AND_PASSWORD)){
 
             User user = null;
-            statement.setString(1, surname);
-            statement.setString(2, name);
+            statement.setString(1, email);
+            statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
                 user = new User();
