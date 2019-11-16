@@ -9,12 +9,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
     private static final Logger LOG = LogManager.getLogger();
 
     private static ConnectionPool instance;
     private BlockingQueue<ProxyConnection> pool;
+    private static ReentrantLock lock = new ReentrantLock();
 
     private ConnectionPool(PoolConfig config) {
         try {
@@ -38,10 +40,15 @@ public class ConnectionPool {
         return DriverManager.getConnection(config.getUrl(), config.getUserName(),  config.getPassword());
     }
 
-    public static synchronized ConnectionPool getInstance() {
-        if (instance == null) {
-            PoolConfig config = new PoolConfig();
-            instance = new ConnectionPool(config);
+    public static ConnectionPool getInstance() {
+        lock.lock();
+        try {
+            if (instance == null) {
+                PoolConfig config = new PoolConfig();
+                instance = new ConnectionPool(config);
+            }
+        } finally {
+            lock.unlock();
         }
         return instance;
     }
@@ -51,7 +58,7 @@ public class ConnectionPool {
         try {
             connection = pool.take();
         } catch ( InterruptedException e) {
-            LOG.error("Connection not received: " + e);
+            LOG.error("Connection not received: ", e);
             throw new PoolFCException(e);
         }
         return connection;
@@ -61,7 +68,7 @@ public class ConnectionPool {
         try {
             pool.put(connection);
         } catch (InterruptedException e) {
-            LOG.error("Connection not released: " + e);
+            LOG.error("Connection not released: ", e);
             throw new PoolFCException(e);
         }
     }
@@ -71,7 +78,7 @@ public class ConnectionPool {
         try {
             connection.reallyClose();
         }catch (SQLException e){
-            LOG.error("Connection not closed: " + e);
+            LOG.error("Connection not closed: ", e);
             throw new PoolFCException(e);
         }
     }
@@ -85,7 +92,7 @@ public class ConnectionPool {
             PoolConfig config = new PoolConfig();
             pool = new ArrayBlockingQueue<>(config.getPoolSize());
         } catch (SQLException e) {
-            LOG.error("All connections are not closed: " + e);
+            LOG.error("All connections are not closed: ", e);
             throw new PoolFCException(e);
         }
     }

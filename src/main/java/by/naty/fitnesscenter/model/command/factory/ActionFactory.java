@@ -20,6 +20,7 @@ public class ActionFactory {
         try {
             CommandType commandType = CommandType.valueOf(commandName.toUpperCase());
             current = Optional.of(commandType.getCommand());
+            LOG.debug("Command " + commandType.toString() + " received.");
         } catch (IllegalArgumentException e){
             LOG.error("Unknown command. It doesn't exist in CommandType. ", e);
             throw new CommandFCException(e);

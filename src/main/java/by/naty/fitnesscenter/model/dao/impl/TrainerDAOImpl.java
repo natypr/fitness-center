@@ -102,7 +102,7 @@ public class TrainerDAOImpl implements TrainerDAO {
     @Override
     public Optional<Trainer> findTrainerById(long id) throws DAOfcException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_TRAINER_BY_ID)) {   //FIXME ...|+
+             PreparedStatement statement = connection.prepareStatement(FIND_TRAINER_BY_ID)) {
 
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();

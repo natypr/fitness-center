@@ -38,6 +38,7 @@ public class RegistrationCommand implements Command {
 
     private static boolean checkRegistration(String name, String surname,
                                              String email, String password, String yearOld){
+        LOG.debug("!!! Check registration: " + name + " " + surname + " " + email + " " + password + " " + yearOld);
         return DataValidator.isNameCorrect(name) &&
                 DataValidator.isSurnameCorrect(surname) &&
                 DataValidator.isEmailCorrect(email) &&
@@ -56,8 +57,9 @@ public class RegistrationCommand implements Command {
         String gender = request.getParameter(GENDER);
         String yearOld = request.getParameter(YEAR_OLD);
 
-        if (!checkRegistration(name, surname, yearOld, email, password)) {
+        if (checkRegistration(name, surname, email, password, yearOld)) {
             if (role.equals("Client")){
+                LOG.debug("Role is Client.");
                 User user = new User(UserType.CLIENT.getTypeUser(), name, surname, email, password);
                 Client client = new Client(user, gender, Byte.parseByte(yearOld), 0.0);
 
@@ -78,11 +80,12 @@ public class RegistrationCommand implements Command {
                     throw new CommandFCException();
                 }
             }
-            request.setAttribute("successMessage", MessageManager.getProperty("messages.reg.success"));
+            request.setAttribute("successMessage", MessageManager.getProperty("message.reg.success"));
             page = ConfigurationManager.getProperty("path.page.login");
-            LOG.info(name + " is registered now.");
+            LOG.info(name + " (" + email + ") is registered now.");
         } else {
-            request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("messages.login.error"));
+            LOG.debug("Data isn't correct.");
+            request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.error"));
             page = ConfigurationManager.getProperty("path.page.reg");
         }
         return new CommandRF(CommandRF.DispatchType.REDIRECT, page);

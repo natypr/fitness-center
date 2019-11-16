@@ -42,22 +42,26 @@ public class Controller extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            LOG.debug("Controller started.");
             Optional<Command> commandOptional = ActionFactory.defineCommand(request.getParameter("command"));
             Command command = commandOptional.orElse(new EmptyCommand());
 
             String locale = (String) request.getSession().getAttribute("changeLanguage");
+            LOG.debug("Locale is: " + locale);
             LocaleManager localeManager = LocaleManager.defineLocale(locale);
 
             CommandRF commandRF = command.execute(request);
 
             if (commandRF.getDispatchType() == CommandRF.DispatchType.FORWARD) {
+                LOG.debug("Dispatch type is Forward.");
                 RequestDispatcher dispatcher = request.getRequestDispatcher(commandRF.getPage());
                 dispatcher.forward(request, response);
             } else {
+                LOG.debug("Dispatch type is Redirect.");
                 String defaultPage = ConfigurationManager.getProperty("path.page.index");
                 if (commandRF.getPage().isEmpty()) {
                     LOG.info("Null page.");
-                    request.getSession().setAttribute("nullPage", localeManager.getProperty("messages.nullpage"));
+                    request.getSession().setAttribute("nullPage", localeManager.getProperty("message.null.page"));
                     response.sendRedirect(request.getContextPath() + defaultPage);
                 }
 
@@ -66,7 +70,7 @@ public class Controller extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandFCException e) {
-            request.getSession().setAttribute("nullPage", MessageManager.getProperty("messages.nullpage"));
+            request.getSession().setAttribute("nullPage", MessageManager.getProperty("message.null.page"));
             LOG.error("Command not defined. ", e);
             String page = ConfigurationManager.getProperty("path.page.error");
             request.getRequestDispatcher(page).forward(request, response);
@@ -86,5 +90,6 @@ public class Controller extends HttpServlet {
                 LOG.error("Some connections aren't closed: ", e);
             }
         }
+        LOG.debug("Destroy connection.");
     }
 }

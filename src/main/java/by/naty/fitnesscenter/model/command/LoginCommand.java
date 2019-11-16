@@ -87,15 +87,15 @@ public class LoginCommand implements Command {
                     }
 
                 } else {
-                    request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("messages.login.error"));
+                    request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.error"));
                     page = ConfigurationManager.getProperty("path.page.login");
                 }
             } catch (LogicFCException e) {
-                request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("messages.login.error"));
+                request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.error"));
                 throw new CommandFCException(e);
             }
         } else {
-            request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("messages.login.empty"));
+            request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.empty"));
         }
         return  new CommandRF(CommandRF.DispatchType.REDIRECT, page);
     }

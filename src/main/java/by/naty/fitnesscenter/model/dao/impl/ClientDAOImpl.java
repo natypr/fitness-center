@@ -61,7 +61,7 @@ public class ClientDAOImpl implements ClientDAO {
     @Override
     public void createClient(Client client) throws DAOfcException {
         User user = createUserFromClient(client);
-        user = new UserDAOImpl().createUserWithMaxId(user);
+        user = new UserDAOImpl().createUserWithMaxId(user);     //FIXME
         try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
             PreparedStatement statement = connection.prepareStatement(CREATE_CLIENT)){
 
