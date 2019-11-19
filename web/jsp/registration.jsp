@@ -1,17 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<fmt:setLocale value="ru_RU" scope="session"/>
-<fmt:setLocale value="${changeLanguage}" scope="session"/>
-<fmt:setBundle basename="messages" var="var"/>--%>
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
-<%@ page isELIgnored="false" %>
-<fmt:setBundle basename="messages"  var="var"/>
-<fmt:setLocale value="${changeLanguage}"/>
-
+<fmt:setBundle basename="messages" var="var"/>
 <html>
 <head>
     <title><fmt:message key="title.reg" bundle="${var}"/></title>
+    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
 <form name="signForm" method="POST" action = "controller">
@@ -52,6 +47,7 @@
     <input type="password" name="password" value="" required pattern="^([A-Za-z0-9_-]{8,})$"/>
 
     <br/><br/>
+
     <input type="submit" value="<fmt:message key = "bt.reg.signup" bundle="${var}"/>">
     <br/>
     ${errorLoginPassMessage} <br/> ${wrongAction} <br/> ${nullPage} <br/>

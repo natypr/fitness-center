@@ -12,15 +12,15 @@ import java.util.concurrent.Executor;
 public class ProxyConnection implements Connection {
     private static final Logger LOG = LogManager.getLogger();
 
-    private Connection connection;
+    private final Connection connection;
 
     ProxyConnection(Connection connection) {
         this.connection = connection;
     }
 
-    public Connection getConnection() {
+/*    private Connection getConnection() {
         return connection;
-    }
+    }*/
 
     @Override
     public void close() throws SQLException {
@@ -37,12 +37,12 @@ public class ProxyConnection implements Connection {
 
     @Override
     public Statement createStatement() throws SQLException {
-        return getConnection().createStatement();
+        return connection.createStatement();
     }
 
     @Override
     public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return null;
+        return connection.prepareStatement(sql);
     }
 
     @Override

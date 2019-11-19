@@ -12,9 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserLogic {
-    private static final String EN = "en_US";
-    private static final String RU = "ru_RU";
-    private static final String REG_JSP = "/jsp.+";
+    private final Pattern pattern = Pattern.compile("/jsp.+");
 
     public void addUser(User user) throws LogicFCException {
         UserDAO userDAO = new UserDAOImpl();
@@ -84,17 +82,8 @@ public class UserLogic {
         }
     }
 
-
-    public String changeLanguage(String locale){
-        if (locale == null){
-            return EN;
-        }
-        return RU.equals(locale) ? RU : EN;
-    }
-
     public String returnSamePage(String pagePath){
         String page = null;
-        Pattern pattern = Pattern.compile(REG_JSP);
         Matcher matcher = pattern.matcher(pagePath);
         if(matcher.find()){
             page = matcher.group();

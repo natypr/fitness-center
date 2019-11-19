@@ -18,7 +18,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     private static final String CREATE_USER =
-            "INSERT INTO `user` (role, `name`, surname, email, password) VALUES (?, ?, ?, ?, ?);";
+            "INSERT INTO `user` (role, `name`, surname, email, password, data_and_time_registration) VALUES (?, ?, ?, ?, ?, ?);";
 
     private static final String SELECT_MAX_ID_FROM_USER = "SELECT max(id) FROM `user`;";
 
@@ -65,6 +65,7 @@ public class UserDAOImpl implements UserDAO {
         statement.setString(3, user.getSurname());
         statement.setString(4, user.getEmail());
         statement.setString(5, user.getPassword());
+        statement.setTimestamp(6, new Timestamp(0));
         statement.executeUpdate();
     }
 
@@ -140,7 +141,7 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
-    void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
+    private void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
         user.setId(resultSet.getLong(DAOConstant.ID));
         user.setRole(resultSet.getString(DAOConstant.ROLE));
         user.setName(resultSet.getString(DAOConstant.NAME));

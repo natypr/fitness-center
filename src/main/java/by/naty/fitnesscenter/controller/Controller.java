@@ -46,10 +46,6 @@ public class Controller extends HttpServlet {
             Optional<Command> commandOptional = ActionFactory.defineCommand(request.getParameter("command"));
             Command command = commandOptional.orElse(new EmptyCommand());
 
-            String locale = (String) request.getSession().getAttribute("changeLanguage");
-            LOG.debug("Locale is: " + locale);
-            LocaleManager localeManager = LocaleManager.defineLocale(locale);
-
             CommandRF commandRF = command.execute(request);
 
             if (commandRF.getDispatchType() == CommandRF.DispatchType.FORWARD) {
@@ -61,6 +57,9 @@ public class Controller extends HttpServlet {
                 String defaultPage = ConfigurationManager.getProperty("path.page.index");
                 if (commandRF.getPage().isEmpty()) {
                     LOG.info("Null page.");
+                    String locale = (String) request.getSession().getAttribute("locale");
+                    LocaleManager localeManager = LocaleManager.defineLocale(locale);
+
                     request.getSession().setAttribute("nullPage", localeManager.getProperty("message.null.page"));
                     response.sendRedirect(request.getContextPath() + defaultPage);
                 }

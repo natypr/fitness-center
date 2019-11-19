@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="ru_RU" scope="session"/>
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages" var="var"/>
 <html>
 <head>
     <title><fmt:message key="title.login" bundle="${var}"/></title>
+    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
 <form name="loginForm" method="POST" action="controller">
