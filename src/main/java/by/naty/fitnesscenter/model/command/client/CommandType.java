@@ -11,7 +11,8 @@ public enum CommandType {
     LOGIN(new LoginCommand(new UserLogic(), new ClientLogic(), new TrainerLogic(), new OrderLogic())),
     LOGOUT(new LogoutCommand()),
     REGISTRATION(new RegistrationCommand(new UserLogic())),
-    CLIENT_CABINET(new WorkoutCommand(new ClientLogic()));
+    CLIENT_CABINET(new ClientCabinetCommand(new ClientLogic())),
+    TRAINER_CABINET(new TrainerCabinetCommand(new ClientLogic(), new TrainerLogic()));
 
     private Command command;
 

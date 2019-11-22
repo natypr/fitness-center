@@ -23,7 +23,11 @@ public class LogoutCommand implements Command {
 
         request.getSession().invalidate();
         request.getSession().setAttribute(PARAM_CHANGE_LANGUAGE, locale);
-        LOG.info(user.getEmail() + " log out!");
+        if (user == null) {
+            LOG.info("Empty log out. Nobody log out.");
+        } else {
+            LOG.info(user.getEmail() + " log out!");
+        }
         return new CommandRF(CommandRF.DispatchType.FORWARD, page);
     }
 }

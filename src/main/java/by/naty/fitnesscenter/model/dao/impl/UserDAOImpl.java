@@ -16,26 +16,23 @@ import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
 
-
     private static final String CREATE_USER =
-            "INSERT INTO `user` (role, `name`, surname, email, password, data_and_time_registration) VALUES (?, ?, ?, ?, ?, ?);";
+            "INSERT INTO `user` (role, `name`, surname, email, password) " +
+                    "VALUES (?, ?, ?, ?, ?);";
 
     private static final String SELECT_MAX_ID_FROM_USER = "SELECT max(id) FROM `user`;";
 
     private static final String FIND_ALL_USERS =
-            "SELECT id, role_name AS role, `name`, surname, email, password, " +
-                    "FROM `user` LEFT JOIN role_legend ON `user`.role = role_legend.role " +
-                    "ORDER BY `user`.id;";
+            "SELECT id, role, `name`, surname, email, password " +
+                    "FROM `user` ORDER BY `user`.id;";
 
     private static final String FIND_USER_BY_ID =
-            "SELECT id, role_name AS role, `name`, surname, email, password, " +
-                    "FROM `user` LEFT JOIN role_legend ON `user`.role = role_legend.role " +
-                    "WHERE `user`.id=?;";
+            "SELECT id, role, `name`, surname, email, password " +
+                    "FROM `user` WHERE `user`.id=?;";
 
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
-            "SELECT id, role_name AS role, `name`, surname, email, password " +
-                    "FROM `user` LEFT JOIN role_legend ON `user`.role = role_legend.role " +
-                    "WHERE email=? AND password=?;";
+            "SELECT id, role, `name`, surname, email, password " +
+                    "FROM `user` WHERE email=? AND password=?;";
 
     private static final String UPDATE_USER =
             "UPDATE `user` SET id=?, role=?, `name`=?, surname=?, email=?, password=? WHERE id=?;";
@@ -65,7 +62,8 @@ public class UserDAOImpl implements UserDAO {
         statement.setString(3, user.getSurname());
         statement.setString(4, user.getEmail());
         statement.setString(5, user.getPassword());
-        statement.setTimestamp(6, new Timestamp(0));
+//        statement.setTimestamp(6, new Timestamp(0));
+ //       statement.setTimestamp(6, user.getDate());
         statement.executeUpdate();
     }
 

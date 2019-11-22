@@ -69,20 +69,20 @@ public class LoginCommand implements Command {
                         }
 
                         request.getSession().setAttribute("listOfClientInfo", listOfClientInfo);
-                        page = ConfigurationManager.getProperty("path.page.trainer.main");
+                        page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                         LOG.info("  Trainer: " + user.getEmail() + " log in.");
 
                     } else {
                         Client client = clientLogic.findClientByEmail(login);
                         request.getSession().setAttribute("client", client);
 
-                        List<Order> orders = (List<Order>) orderLogic.findOrderByEmailClient(client.getEmail());
-                        request.getSession().setAttribute("order", orders);
+//                        List<Order> orders = (List<Order>) orderLogic.findOrderByEmailClient(client.getEmail());
+//                        request.getSession().setAttribute("order", orders); FIXME OrderLogic.findOrderByEmailClient()
 
                         List<Workout> workouts = clientLogic.findAllWorkoutForClients(client.getId());
                         request.getSession().setAttribute("exercises", workouts);
 
-                        page = ConfigurationManager.getProperty("path.page.client.main");
+                        page = ConfigurationManager.getProperty("path.page.client.cabinet");
                         LOG.info(" Client: " + user.getEmail() + " log in.");
                     }
 

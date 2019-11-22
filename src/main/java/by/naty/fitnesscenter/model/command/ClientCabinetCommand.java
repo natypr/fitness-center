@@ -10,12 +10,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class WorkoutCommand implements Command {
+public class ClientCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
     private ClientLogic clientLogic;
 
-    public WorkoutCommand(ClientLogic clientLogic){
+    public ClientCabinetCommand(ClientLogic clientLogic){
         this.clientLogic = clientLogic;
     }
 

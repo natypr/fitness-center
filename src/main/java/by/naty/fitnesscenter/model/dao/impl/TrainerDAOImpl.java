@@ -21,16 +21,16 @@ public class TrainerDAOImpl implements TrainerDAO {
             "INSERT INTO trainer (id, education, cost_per_hour)  VALUES (?, ?, ?);";
 
     private static final String FIND_ALL_TRAINERS =
-            "SELECT SELECT `user`.id, role_name AS role, `name`, surname, email, password, education, cost_per_hour " +
+            "SELECT `user`.id, role, `name`, surname, email, password, education, cost_per_hour " +
                     "FROM `user` RIGHT JOIN trainer ON `user`.id=trainer.id";
 
     private static final String FIND_TRAINER_BY_ID =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password,  education, cost_per_hour " +
+            "SELECT `user`.id, role, `name`, surname, email, password,  education, cost_per_hour " +
                     "FROM `user` JOIN trainer ON trainer.id=`user`.id WHERE `trainer`.id = ?;";
 
     private static final String FIND_TRAINER_BY_EMAIL =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password,  education, cost_per_hour " +
-                    "FROM `user` JOIN trainer ON trainer.id=`user`.id WHERE `trainer`.email = ?;";
+            "SELECT `user`.id, role, `name`, surname, email, password,  education, cost_per_hour " +
+                    "FROM `user` JOIN trainer ON trainer.id=`user`.id WHERE email = ?;";
 
     private static final String UPDATE_TRAINER =
             "UPDATE trainer SET trainer.id=?, education=?, cost_per_hous=?  WHERE trainer.id=?;";

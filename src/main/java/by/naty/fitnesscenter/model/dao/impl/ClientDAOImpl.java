@@ -24,16 +24,16 @@ public class ClientDAOImpl implements ClientDAO {
             "INSERT INTO client (`id`, `gender`, `year_old`, `discount`) VALUES (?, ?, ?, ?);";
 
     private static final String FIND_ALL_CLIENTS =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
                     "FROM `user` RIGHT JOIN `client` ON `user`.id=client.id";
 
     private static final String FIND_CLIENT_BY_ID =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
                     "FROM `user` JOIN `client` ON `user`.`id_user`=`client`.`id_user` " +
                     "WHERE `client`.`id_user` = ?;";
 
     private static final String FIND_CLIENT_BY_EMAIL =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password, gender, year_old, discount " +
+            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
                     "FROM `user` JOIN `client` ON `user`.id=client.id " +
                     "WHERE email=?;";
 
@@ -52,7 +52,7 @@ public class ClientDAOImpl implements ClientDAO {
                     "WHERE client.id=?;";
 
     private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
-            "SELECT `user`.id, role_name AS role, `name`, surname, email, password " +
+            "SELECT `user`.id, role, `name`, surname, email, password " +
                     "FROM workout " +
                     "JOIN `order` ON workout.id_order=`order`.id " +
                     "JOIN `user` ON `order`.id_client=`user`.id " +

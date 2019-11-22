@@ -15,31 +15,26 @@
 <div>
     <div>
         <strong><fmt:message key="text.clientcabinet.name" bundle="${var}"/></strong>
-        ${client.name}
-        </br>
+        ${client.name} </br>
 
-        <strong><fmt:message key="text.clientcabinet.surname" bundle="${var}"/></strong>>
-        ${client.surname}
-        </br>
+        <strong><fmt:message key="text.clientcabinet.surname" bundle="${var}"/></strong>
+        ${client.surname} </br>
 
         <strong><fmt:message key="text.clientcabinet.gender" bundle="${var}"/></strong>
-        ${client.gender}
-        </br>
+        ${client.gender} </br>
 
         <strong><fmt:message key="text.clientcabinet.yearold" bundle="${var}"/></strong>
-        ${client.yearOld}
-        </br>
+        ${client.yearOld} </br>
 
         <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
-        ${client.email}
-        </br>
+        ${client.email}</br></br></br></br>
     </div>
 
 
     <form name="clientCabinet" method="POST" action = "${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="client_cabinet"/>
 
-        <table>
+        <table border="1" width="60%" cellpadding="5">
             <tr>
                 <th><fmt:message key="table.client.nameOfWorkout" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.typeWorkout" bundle="${var}"/></th>

@@ -22,9 +22,9 @@ public class OrderDAOImpl implements OrderDAO {
     private static final String FIND_ORDER_BY_ID = "SELECT id, id_client FROM order  WHERE id=?;";
 
     private static final String FIND_ORDER_BY_EMAIL =
-            "SELECT id, id_client FROM order " +
-                    "JOIN client ON client.id=order.id_client " +
-                    "JOIN `user` ON client.id=`user`.id WHERE email=?;";
+            "SELECT `order`.`id`, `order`.`id_client` FROM `order` " +
+                    "JOIN `client` ON `client`.`id`=`order`.`id_client` " +
+                    "JOIN `user` ON `user`.`id`=`client`.`id` WHERE `user`.`email`=?;";
 
     private static final String UPDATE_ORDER = "UPDATE order SET id=?, id_client=? WHERE id=?;";
 

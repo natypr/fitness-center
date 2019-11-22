@@ -10,6 +10,16 @@
 <footer>
     <hr/>
     <hr/>
+
+    <div>
+        <a href="https://www.instagram.com">
+            <img src="<fmt:message key="path.to.img.footer.instagram" bundle="${var}"/>"
+                 height="30" width="30"
+                 alt="<fmt:message key="img.footer.instagram" bundle="${var}"/>">
+        </a>
+    </div>
+
+    </br>
     <fmt:message key="footer.nameproject" bundle="${ var }" />
     <br>
     <fmt:message key="footer.copyright" bundle="${ var }" />

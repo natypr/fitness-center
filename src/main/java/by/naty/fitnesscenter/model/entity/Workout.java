@@ -14,6 +14,16 @@ public class Workout {
     public Workout() {
     }
 
+    public Workout(String typeWorkout, String nameOfWorkout, String equipment,
+                   String description, double costPerOneWorkout, int numberOfVisit) {
+        this.typeWorkout = typeWorkout;
+        this.nameOfWorkout = nameOfWorkout;
+        this.equipment = equipment;
+        this.description = description;
+        this.costPerOneWorkout = costPerOneWorkout;
+        this.numberOfVisit = numberOfVisit;
+    }
+
     public Workout(long id, String typeWorkout, String nameOfWorkout, String equipment,
                    String description, double costPerOneWorkout, int numberOfVisit, long idTrainer, long idOrder) {
         this.id = id;
