@@ -1,6 +1,6 @@
-package by.naty.fitnesscenter.model.command.client;
+package by.naty.fitnesscenter.model.command;
 
-import by.naty.fitnesscenter.model.command.*;
+import by.naty.fitnesscenter.model.command.impl.*;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.logic.OrderLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;

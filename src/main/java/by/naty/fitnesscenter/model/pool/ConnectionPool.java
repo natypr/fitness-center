@@ -1,6 +1,6 @@
 package by.naty.fitnesscenter.model.pool;
 
-import by.naty.fitnesscenter.model.exception.PoolFCException;
+import by.naty.fitnesscenter.model.exception.PoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,8 +15,8 @@ public class ConnectionPool {
     private static final Logger LOG = LogManager.getLogger();
 
     private static ConnectionPool instance;
-    private BlockingQueue<ProxyConnection> pool;
     private static ReentrantLock lock = new ReentrantLock();
+    private BlockingQueue<ProxyConnection> pool;
 
     private ConnectionPool(PoolConfig config) {
         try {
@@ -36,10 +36,6 @@ public class ConnectionPool {
         }
     }
 
-    private Connection createConnection(PoolConfig config) throws SQLException {
-        return DriverManager.getConnection(config.getUrl(), config.getUserName(),  config.getPassword());
-    }
-
     public static ConnectionPool getInstance() {
         lock.lock();
         try {
@@ -53,37 +49,41 @@ public class ConnectionPool {
         return instance;
     }
 
-    public ProxyConnection getConnection() throws PoolFCException {
+    private Connection createConnection(PoolConfig config) throws SQLException {
+        return DriverManager.getConnection(config.getUrl(), config.getUserName(), config.getPassword());
+    }
+
+    public ProxyConnection getConnection() throws PoolException {
         ProxyConnection connection;
         try {
             connection = pool.take();
-        } catch ( InterruptedException e) {
+        } catch (InterruptedException e) {
             LOG.error("Connection not received: ", e);
-            throw new PoolFCException(e);
+            throw new PoolException(e);
         }
         return connection;
     }
 
-    public void releaseConnection(ProxyConnection connection) throws PoolFCException {
+    void releaseConnection(ProxyConnection connection) throws PoolException {
         try {
             pool.put(connection);
         } catch (InterruptedException e) {
             LOG.error("Connection not released: ", e);
-            throw new PoolFCException(e);
+            throw new PoolException(e);
         }
     }
 
-    public void closeConnection(ProxyConnection connection) throws PoolFCException {
+    public void closeConnection(ProxyConnection connection) throws PoolException {
         pool.offer(connection);
         try {
             connection.reallyClose();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOG.error("Connection not closed: ", e);
-            throw new PoolFCException(e);
+            throw new PoolException(e);
         }
     }
 
-    public void closeAllConnections() throws PoolFCException {
+    public void closeAllConnections() throws PoolException {
         try {
             for (Connection connection : pool) {
                 ProxyConnection proxyConnection = (ProxyConnection) connection;
@@ -93,7 +93,7 @@ public class ConnectionPool {
             pool = new ArrayBlockingQueue<>(config.getPoolSize());
         } catch (SQLException e) {
             LOG.error("All connections are not closed: ", e);
-            throw new PoolFCException(e);
+            throw new PoolException(e);
         }
     }
 }

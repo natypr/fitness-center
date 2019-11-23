@@ -1,8 +1,6 @@
-package by.naty.fitnesscenter.model.command.factory;
+package by.naty.fitnesscenter.model.command;
 
-import by.naty.fitnesscenter.model.command.Command;
-import by.naty.fitnesscenter.model.command.client.CommandType;
-import by.naty.fitnesscenter.model.exception.CommandFCException;
+import by.naty.fitnesscenter.model.exception.CommandException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,9 +9,9 @@ import java.util.Optional;
 public class ActionFactory {
     private static final Logger LOG = LogManager.getLogger();
 
-    public static Optional<Command> defineCommand(String commandName) throws CommandFCException {
+    public static Optional<Command> defineCommand(String commandName) throws CommandException {
         Optional<Command> current = Optional.empty();
-        if(commandName == null){
+        if (commandName == null) {
             return current;
         }
 
@@ -21,9 +19,9 @@ public class ActionFactory {
             CommandType commandType = CommandType.valueOf(commandName.toUpperCase());
             current = Optional.of(commandType.getCommand());
             LOG.debug("Command " + commandType.toString() + " received.");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             LOG.error("Unknown command. It doesn't exist in CommandType. ", e);
-            throw new CommandFCException(e);
+            throw new CommandException(e);
         }
         return current;
     }

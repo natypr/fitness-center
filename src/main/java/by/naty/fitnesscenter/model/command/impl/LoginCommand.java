@@ -1,9 +1,14 @@
-package by.naty.fitnesscenter.model.command;
+package by.naty.fitnesscenter.model.command.impl;
 
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.*;
-import by.naty.fitnesscenter.model.exception.CommandFCException;
-import by.naty.fitnesscenter.model.exception.LogicFCException;
-import by.naty.fitnesscenter.model.logic.*;
+import by.naty.fitnesscenter.model.exception.CommandException;
+import by.naty.fitnesscenter.model.exception.LogicException;
+import by.naty.fitnesscenter.model.logic.ClientLogic;
+import by.naty.fitnesscenter.model.logic.OrderLogic;
+import by.naty.fitnesscenter.model.logic.TrainerLogic;
+import by.naty.fitnesscenter.model.logic.UserLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import by.naty.fitnesscenter.model.resource.MessageManager;
 import by.naty.fitnesscenter.model.validator.DataValidator;
@@ -15,11 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
+
 public class LoginCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
-
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
 
     private UserLogic userLogic;
     private ClientLogic clientLogic;
@@ -35,68 +39,68 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public CommandRF execute(HttpServletRequest request) throws CommandFCException {
+    public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String page = null;
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
 
-        if (DataValidator.isPasswordCorrect(password) && DataValidator.isEmailCorrect(login)){
+        if (DataValidator.isPasswordCorrect(password) && DataValidator.isEmailCorrect(login)) {
             try {
                 User user = userLogic.findUserByEmailAndPassword(login, password);
-                request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute(USER, user);
 
-                if (user != null){
+                if (user != null) {
                     List<Trainer> trainers = trainerLogic.findAllTrainers();
-                    request.getSession().setAttribute("trainers", trainers);
+                    request.getSession().setAttribute(TRAINERS, trainers);
 
-                    if (user.getRole().equals(UserType.ADMIN.getTypeUser())){
+                    if (user.getRole().equals(UserType.ADMIN.getTypeUser())) {
                         List<Client> clients = clientLogic.findAllClients();
-                        request.getSession().setAttribute("clients", clients);
+                        request.getSession().setAttribute(CLIENTS, clients);
                         page = ConfigurationManager.getProperty("path.page.admin.main");
                         LOG.info("  Admin: " + user.getEmail() + " log in.");
 
-                    } else if (user.getRole().equals(UserType.TRAINER.getTypeUser())){
+                    } else if (user.getRole().equals(UserType.TRAINER.getTypeUser())) {
                         Trainer trainer = trainerLogic.findTrainerByEmail(login);
-                        request.getSession().setAttribute("trainer", trainer);
+                        request.getSession().setAttribute(TRAINER, trainer);
 
                         List<Client> listOfAllClientsByIdTrainer = clientLogic.findAllClientsByIdTrainer(trainer.getId());
-                        request.getSession().setAttribute("clientsOfTrainer", listOfAllClientsByIdTrainer);
+                        request.getSession().setAttribute(CLIENTS_OF_TRAINER, listOfAllClientsByIdTrainer);
 
                         Map<Client, List<Workout>> listOfClientInfo = new HashMap<>();
-                        for (Client client : listOfAllClientsByIdTrainer){
+                        for (Client client : listOfAllClientsByIdTrainer) {
                             List<Workout> workouts = clientLogic.findAllWorkoutForClients(client.getId());
                             listOfClientInfo.put(client, workouts);
                         }
 
-                        request.getSession().setAttribute("listOfClientInfo", listOfClientInfo);
+                        request.getSession().setAttribute(LIST_OF_CLIENT_INFO, listOfClientInfo);
                         page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                         LOG.info("  Trainer: " + user.getEmail() + " log in.");
 
                     } else {
                         Client client = clientLogic.findClientByEmail(login);
-                        request.getSession().setAttribute("client", client);
+                        request.getSession().setAttribute(CLIENT, client);
 
 //                        List<Order> orders = (List<Order>) orderLogic.findOrderByEmailClient(client.getEmail());
 //                        request.getSession().setAttribute("order", orders); FIXME OrderLogic.findOrderByEmailClient()
 
                         List<Workout> workouts = clientLogic.findAllWorkoutForClients(client.getId());
-                        request.getSession().setAttribute("exercises", workouts);
+                        request.getSession().setAttribute(WORKOUTS, workouts);
 
                         page = ConfigurationManager.getProperty("path.page.client.cabinet");
                         LOG.info(" Client: " + user.getEmail() + " log in.");
                     }
 
                 } else {
-                    request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.error"));
+                    request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
                     page = ConfigurationManager.getProperty("path.page.login");
                 }
-            } catch (LogicFCException e) {
-                request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.error"));
-                throw new CommandFCException(e);
+            } catch (LogicException e) {
+                request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+                throw new CommandException(e);
             }
         } else {
-            request.setAttribute("errorLoginPassMessage", MessageManager.getProperty("message.login.empty"));
+            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.empty"));
         }
-        return  new CommandRF(CommandRF.DispatchType.REDIRECT, page);
+        return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
     }
 }

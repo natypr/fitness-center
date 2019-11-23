@@ -1,10 +1,10 @@
 package by.naty.fitnesscenter.model.logic;
 
-import by.naty.fitnesscenter.model.dao.UserDAO;
-import by.naty.fitnesscenter.model.dao.impl.UserDAOImpl;
+import by.naty.fitnesscenter.model.dao.UserDao;
+import by.naty.fitnesscenter.model.dao.impl.UserDaoImpl;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.exception.DAOfcException;
-import by.naty.fitnesscenter.model.exception.LogicFCException;
+import by.naty.fitnesscenter.model.exception.DaoException;
+import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
 
 import java.util.List;
@@ -14,78 +14,77 @@ import java.util.regex.Pattern;
 public class UserLogic {
     private final Pattern pattern = Pattern.compile("/jsp.+");
 
-    public void addUser(User user) throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public void addUser(User user) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             user.setPassword(MD5.encrypt(user.getPassword()));
             userDAO.createUser(user);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public User addUser(String role, String name, String surname, String email, String password) throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public User addUser(String role, String name, String surname, String email, String password) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             String encryptedPassword = MD5.encrypt(password);
-            User user = new User(0, role, name,  surname, email, encryptedPassword);
+            User user = new User(0, role, name, surname, email, encryptedPassword);
             userDAO.createUser(user);
             return user;
-        } catch (DAOfcException exc) {
-            throw new LogicFCException(exc);
+        } catch (DaoException exc) {
+            throw new LogicException(exc);
         }
     }
 
-    public List<User> findAllUsers()  throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public List<User> findAllUsers() throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.findAllUsers();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public User findUserById(int id)  throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public User findUserById(int id) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.findUserById(id).get();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public User findUserByEmailAndPassword(String login, String password) throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public User findUserByEmailAndPassword(String login, String password) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.findUserByEmailAndPassword(login, MD5.encrypt(password));
-        }
-        catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public User updateUser(User user) throws LogicFCException {
-        UserDAO userDAO = new UserDAOImpl();
+    public User updateUser(User user) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.updateUser(user);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public void deleteUser(long id) throws LogicFCException{
-        UserDAO userDAO = new UserDAOImpl();
+    public void deleteUser(long id) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
         try {
             userDAO.deleteUserById(id);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public String returnSamePage(String pagePath){
+    public String returnSamePage(String pagePath) {
         String page = null;
         Matcher matcher = pattern.matcher(pagePath);
-        if(matcher.find()){
+        if (matcher.find()) {
             page = matcher.group();
         }
         return page;

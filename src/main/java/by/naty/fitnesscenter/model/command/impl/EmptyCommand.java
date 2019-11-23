@@ -1,5 +1,7 @@
-package by.naty.fitnesscenter.model.command;
+package by.naty.fitnesscenter.model.command.impl;
 
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,9 +12,9 @@ public class EmptyCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
     @Override
-    public CommandRF execute(HttpServletRequest request) {
+    public CommandRouter execute(HttpServletRequest request) {
         String page = ConfigurationManager.getProperty("path.page.index");
         LOG.debug("Empty command, transition to the index.");
-        return new CommandRF(CommandRF.DispatchType.FORWARD, page);
+        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
     }
 }

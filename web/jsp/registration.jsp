@@ -9,17 +9,17 @@
     <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
-<form name="signForm" method="POST" action = "controller">
+<form name="signForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="registration"/>
 
     <fmt:message key="text.reg.registration" bundle="${var}"/>
     <br/>
 
-    <input type="radio" name="radio-role" value="Client" checked>
+    <input type="radio" name="radio_role" value="Client" checked>
     <fmt:message key="radio.reg.client" bundle="${var}"/>
-    <input type="radio" name="radio-role" value="Trainer">
+    <input type="radio" name="radio_role" value="Trainer">
     <fmt:message key="radio.reg.trainer" bundle="${var}"/>
-    <input type="radio" name="radio-role" value="Administrator">
+    <input type="radio" name="radio_role" value="Administrator">
     <fmt:message key="radio.reg.administrator" bundle="${var}"/>
     <br/>
 
@@ -31,13 +31,13 @@
 
 
     <br/><fmt:message key="text.reg.gender" bundle="${var}"/><br/>
-    <input type="radio" name="radio-gender" value="M" checked>
+    <input type="radio" name="radio_gender" value="M" checked>
     <fmt:message key="radio.reg.genderM" bundle="${var}"/>
-    <input type="radio" name="radio-gender" value="F">
+    <input type="radio" name="radio_gender" value="F">
     <fmt:message key="radio.reg.genderF" bundle="${var}"/>
 
     <br/><fmt:message key="text.reg.yearold" bundle="${var}"/><br/>
-    <input type="text" name="year_old" value="" />
+    <input type="text" name="year_old" value=""/>
 
 
     <br/><fmt:message key="text.reg.email" bundle="${var}"/><br/>
@@ -49,9 +49,10 @@
     <br/><br/>
 
     <input type="submit" value="<fmt:message key = "bt.reg.signup" bundle="${var}"/>">
-    <br/>
-    ${errorLoginPassMessage} <br/> ${wrongAction} <br/> ${nullPage} <br/>
+
+    <br/> ${errorLoginPassMessage} <br/>
 </form>
+
 <c:import url="/jsp/util/footer.jsp"/>
 </body>
 </html>

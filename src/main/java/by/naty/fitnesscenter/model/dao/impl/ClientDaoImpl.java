@@ -1,12 +1,11 @@
 package by.naty.fitnesscenter.model.dao.impl;
 
-import by.naty.fitnesscenter.model.dao.ClientDAO;
-import by.naty.fitnesscenter.model.dao.DAOConstant;
+import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.entity.Workout;
-import by.naty.fitnesscenter.model.exception.DAOfcException;
-import by.naty.fitnesscenter.model.exception.PoolFCException;
+import by.naty.fitnesscenter.model.exception.DaoException;
+import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.ProxyConnection;
 
@@ -18,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientDAOImpl implements ClientDAO {
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
+
+public class ClientDaoImpl implements ClientDao {
 
     private static final String CREATE_CLIENT =
             "INSERT INTO client (`id`, `gender`, `year_old`, `discount`) VALUES (?, ?, ?, ?);";
@@ -59,29 +60,24 @@ public class ClientDAOImpl implements ClientDAO {
                     "WHERE workout.id_trainer=?;";
 
     @Override
-    public void createClient(Client client) throws DAOfcException {
+    public void createClient(Client client) throws DaoException {
         User user = createUserFromClient(client);
-        user = new UserDAOImpl().createUserWithMaxId(user);
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(CREATE_CLIENT)){
+        user = new UserDaoImpl().createUserWithMaxId(user);
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_CLIENT)) {
 
             statement.setLong(1, user.getId());
             statement.setString(2, client.getGender());
             statement.setByte(3, client.getYearOld());
             statement.setDouble(4, client.getDiscount());
             statement.executeUpdate();
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
-    private User createUserFromClient(Client client){
-        return new User(client.getId(), client.getRole(), client.getName(), client.getSurname(),
-                client.getEmail(),client.getPassword());
-    }
-
     @Override
-    public List<Client> findAllClients() throws DAOfcException {
+    public List<Client> findAllClients() throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
 
@@ -92,22 +88,13 @@ public class ClientDAOImpl implements ClientDAO {
                 clients.add(createClientFromResult(resultSet));
             }
             return clients;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
-    private Client createClientFromResult(ResultSet resultSet) throws SQLException, DAOfcException {
-        long id = resultSet.getLong(DAOConstant.ID);
-        Optional<User> user = new UserDAOImpl().findUserById(id);
-        Client client = new Client(user.get(), resultSet.getLong(DAOConstant.ID),
-                resultSet.getString(DAOConstant.GENDER), resultSet.getByte(DAOConstant.YEAR_OLD),
-                resultSet.getDouble(DAOConstant.DISCOUNT));
-        return client;
-    }
-
     @Override
-    public Optional<Client> findClientById(long id) throws DAOfcException {
+    public Optional<Client> findClientById(long id) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_CLIENT_BY_ID)) {
 
@@ -119,13 +106,13 @@ public class ClientDAOImpl implements ClientDAO {
                 clientOptionalById = Optional.of(client);
             }
             return clientOptionalById;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Optional<Client> findClientByEmail(String email) throws DAOfcException {
+    public Optional<Client> findClientByEmail(String email) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_CLIENT_BY_EMAIL)) {
 
@@ -137,17 +124,17 @@ public class ClientDAOImpl implements ClientDAO {
                 clientOptionalByEmail = Optional.of(client);
             }
             return clientOptionalByEmail;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Client updateClient(Client client) throws DAOfcException {
+    public Client updateClient(Client client) throws DaoException {
         User user = createUserFromClient(client);
-        new UserDAOImpl().updateUser(user);
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_CLIENT)){
+        new UserDaoImpl().updateUser(user);
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_CLIENT)) {
 
             statement.setLong(1, client.getId());
             statement.setString(2, client.getGender());
@@ -155,44 +142,27 @@ public class ClientDAOImpl implements ClientDAO {
             statement.setDouble(4, client.getDiscount());
             statement.executeUpdate();
             return client;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteClientById(long id) throws DAOfcException {
+    public void deleteClientById(long id) throws DaoException {
         User user = selectUserFromClientTable(id, SELECT_USER_FROM_CLIENT_TABLE);
-        new UserDAOImpl().deleteUserById(user.getId());
+        new UserDaoImpl().deleteUserById(user.getId());
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CLIENT_BY_ID)) {
 
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
-        }
-    }
-
-    User selectUserFromClientTable(long idUser, String sufctFinal) throws DAOfcException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(sufctFinal)){
-
-            statement.setLong(1, idUser);
-            ResultSet resultSet = statement.executeQuery();
-            User user = new User();
-            if(resultSet.next()){
-                user.setId(resultSet.getLong(DAOConstant.ID));
-            }
-            return user;
-        }
-        catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public List<Workout> findAllWorkoutByIdClient(long idClient) throws DAOfcException {
+    public List<Workout> findAllWorkoutByIdClient(long idClient) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_WORKOUT_BY_ID_CLIENT)) {
 
@@ -203,26 +173,13 @@ public class ClientDAOImpl implements ClientDAO {
                 workouts.add(createWorkoutFromResult(resultSet));
             }
             return workouts;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
-    public Workout createWorkoutFromResult(ResultSet resultSet) throws SQLException {
-        Workout workout = new Workout(resultSet.getLong(DAOConstant.ID),
-                resultSet.getString(DAOConstant.TYPE_WORKOUT),
-                resultSet.getString(DAOConstant.NAME_OF_WORKOUT),
-                resultSet.getString(DAOConstant.EQUIPMENT),
-                resultSet.getString(DAOConstant.DESCRIPTION),
-                resultSet.getDouble(DAOConstant.COST_PER_ONE_WORKOUT),
-                resultSet.getInt(DAOConstant.NUMBER_OF_VISIT),
-                resultSet.getLong(DAOConstant.ID_TRAINER),
-                resultSet.getLong(DAOConstant.ID_ORDER));
-        return workout;
-    }
-
     @Override
-    public List<Client> findAllClientsByIdTrainer(long idTrainer) throws DAOfcException {
+    public List<Client> findAllClientsByIdTrainer(long idTrainer) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_CLIENTS_BY_ID_TRAINER)) {
 
@@ -233,8 +190,49 @@ public class ClientDAOImpl implements ClientDAO {
                 clients.add(createClientFromResult(resultSet));
             }
             return clients;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
+    }
+
+    private User createUserFromClient(Client client) {
+        return new User(client.getId(), client.getRole(), client.getName(), client.getSurname(),
+                client.getEmail(), client.getPassword());
+    }
+
+    private Client createClientFromResult(ResultSet resultSet) throws SQLException, DaoException {
+        long id = resultSet.getLong(ID);
+        Optional<User> user = new UserDaoImpl().findUserById(id);
+        return new Client(user.get(), resultSet.getLong(ID),
+                resultSet.getString(GENDER), resultSet.getByte(YEAR_OLD),
+                resultSet.getDouble(DISCOUNT));
+    }
+
+    User selectUserFromClientTable(long idUser, String sufctFinal) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(sufctFinal)) {
+
+            statement.setLong(1, idUser);
+            ResultSet resultSet = statement.executeQuery();
+            User user = new User();
+            if (resultSet.next()) {
+                user.setId(resultSet.getLong(ID));
+            }
+            return user;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private Workout createWorkoutFromResult(ResultSet resultSet) throws SQLException {
+        return new Workout(resultSet.getLong(ID),
+                resultSet.getString(TYPE_WORKOUT),
+                resultSet.getString(NAME_OF_WORKOUT),
+                resultSet.getString(EQUIPMENT),
+                resultSet.getString(DESCRIPTION),
+                resultSet.getDouble(COST_PER_ONE_WORKOUT),
+                resultSet.getInt(NUMBER_OF_VISIT),
+                resultSet.getLong(ID_TRAINER),
+                resultSet.getLong(ID_ORDER));
     }
 }

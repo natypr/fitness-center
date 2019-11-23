@@ -1,9 +1,9 @@
 package by.naty.fitnesscenter.model.command;
 
-import by.naty.fitnesscenter.model.exception.CommandFCException;
+import by.naty.fitnesscenter.model.exception.CommandException;
 
 import javax.servlet.http.HttpServletRequest;
 
 public interface Command {
-    CommandRF execute(HttpServletRequest request) throws CommandFCException;
+    CommandRouter execute(HttpServletRequest request) throws CommandException;
 }

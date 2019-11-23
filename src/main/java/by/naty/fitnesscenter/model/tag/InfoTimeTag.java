@@ -10,13 +10,16 @@ import java.util.Locale;
 
 @SuppressWarnings("serial")
 public class InfoTimeTag extends TagSupport {
+    private static final String CHANGE_LANGUAGE = "changeLanguage";
+    private static final String EN_US = "en_US";
+
     @Override
     public int doStartTag() throws JspException {
         DateFormat dateFormat;
-        if("en_US".equals(pageContext.getSession().getAttribute("changeLanguage")))
-            dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM , Locale.US);
-        else{
-            dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, new Locale("ru","RU"));
+        if (EN_US.equals(pageContext.getSession().getAttribute(CHANGE_LANGUAGE)))
+            dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
+        else {
+            dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, new Locale("ru", "RU"));
         }
         String time = "<b> " + dateFormat.format(new Date()) + " </b>";
 

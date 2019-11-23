@@ -1,67 +1,66 @@
 package by.naty.fitnesscenter.model.logic;
 
-import by.naty.fitnesscenter.model.dao.OrderDAO;
-import by.naty.fitnesscenter.model.dao.impl.OrderDAOImpl;
+import by.naty.fitnesscenter.model.dao.OrderDao;
+import by.naty.fitnesscenter.model.dao.impl.OrderDaoImpl;
 import by.naty.fitnesscenter.model.entity.Order;
-import by.naty.fitnesscenter.model.exception.DAOfcException;
-import by.naty.fitnesscenter.model.exception.LogicFCException;
+import by.naty.fitnesscenter.model.exception.DaoException;
+import by.naty.fitnesscenter.model.exception.LogicException;
 
 import java.util.List;
-import java.util.Locale;
 
 public class OrderLogic {
 
-    public void createOrder(Order order) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public void createOrder(Order order) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             orderDAO.createOrder(order);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public List<Order> findAllOrders(String email) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public List<Order> findAllOrders(String email) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             return orderDAO.findAllOrders();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public Order findOrderById(Long id) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public Order findOrderById(Long id) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             return orderDAO.findOrderById(id).get();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public Order findOrderByEmailClient(String email) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public Order findOrderByEmailClient(String email) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             return orderDAO.findOrderByEmailClient(email).get();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public Order updateOrder(Order order) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public Order updateOrder(Order order) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             return orderDAO.updateOrder(order);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public void deleteOrderById(Order order) throws LogicFCException {
-        OrderDAO orderDAO = new OrderDAOImpl();
+    public void deleteOrderById(Order order) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
         try {
             orderDAO.deleteOrderById(order.getId());
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 }

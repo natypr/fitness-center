@@ -1,89 +1,89 @@
 package by.naty.fitnesscenter.model.logic;
 
-import by.naty.fitnesscenter.model.dao.ClientDAO;
-import by.naty.fitnesscenter.model.dao.impl.ClientDAOImpl;
+import by.naty.fitnesscenter.model.dao.ClientDao;
+import by.naty.fitnesscenter.model.dao.impl.ClientDaoImpl;
 import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.entity.Workout;
-import by.naty.fitnesscenter.model.exception.DAOfcException;
-import by.naty.fitnesscenter.model.exception.LogicFCException;
+import by.naty.fitnesscenter.model.exception.DaoException;
+import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
 
 import java.util.List;
 
 public class ClientLogic {
 
-    public void addClient(Client client) throws LogicFCException{
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public void addClient(Client client) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             client.setPassword(MD5.encrypt(client.getPassword()));
             clientDAO.createClient(client);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public List<Client> findAllClients()  throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public List<Client> findAllClients() throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findAllClients();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public Client findClientById(int id)  throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public Client findClientById(int id) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findClientById(id).get();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public Client findClientByEmail(String email) throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public Client findClientByEmail(String email) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findClientByEmail(email).get();
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public User updateClient(Client client) throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public User updateClient(Client client) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.updateClient(client);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public void deleteClientById(long id) throws LogicFCException{
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public void deleteClientById(long id) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             clientDAO.deleteClientById(id);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
 
-    public List<Workout> findAllWorkoutForClients(long idClient)  throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public List<Workout> findAllWorkoutForClients(long idClient) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findAllWorkoutByIdClient(idClient);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 
-    public List<Client> findAllClientsByIdTrainer(long idTrainer) throws LogicFCException {
-        ClientDAO clientDAO = new ClientDAOImpl();
+    public List<Client> findAllClientsByIdTrainer(long idTrainer) throws LogicException {
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findAllClientsByIdTrainer(idTrainer);
-        } catch (DAOfcException e) {
-            throw new LogicFCException(e);
+        } catch (DaoException e) {
+            throw new LogicException(e);
         }
     }
 }

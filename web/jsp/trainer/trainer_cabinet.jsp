@@ -9,7 +9,7 @@
     <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
-<form name="trainerCabinet" method="POST" action = "${pageContext.request.contextPath}/controller">
+<form name="trainerCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="trainer_cabinet"/>
 
     <h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
@@ -51,7 +51,7 @@
 
         <c:forEach items="${clientInfo}" var="clientInfo" varStatus="loop">
             <tr>
-                <td><input type="checkbox" name="selectClient" value="${clientInfo.client.email}" id=""/></td>
+                <td><input type="checkbox" name="select_client" value="${clientInfo.client.email}" id=""/></td>
                 <td>${clientInfo.client.name}</td>
                 <td>${clientInfo.client.surname}</td>
                 <td>${clientInfo.client.gender}</td>
@@ -94,9 +94,9 @@
     <input type="text" name="number_of_visit" value=""/></br></br>
 
 
-    <input type="submit" name="actionExercise" value="Add workout">
-    <input type="submit" name="actionExercise" value="Delete workout">
-    <input type="submit" name="actionExercise" value="Update workout">
+    <input type="submit" name="action_workout" value="Add workout">
+    <input type="submit" name="action_workout" value="Delete workout">
+    <input type="submit" name="action_workout" value="Update workout">
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

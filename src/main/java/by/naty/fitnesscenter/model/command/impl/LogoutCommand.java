@@ -1,5 +1,7 @@
-package by.naty.fitnesscenter.model.command;
+package by.naty.fitnesscenter.model.command.impl;
 
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
@@ -7,17 +9,18 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.PARAM_CHANGE_LANGUAGE;
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.USER;
+
 public class LogoutCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
-
-    private static final String PARAM_CHANGE_LANGUAGE = "changeLanguage";
 
     public LogoutCommand() {
     }
 
     @Override
-    public CommandRF execute(HttpServletRequest request) {
-        User user = (User)request.getSession().getAttribute("user");
+    public CommandRouter execute(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(USER);
         Object locale = request.getSession().getAttribute(PARAM_CHANGE_LANGUAGE);
         String page = ConfigurationManager.getProperty("path.page.index");
 
@@ -28,6 +31,6 @@ public class LogoutCommand implements Command {
         } else {
             LOG.info(user.getEmail() + " log out!");
         }
-        return new CommandRF(CommandRF.DispatchType.FORWARD, page);
+        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
     }
 }

@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertyLoader {
+class PropertyLoader {
     private static final Logger LOG = LogManager.getLogger();
 
-    public Properties loadFile(String fileName) {
+    Properties loadFile(String fileName) {
         Properties properties = new Properties();
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(fileName);
         try {

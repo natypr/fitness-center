@@ -9,23 +9,23 @@ public class DataValidator {
     private static final String PASSWORD_REGEX = "[a-zA-Z_0-9]{8,40}";
     private static final String USER_YEARS_OLD_REGEX = "[1-9][0-9]?";
 
-    public static boolean isNameCorrect(String username){
+    public static boolean isNameCorrect(String username) {
         return (Pattern.matches(NAME_REGEX, username));
     }
 
-    public static boolean isSurnameCorrect(String surname){
+    public static boolean isSurnameCorrect(String surname) {
         return Pattern.matches(SURNAME_REGEX, surname);
     }
 
-    public static boolean isEmailCorrect(String email){
+    public static boolean isEmailCorrect(String email) {
         return Pattern.matches(EMAIL_REGEX, email);
     }
 
-    public static boolean isPasswordCorrect(String password){
+    public static boolean isPasswordCorrect(String password) {
         return Pattern.matches(PASSWORD_REGEX, password);
     }
 
-    public static boolean isYearsOldCorrect(String yearOld){
+    public static boolean isYearsOldCorrect(String yearOld) {
         return Pattern.matches(USER_YEARS_OLD_REGEX, yearOld);
     }
 }

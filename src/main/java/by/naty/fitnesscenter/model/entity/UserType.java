@@ -11,7 +11,7 @@ public enum UserType {
 
     UserType(String typeUser, int id) {
         this.typeUser = typeUser;
-        this.id=id;
+        this.id = id;
     }
 
     public String getTypeUser() {

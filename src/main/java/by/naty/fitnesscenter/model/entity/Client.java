@@ -11,14 +11,14 @@ public class Client extends User {
     }
 
     public Client(User user, String gender, byte yearOld, double discount) {
-        super(user.getId(),user.getRole(),user.getName(),user.getSurname(),user.getEmail(),user.getPassword());
+        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
         this.gender = gender;
         this.yearOld = yearOld;
         this.discount = discount;
     }
 
     public Client(User user, long id, String gender, byte yearOld, double discount) {
-        super(user.getId(),user.getRole(),user.getName(),user.getSurname(),user.getEmail(),user.getPassword());
+        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
         this.id = id;
         this.gender = gender;
         this.yearOld = yearOld;

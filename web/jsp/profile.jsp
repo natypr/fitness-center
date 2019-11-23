@@ -9,41 +9,36 @@
     <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
-    <h3><fmt:message key="text.profile.welcome" bundle="${var}"/></h3>
-    <br/>
-    <fmt:message key="text.profile.hellouser" bundle="${var}"/>
-    ${user}
-    <br/><br/>
+<h3><fmt:message key="text.profile.welcome" bundle="${var}"/></h3>
+<br/>
+<fmt:message key="text.profile.hellouser" bundle="${var}"/>
+${user}
+<br/><br/>
 
-    <div>
-        <h1><fmt:message key="text.profile.myprofile" bundle="${var}"/></h1>
+<div>
+    <h1><fmt:message key="text.profile.myprofile" bundle="${var}"/></h1>
 
-        <strong><fmt:message key="text.profile.name" bundle="${var}"/></strong>
-        ${user.name}
-        </br>
+    <strong><fmt:message key="text.profile.name" bundle="${var}"/></strong>
+    ${user.name} </br>
 
-        <strong><fmt:message key="text.profile.surname" bundle="${var}"/></strong>
-        ${user.surname}
-        </br>
+    <strong><fmt:message key="text.profile.surname" bundle="${var}"/></strong>
+    ${user.surname} </br>
 
-        <strong><fmt:message key="text.profile.gender" bundle="${var}"/></strong>
-        ${user.gender}
-        </br>
+    <strong><fmt:message key="text.profile.gender" bundle="${var}"/></strong>
+    ${user.gender} </br>
 
-        <strong><fmt:message key="text.profile.yearold" bundle="${var}"/></strong>
-        ${user.yearOld}
-        </br>
+    <strong><fmt:message key="text.profile.yearold" bundle="${var}"/></strong>
+    ${user.yearOld} </br>
 
-        <strong><fmt:message key="text.profile.email" bundle="${var}"/></strong>
-        ${user.email}
+    <strong><fmt:message key="text.profile.email" bundle="${var}"/></strong>
+    ${user.email}
 
-        <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
-            <input type="hidden" name="command" value="logout"/><br/>
-            <input type="submit" value="<fmt:message key = "bt.profile.logout" bundle="${var}"/>">
-        </form>
-    </div>
+    <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
+        <input type="hidden" name="command" value="logout"/><br/>
+        <input type="submit" value="<fmt:message key = "bt.profile.logout" bundle="${var}"/>">
+    </form>
+</div>
 
-<%--    <a href="controller?command=logout"><fmt:message key="text.main.logout" bundle="${var}"/></a>--%>
 <c:import url="/jsp/util/footer.jsp"/>
 </body>
 </html>

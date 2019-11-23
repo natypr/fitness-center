@@ -13,9 +13,9 @@
         <table>
             <tr>
                 <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="pagePath" value="${pageContext.request.requestURL}" />
+                    <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                     <input type="hidden" name="command" value="locale"/>
-                    <input type="hidden" name="newLocale" value="ru_RU"/>
+                    <input type="hidden" name="new_locale" value="ru_RU"/>
                     <td><input type="image"
                                src="<fmt:message key="path.to.locale.picture.flag.ru" bundle="${var}"/>"
                                height="30" width="40"
@@ -23,9 +23,9 @@
                     </td>
                 </form>
                 <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="pagePath" value="${pageContext.request.requestURL}" />
+                    <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                     <input type="hidden" name="command" value="locale"/>
-                    <input type="hidden" name="newLocale" value="en_US"/>
+                    <input type="hidden" name="new_locale" value="en_US"/>
                     <td><input type="image"
                                src="<fmt:message key="path.to.locale.picture.flag.us" bundle="${var}"/>"
                                height="30" width="40"

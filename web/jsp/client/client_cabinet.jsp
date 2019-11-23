@@ -27,11 +27,11 @@
         ${client.yearOld} </br>
 
         <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
-        ${client.email}</br></br></br></br>
+        ${client.email} </br></br></br></br>
     </div>
 
 
-    <form name="clientCabinet" method="POST" action = "${pageContext.request.contextPath}/controller">
+    <form name="clientCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="client_cabinet"/>
 
         <table border="1" width="60%" cellpadding="5">
@@ -44,7 +44,7 @@
                 <th><fmt:message key="table.client.button.refuse" bundle="${var}"/></th>
             </tr>
 
-            <c:forEach items="${workout}" var="workout_n" begin="${index}" end="${index}" >
+            <c:forEach items="${workout}" var="workout_n" begin="${index}" end="${index}">
                 <tr>
                     <td>${workout_n.nameOfWorkout}</td>
                     <td>${workout_n.typeWorkout}</td>
@@ -52,8 +52,8 @@
                     <td>${workout_n.description}</td>
                     <td>${workout_n.numberOfVisit}</td>
                     <td><input type="submit"
-                               value= "<fmt:message key="table.client.button.refuse" bundle="${var}"/>"
-                               name="Refuse"></td>
+                               value="<fmt:message key="table.client.button.refuse" bundle="${var}"/>"
+                               name="refuse"></td>
                 </tr>
             </c:forEach>
         </table>

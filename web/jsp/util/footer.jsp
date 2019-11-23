@@ -20,11 +20,9 @@
     </div>
 
     </br>
-    <fmt:message key="footer.nameproject" bundle="${ var }" />
-    <br>
-    <fmt:message key="footer.copyright" bundle="${ var }" />
-    <fmt:message key="footer.year" bundle="${ var }" />
-    <fmt:message key="footer.authorname" bundle="${ var }" />
+    <fmt:message key="footer.nameproject" bundle="${var}"/>
+    </br>
+    <fmt:message key="footer.copyright" bundle="${var}"/>
 </footer>
 </body>
 </html>

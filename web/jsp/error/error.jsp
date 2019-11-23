@@ -8,7 +8,8 @@
     <title><fmt:message key="title.error" bundle="${var}"/></title>
     <c:import url="/jsp/util/header.jsp"/>
 </head>
-<br>
+<div>
+    <br>
     <h1><fmt:message key="text.error.pagenotfound" bundle="${var}"/></h1>
     <br/>
 
@@ -27,8 +28,9 @@
 
     </br></br>
     <a href="${pageContext.request.contextPath}/jsp/login.jsp">
-        <fmt:message key = "bt.login.return" bundle="${var}"/></a>
+        <fmt:message key="bt.login.return" bundle="${var}"/></a>
+</div>
 
-    <c:import url="/jsp/util/footer.jsp"/>
+<c:import url="/jsp/util/footer.jsp"/>
 </body>
 </html>

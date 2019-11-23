@@ -1,15 +1,10 @@
 package by.naty.fitnesscenter.model.command;
 
-public class CommandRF {
-    public enum DispatchType {
-        REDIRECT,
-        FORWARD
-    }
-
+public class CommandRouter {
     private DispatchType dispatchType;
     private String page;
 
-    public CommandRF(DispatchType dispatchType, String page) {
+    public CommandRouter(DispatchType dispatchType, String page) {
         this.dispatchType = dispatchType;
         this.page = page;
     }
@@ -28,5 +23,10 @@ public class CommandRF {
 
     public void setPage(String page) {
         this.page = page;
+    }
+
+    public enum DispatchType {
+        REDIRECT,
+        FORWARD
     }
 }

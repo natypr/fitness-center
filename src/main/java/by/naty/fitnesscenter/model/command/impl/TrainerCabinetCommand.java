@@ -1,10 +1,12 @@
-package by.naty.fitnesscenter.model.command;
+package by.naty.fitnesscenter.model.command.impl;
 
+import by.naty.fitnesscenter.model.command.Command;
+import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.ClientInfoWorkout;
 import by.naty.fitnesscenter.model.entity.Workout;
-import by.naty.fitnesscenter.model.exception.CommandFCException;
-import by.naty.fitnesscenter.model.exception.LogicFCException;
+import by.naty.fitnesscenter.model.exception.CommandException;
+import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
@@ -15,8 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrainerCabinetCommand implements Command{
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
+
+public class TrainerCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
+
+    private static final String ADD_WORKOUT_ACTION = "Add workout";
+    private static final String DELETE_WORKOUT_ACTION = "Delete workout";
+    private static final String UPDATE_WORKOUT_ACTION = "Update workout";
 
     private ClientLogic clientLogic;
     private TrainerLogic trainerLogic;
@@ -27,22 +35,22 @@ public class TrainerCabinetCommand implements Command{
     }
 
     @Override
-    public CommandRF execute(HttpServletRequest request) throws CommandFCException {
-        String[] checkbox = request.getParameterValues("selectClient");
-        String actionButtonWorkout = request.getParameter("actionWorkout");
+    public CommandRouter execute(HttpServletRequest request) throws CommandException {
+        String[] checkbox = request.getParameterValues(SELECT_CLIENT);
+        String actionButtonWorkout = request.getParameter(ACTION_WORKOUT);
 
-        String typeWorkout = request.getParameter("type_workout");
-        String nameOfWorkout = request.getParameter("name_of_workout");
-        String equipment = request.getParameter("equipment");
-        String description = request.getParameter("description");
-        String costPerOneWorkout = request.getParameter("cost_per_one_workout");
-        String numberOfVisit = request.getParameter("number_of_visit");
+        String typeWorkout = request.getParameter(TYPE_WORKOUT);
+        String nameOfWorkout = request.getParameter(NAME_OF_WORKOUT);
+        String equipment = request.getParameter(EQUIPMENT);
+        String description = request.getParameter(DESCRIPTION);
+        String costPerOneWorkout = request.getParameter(COST_PER_ONE_WORKOUT);
+        String numberOfVisit = request.getParameter(NUMBER_OF_VISIT);
 
         String page;
         ArrayList<Client> clients = new ArrayList<>();
         List<ClientInfoWorkout> clientInfo = new ArrayList<>();
         try {
-            if(checkbox != null){
+            if (checkbox != null) {
                 for (String s : checkbox) {
                     System.out.println(s);
                     Client currentClient = clientLogic.findClientByEmail(s);
@@ -59,17 +67,17 @@ public class TrainerCabinetCommand implements Command{
                 }
                 if (actionButtonWorkout != null) {
                     switch (actionButtonWorkout) {
-                        case "Add workout": {
+                        case ADD_WORKOUT_ACTION: {
                             trainerLogic.createWorkoutForClient(workout);
                             LOG.info("Create workout for client " + client.getEmail());
                             break;
                         }
-                        case "Delete workout": {
+                        case DELETE_WORKOUT_ACTION: {
                             trainerLogic.deleteWorkoutById(workout.getId());
                             LOG.info("Delete workout for client" + client.getEmail());
                             break;
                         }
-                        case "Update workout": {
+                        case UPDATE_WORKOUT_ACTION: {
                             trainerLogic.updateWorkout(workout);
                             LOG.info("Update exercises for client" + client.getEmail());
                             break;
@@ -79,11 +87,11 @@ public class TrainerCabinetCommand implements Command{
                 List<Workout> currentWorkout = clientLogic.findAllWorkoutForClients(client.getId());//FIXME
                 clientInfo.add(new ClientInfoWorkout(client, currentWorkout));
             }
-            request.getSession().setAttribute("clientInfo", clientInfo);
+            request.getSession().setAttribute(CLIENT_INFO, clientInfo);
             page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
-            return new CommandRF(CommandRF.DispatchType.REDIRECT, page);
-        } catch (LogicFCException e) {
-            throw new CommandFCException(e.getMessage(), e);
+            return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
+        } catch (LogicException e) {
+            throw new CommandException(e.getMessage(), e);
         }
     }
 }

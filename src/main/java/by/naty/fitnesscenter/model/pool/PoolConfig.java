@@ -21,19 +21,19 @@ public class PoolConfig {
         this.poolSize = Integer.parseInt(properties.getProperty("db.poolSize"));
     }
 
-    public String getDriverName(){
+    String getDriverName() {
         return driverName;
     }
 
-    public String getUrl() {
+    String getUrl() {
         return url;
     }
 
-    public String getUserName() {
+    String getUserName() {
         return userName;
     }
 
-    public String getPassword() {
+    String getPassword() {
         return password;
     }
 

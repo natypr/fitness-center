@@ -4,16 +4,19 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
-public class SessionCreator {
-    private String smtpHost;
-    private String smtpPort;
+class SessionCreator {
+
+    private static final String TRUE = "true";
+    private static final String FALSE = "false";
+    private static final String CLASS_SOCKET_FACTORY = "javax.net.ssl.SSLSocketFactory";
+
     private String userName;
     private String userPassword;
     private Properties sessionProperties;
 
-    public SessionCreator(Properties configProperties) {
-        smtpHost = configProperties.getProperty("mail.smtp.host");
-        smtpPort = configProperties.getProperty("mail.smtp.port");
+    SessionCreator(Properties configProperties) {
+        String smtpHost = configProperties.getProperty("mail.smtp.host");
+        String smtpPort = configProperties.getProperty("mail.smtp.port");
         userName = configProperties.getProperty("mail.user.name");
         userPassword = configProperties.getProperty("mail.user.password");
 
@@ -23,19 +26,19 @@ public class SessionCreator {
         sessionProperties.setProperty("mail.transport.protocol", "smtp");
         sessionProperties.setProperty("mail.host", smtpHost);
 
-        sessionProperties.put("mail.smtp.auth", "true");
+        sessionProperties.put("mail.smtp.auth", TRUE);
         sessionProperties.put("mail.smtp.port", smtpPort);
         sessionProperties.put("mail.smtp.host", smtpHost);
         sessionProperties.put("mail.smtp.name", userName);
         sessionProperties.put("mail.smtp.socketFactory.port", smtpPort);
-        sessionProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        sessionProperties.put("mail.smtp.socketFactory.fallback", "false");
-        sessionProperties.setProperty("mail.smtp.quitwait", "false");
+        sessionProperties.put("mail.smtp.socketFactory.class", CLASS_SOCKET_FACTORY);
+        sessionProperties.put("mail.smtp.socketFactory.fallback", FALSE);
+        sessionProperties.setProperty("mail.smtp.quitwait", FALSE);
     }
 
-    public Session createSession(){
-        return Session.getDefaultInstance(sessionProperties, new javax.mail.Authenticator(){
-            protected PasswordAuthentication getPasswordAuthentication(){
+    Session createSession() {
+        return Session.getDefaultInstance(sessionProperties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(userName, userPassword);
             }
         });

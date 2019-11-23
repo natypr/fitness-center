@@ -1,12 +1,11 @@
 package by.naty.fitnesscenter.model.dao.impl;
 
-import by.naty.fitnesscenter.model.dao.DAOConstant;
-import by.naty.fitnesscenter.model.dao.TrainerDAO;
+import by.naty.fitnesscenter.model.dao.TrainerDao;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.entity.Workout;
-import by.naty.fitnesscenter.model.exception.DAOfcException;
-import by.naty.fitnesscenter.model.exception.PoolFCException;
+import by.naty.fitnesscenter.model.exception.DaoException;
+import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.ProxyConnection;
 
@@ -15,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class TrainerDAOImpl implements TrainerDAO {
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
+
+public class TrainerDaoImpl implements TrainerDao {
 
     private static final String CREATE_TRAINER =
             "INSERT INTO trainer (id, education, cost_per_hour)  VALUES (?, ?, ?);";
@@ -53,28 +54,23 @@ public class TrainerDAOImpl implements TrainerDAO {
     private static final String DELETE_EXERCISES_BY_ID = "DELETE FROM workout WHERE id=?;";
 
     @Override
-    public void createTrainer(Trainer trainer) throws DAOfcException {
+    public void createTrainer(Trainer trainer) throws DaoException {
         User user = createUserFromTrainer(trainer);
-        user = new UserDAOImpl().createUserWithMaxId(user);
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(CREATE_TRAINER)){
+        user = new UserDaoImpl().createUserWithMaxId(user);
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_TRAINER)) {
 
             statement.setLong(1, user.getId());
             statement.setString(2, trainer.getEducation());
             statement.setDouble(3, trainer.getCostPerHour());
             statement.executeUpdate();
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
-    private User createUserFromTrainer(Trainer trainer){
-        return new User(trainer.getId(),  trainer.getRole(), trainer.getName(), trainer.getSurname(),
-                trainer.getEmail(),trainer.getPassword());
-    }
-
     @Override
-    public List<Trainer> findAllTrainers() throws DAOfcException {
+    public List<Trainer> findAllTrainers() throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              Statement statement = connection.createStatement()) {
 
@@ -85,22 +81,21 @@ public class TrainerDAOImpl implements TrainerDAO {
                 trainers.add(createTrainerFromResult(resultSet));
             }
             return trainers;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
-    private Trainer createTrainerFromResult(ResultSet resultSet) throws SQLException, DAOfcException {
-        long id = resultSet.getLong(DAOConstant.ID);
-        Optional<User> user = new UserDAOImpl().findUserById(id);
-        Trainer trainer = new Trainer(user.get(), resultSet.getInt(DAOConstant.ID),
-                resultSet.getString(DAOConstant.EDUCATION),
-                resultSet.getDouble(DAOConstant.COST_PER_HOUR));
-        return trainer;
+    private Trainer createTrainerFromResult(ResultSet resultSet) throws SQLException, DaoException {
+        long id = resultSet.getLong(ID);
+        Optional<User> user = new UserDaoImpl().findUserById(id);
+        return new Trainer(user.get(), resultSet.getInt(ID),
+                resultSet.getString(EDUCATION),
+                resultSet.getDouble(COST_PER_HOUR));
     }
 
     @Override
-    public Optional<Trainer> findTrainerById(long id) throws DAOfcException {
+    public Optional<Trainer> findTrainerById(long id) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_TRAINER_BY_ID)) {
 
@@ -111,13 +106,13 @@ public class TrainerDAOImpl implements TrainerDAO {
                 trainerOptionalById = Optional.of(createTrainerFromResult(resultSet));
             }
             return trainerOptionalById;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Optional<Trainer> findTrainerByEmail(String email) throws DAOfcException {
+    public Optional<Trainer> findTrainerByEmail(String email) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_TRAINER_BY_EMAIL)) {
 
@@ -128,47 +123,47 @@ public class TrainerDAOImpl implements TrainerDAO {
                 trainerOptional = Optional.of(createTrainerFromResult(resultSet));
             }
             return trainerOptional;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Trainer updateTrainer(Trainer trainer) throws DAOfcException {
+    public Trainer updateTrainer(Trainer trainer) throws DaoException {
         User user = createUserFromTrainer(trainer);
-        new UserDAOImpl().updateUser(user);
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER)){
+        new UserDaoImpl().updateUser(user);
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER)) {
 
             statement.setLong(1, trainer.getId());
             statement.setString(2, trainer.getEducation());
             statement.setDouble(3, trainer.getCostPerHour());
             statement.executeUpdate();
             return trainer;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteTrainerById(long id) throws DAOfcException {
-        User user = new ClientDAOImpl().selectUserFromClientTable(id, SELECT_USER_FROM_TRAINER_TABLE);
-        new UserDAOImpl().deleteUserById(user.getId());
+    public void deleteTrainerById(long id) throws DaoException {
+        User user = new ClientDaoImpl().selectUserFromClientTable(id, SELECT_USER_FROM_TRAINER_TABLE);
+        new UserDaoImpl().deleteUserById(user.getId());
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_TRAINER_BY_ID)) {
 
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Workout createWorkoutForClient(Workout workout) throws DAOfcException {
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(CREATE_WORKOUT_FOR_CLIENT);
-            PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FOR_WORKOUT)){
+    public Workout createWorkoutForClient(Workout workout) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_WORKOUT_FOR_CLIENT);
+             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FOR_WORKOUT)) {
 
             statement.setString(1, workout.getTypeWorkout());
             statement.setString(2, workout.getNameOfWorkout());
@@ -180,19 +175,19 @@ public class TrainerDAOImpl implements TrainerDAO {
             statement.setDouble(8, workout.getIdOrder());
             statement.executeUpdate();
             ResultSet resultSet = preStatement.executeQuery();
-            if (resultSet.next()){
+            if (resultSet.next()) {
                 workout.setId(resultSet.getLong(1));
             }
             return workout;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public Workout updateWorkout(Workout workout) throws DAOfcException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_WORKOUT)){
+    public Workout updateWorkout(Workout workout) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_WORKOUT)) {
 
             statement.setLong(1, workout.getId());
             statement.setString(2, workout.getTypeWorkout());
@@ -205,20 +200,25 @@ public class TrainerDAOImpl implements TrainerDAO {
             statement.setDouble(9, workout.getIdOrder());
             statement.executeUpdate();
             return workout;
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteWorkoutById(long id) throws DAOfcException {
+    public void deleteWorkoutById(long id) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_EXERCISES_BY_ID)) {
 
             statement.setLong(1, id);
             statement.executeUpdate();
-        } catch (SQLException | PoolFCException e) {
-            throw new DAOfcException(e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
         }
+    }
+
+    private User createUserFromTrainer(Trainer trainer) {
+        return new User(trainer.getId(), trainer.getRole(), trainer.getName(), trainer.getSurname(),
+                trainer.getEmail(), trainer.getPassword());
     }
 }

@@ -1,31 +1,36 @@
 package by.naty.fitnesscenter.controller;
 
+import by.naty.fitnesscenter.model.command.ActionFactory;
 import by.naty.fitnesscenter.model.command.Command;
-import by.naty.fitnesscenter.model.command.CommandRF;
-import by.naty.fitnesscenter.model.command.EmptyCommand;
-import by.naty.fitnesscenter.model.command.factory.ActionFactory;
-import by.naty.fitnesscenter.model.exception.CommandFCException;
-import by.naty.fitnesscenter.model.exception.PoolFCException;
+import by.naty.fitnesscenter.model.command.CommandRouter;
+import by.naty.fitnesscenter.model.command.impl.EmptyCommand;
+import by.naty.fitnesscenter.model.exception.CommandException;
+import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.PoolConfig;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.LocaleManager;
+import by.naty.fitnesscenter.model.resource.LocaleType;
 import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
+
+    private static final String COMMAND = "command";
+    private static final String LOCALE = "locale";
+    private static final String NULL_PAGE = "nullPage";
+    private static final String PAGE_PASS = "pagePath";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,38 +48,37 @@ public class Controller extends HttpServlet {
             throws ServletException, IOException {
         try {
             LOG.debug("Controller started.");
-            Optional<Command> commandOptional = ActionFactory.defineCommand(request.getParameter("command"));
+            Optional<Command> commandOptional = ActionFactory.defineCommand(request.getParameter(COMMAND));
             Command command = commandOptional.orElse(new EmptyCommand());
 
-            CommandRF commandRF = command.execute(request);
+            CommandRouter commandRouter = command.execute(request);
 
-            if (commandRF.getDispatchType() == CommandRF.DispatchType.FORWARD) {
+            if (commandRouter.getDispatchType() == CommandRouter.DispatchType.FORWARD) {
                 LOG.debug("Dispatch type is Forward.");
-                RequestDispatcher dispatcher = request.getRequestDispatcher(commandRF.getPage());
+                RequestDispatcher dispatcher = request.getRequestDispatcher(commandRouter.getPage());
                 dispatcher.forward(request, response);
             } else {
                 LOG.debug("Dispatch type is Redirect.");
                 String defaultPage = ConfigurationManager.getProperty("path.page.index");
-                if (commandRF.getPage().isEmpty()) {
+                if (commandRouter.getPage().isEmpty()) {
                     LOG.info("Null page.");
-                    String locale = (String) request.getSession().getAttribute("locale");
-                    LocaleManager localeManager = LocaleManager.defineLocale(locale);
+                    String locale = (String) request.getSession().getAttribute(LOCALE);
+                    LocaleType localeType = LocaleType.defineLocale(locale);
 
-                    request.getSession().setAttribute("nullPage", localeManager.getProperty("message.null.page"));
+                    request.getSession().setAttribute(NULL_PAGE, localeType.getProperty("message.null.page"));
                     response.sendRedirect(request.getContextPath() + defaultPage);
                 }
 
-                String page = commandRF.getPage();
-                request.getSession().setAttribute("pagePath", page);
+                String page = commandRouter.getPage();
+                request.getSession().setAttribute(PAGE_PASS, page);
                 response.sendRedirect(request.getContextPath() + page);
             }
-        } catch (CommandFCException e) {
-            request.getSession().setAttribute("nullPage", MessageManager.getProperty("message.null.page"));
+        } catch (CommandException e) {
+            request.getSession().setAttribute(NULL_PAGE, MessageManager.getProperty("message.null.page"));
             LOG.error("Command not defined. ", e);
             String page = ConfigurationManager.getProperty("path.page.error");
             request.getRequestDispatcher(page).forward(request, response);
         }
-
     }
 
     @Override
@@ -85,7 +89,7 @@ public class Controller extends HttpServlet {
         for (int i = 0; i < poolSize; i++) {
             try {
                 connectionPool.closeConnection(connectionPool.getConnection());
-            } catch (PoolFCException e) {
+            } catch (PoolException e) {
                 LOG.error("Some connections aren't closed: ", e);
             }
         }

@@ -14,41 +14,41 @@ import java.util.Properties;
 public class MailThread extends Thread {
     private static final Logger LOG = LogManager.getLogger();
 
+    private static final String TYPE_MAIL = "text/html; charset=utf-8";
+
     private MimeMessage message;
     private String sendToEmail;
     private String mailSubject;
     private String mailText;
     private Properties properties;
 
-    public MailThread(String sendToEmail, String mailSubject, String mailText, Properties properties){
+    public MailThread(String sendToEmail, String mailSubject, String mailText, Properties properties) {
         this.sendToEmail = sendToEmail;
         this.mailSubject = mailSubject;
         this.mailText = mailText;
         this.properties = properties;
     }
 
-    private void init(){
+    private void init() {
         Session mailSession = (new SessionCreator(properties)).createSession();
         mailSession.setDebug(true);
         message = new MimeMessage(mailSession);
         try {
-           // message.setFrom(new InternetAddress(mailSession.getProperties().getProperty("mail.smtp.name")));
             message.setSubject(mailSubject);
-            message.setContent(mailText, "text/html; charset=utf-8");
+            message.setContent(mailText, TYPE_MAIL);
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
         } catch (MessagingException e) {
-            LOG.error("Error generating message" + e);
+            LOG.error("Error generating message", e);
         }
     }
 
-    public void run(){
+    public void run() {
         init();
         try {
             LOG.info("Sending mail.");
             Transport.send(message);
         } catch (MessagingException e) {
-            LOG.error("Error sending message" + e);
+            LOG.error("Error sending message", e);
         }
     }
-
 }
