@@ -45,10 +45,19 @@ public class UserLogic {
         }
     }
 
-    public User findUserById(int id) throws LogicException {
+    public User findUserById(long id) throws LogicException {
         UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.findUserById(id).get();
+        } catch (DaoException e) {
+            throw new LogicException(e);
+        }
+    }
+
+    public User findUserByEmail(String email) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
+        try {
+            return userDAO.findUserByEmail(email).get();
         } catch (DaoException e) {
             throw new LogicException(e);
         }

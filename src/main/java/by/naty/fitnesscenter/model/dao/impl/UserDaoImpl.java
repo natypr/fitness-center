@@ -33,6 +33,10 @@ public class UserDaoImpl implements UserDao {
             "SELECT id, role, `name`, surname, email, password " +
                     "FROM `user` WHERE `user`.id=?;";
 
+    private static final String FIND_USER_BY_EMAIL =
+            "SELECT id, role, `name`, surname, email, password " +
+                    "FROM `user` WHERE `user`.email=?;";
+
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
             "SELECT id, role, `name`, surname, email, password " +
                     "FROM `user` WHERE email=? AND password=?;";
@@ -50,33 +54,6 @@ public class UserDaoImpl implements UserDao {
                 return String.valueOf(1);
         }
         return string;
-    }
-
-    public User createUserWithMaxId(User user) throws DaoException {
-        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE_USER);
-             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FROM_USER)) {
-
-            setPreparedStatement(user, statement);
-            ResultSet resultSet = preStatement.executeQuery();
-            if (resultSet.next()) {
-                user.setId(resultSet.getLong(1));
-            }
-            return user;
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    private void setPreparedStatement(User user, PreparedStatement statement) throws SQLException {
-        statement.setString(1, user.getRole());
-        statement.setString(2, user.getName());
-        statement.setString(3, user.getSurname());
-        statement.setString(4, user.getEmail());
-        statement.setString(5, user.getPassword());
-//        statement.setTimestamp(6, new Timestamp(0));
-        //       statement.setTimestamp(6, user.getDate());
-        statement.executeUpdate();
     }
 
     @Override
@@ -107,19 +84,30 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private User createUserFromResult(ResultSet resultSet) throws SQLException {
-        User user = new User(resultSet.getLong(ID), resultSet.getString(ROLE),
-                resultSet.getString(NAME), resultSet.getString(SURNAME),
-                resultSet.getString(EMAIL), resultSet.getString(PASSWORD));
-        return user;
-    }
-
     @Override
     public Optional<User> findUserById(long id) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID)) {
 
             statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            Optional<User> userOptionalById = Optional.empty();
+            if (resultSet.next()) {
+                User user = createUserFromResult(resultSet);
+                userOptionalById = Optional.of(user);
+            }
+            return userOptionalById;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL)) {
+
+            statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
             Optional<User> userOptionalById = Optional.empty();
             if (resultSet.next()) {
@@ -151,15 +139,6 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-    private void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
-        user.setId(resultSet.getLong(ID));
-        user.setRole(resultSet.getString(ROLE));
-        user.setName(resultSet.getString(NAME));
-        user.setSurname(resultSet.getString(SURNAME));
-        user.setEmail(resultSet.getString(EMAIL));
-        user.setPassword(resultSet.getString(PASSWORD));
-    }
-
     @Override
     public User updateUser(User user) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
@@ -188,5 +167,45 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
+    }
+
+    User createUserWithMaxId(User user) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_USER);
+             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FROM_USER)) {
+
+            setPreparedStatement(user, statement);
+            ResultSet resultSet = preStatement.executeQuery();
+            if (resultSet.next()) {
+                user.setId(resultSet.getLong(1));
+            }
+            return user;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private void setPreparedStatement(User user, PreparedStatement statement) throws SQLException {
+        statement.setString(1, user.getRole());
+        statement.setString(2, user.getName());
+        statement.setString(3, user.getSurname());
+        statement.setString(4, user.getEmail());
+        statement.setString(5, user.getPassword());
+        statement.executeUpdate();
+    }
+
+    private User createUserFromResult(ResultSet resultSet) throws SQLException {
+        return new User(resultSet.getLong(ID), resultSet.getString(ROLE),
+                resultSet.getString(NAME), resultSet.getString(SURNAME),
+                resultSet.getString(EMAIL), resultSet.getString(PASSWORD));
+    }
+
+    private void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
+        user.setId(resultSet.getLong(ID));
+        user.setRole(resultSet.getString(ROLE));
+        user.setName(resultSet.getString(NAME));
+        user.setSurname(resultSet.getString(SURNAME));
+        user.setEmail(resultSet.getString(EMAIL));
+        user.setPassword(resultSet.getString(PASSWORD));
     }
 }

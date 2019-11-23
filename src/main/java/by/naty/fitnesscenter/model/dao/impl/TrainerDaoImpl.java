@@ -86,14 +86,6 @@ public class TrainerDaoImpl implements TrainerDao {
         }
     }
 
-    private Trainer createTrainerFromResult(ResultSet resultSet) throws SQLException, DaoException {
-        long id = resultSet.getLong(ID);
-        Optional<User> user = new UserDaoImpl().findUserById(id);
-        return new Trainer(user.get(), resultSet.getInt(ID),
-                resultSet.getString(EDUCATION),
-                resultSet.getDouble(COST_PER_HOUR));
-    }
-
     @Override
     public Optional<Trainer> findTrainerById(long id) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
@@ -220,5 +212,13 @@ public class TrainerDaoImpl implements TrainerDao {
     private User createUserFromTrainer(Trainer trainer) {
         return new User(trainer.getId(), trainer.getRole(), trainer.getName(), trainer.getSurname(),
                 trainer.getEmail(), trainer.getPassword());
+    }
+
+    private Trainer createTrainerFromResult(ResultSet resultSet) throws SQLException, DaoException {
+        long id = resultSet.getLong(ID);
+        Optional<User> user = new UserDaoImpl().findUserById(id);
+        return new Trainer(user.get(), resultSet.getInt(ID),
+                resultSet.getString(EDUCATION),
+                resultSet.getDouble(COST_PER_HOUR));
     }
 }
