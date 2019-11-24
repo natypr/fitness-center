@@ -34,15 +34,22 @@ public class ConstantNameFromJsp {
     public static final String TRAINERS = "trainers";
     public static final String WORKOUT = "workout";
     public static final String WORKOUTS = "workouts";
+    public static final String RADIO_ROLE = "radio_role";
+    public static final String RADIO_GENDER = "radio_gender";
 
     public static final String REFUSE = "refuse";
     public static final String LOGIN = "login";
     public static final String SELECT_CLIENT = "select_client";
+    public static final String SELECT_TRAINER = "select_trainer";
+    public static final String BUTTON_ADMIN_BLOCK_CLIENT = "button_admin_block_client";
+    public static final String BUTTON_ADMIN_BLOCK_TRAINER = "button_admin_block_trainer";
     public static final String ACTION_WORKOUT = "action_workout";
-
     public static final String LOCALE = "locale";
     public static final String NEW_LOCALE = "new_locale";
     public static final String PAGE_PATH = "page_path";
+    public static final String RADIO_SELECT_TRAINER = "select_trainer";
+    public static final String SELECT_TYPE_OF_WORKOUT = "select_type_of_workout";
+    public static final String COUNT_OF_WORKOUT = "count_of_workout";
 
     public static final String PARAM_CHANGE_LANGUAGE = "changeLanguage";
     public static final String CLIENT_INFO = "clientInfo";

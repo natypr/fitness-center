@@ -62,7 +62,7 @@ public class TrainerDaoImpl implements TrainerDao {
 
             statement.setLong(1, user.getId());
             statement.setString(2, trainer.getEducation());
-            statement.setDouble(3, trainer.getCostPerHour());
+            statement.setDouble(3, trainer.getCostPerOneWorkout());
             statement.executeUpdate();
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
@@ -129,7 +129,7 @@ public class TrainerDaoImpl implements TrainerDao {
 
             statement.setLong(1, trainer.getId());
             statement.setString(2, trainer.getEducation());
-            statement.setDouble(3, trainer.getCostPerHour());
+            statement.setDouble(3, trainer.getCostPerOneWorkout());
             statement.executeUpdate();
             return trainer;
         } catch (SQLException | PoolException e) {

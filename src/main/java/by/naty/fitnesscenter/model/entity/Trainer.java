@@ -3,7 +3,7 @@ package by.naty.fitnesscenter.model.entity;
 public class Trainer extends User {
     private long id;
     private String education;
-    private double costPerHour;
+    private double costPerOneWorkout;
     private boolean blocked;
 
     public Trainer() {
@@ -12,29 +12,29 @@ public class Trainer extends User {
     public Trainer(User user) {
         super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
         this.education = "master";
-        this.costPerHour = 0.0;
+        this.costPerOneWorkout = 0.0;
     }
 
-    public Trainer(User user, long id, String education, double costPerHour) {
+    public Trainer(User user, long id, String education, double costPerOneWorkout) {
         super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
         this.id = id;
         this.education = education;
-        this.costPerHour = costPerHour;
+        this.costPerOneWorkout = costPerOneWorkout;
     }
 
-    public Trainer(long id, String education, double costPerHour, boolean blocked) {
+    public Trainer(long id, String education, double costPerOneWorkout, boolean blocked) {
         this.id = id;
         this.education = education;
-        this.costPerHour = costPerHour;
+        this.costPerOneWorkout = costPerOneWorkout;
         this.blocked = blocked;
     }
 
     public Trainer(long idUser, String role, String name, String surname, String email, String password,
-                   long id, String education, double costPerHour, boolean blocked) {
+                   long id, String education, double costPerOneWorkout, boolean blocked) {
         super(idUser, role, name, surname, email, password);
         this.id = id;
         this.education = education;
-        this.costPerHour = costPerHour;
+        this.costPerOneWorkout = costPerOneWorkout;
         this.blocked = blocked;
     }
 
@@ -54,12 +54,12 @@ public class Trainer extends User {
         this.education = education;
     }
 
-    public double getCostPerHour() {
-        return costPerHour;
+    public double getCostPerOneWorkout() {
+        return costPerOneWorkout;
     }
 
-    public void setCostPerHour(double costPerHour) {
-        this.costPerHour = costPerHour;
+    public void setCostPerOneWorkout(double costPerOneWorkout) {
+        this.costPerOneWorkout = costPerOneWorkout;
     }
 
     public boolean isBlocked() {
@@ -79,7 +79,7 @@ public class Trainer extends User {
         Trainer trainer = (Trainer) o;
 
         if (id != trainer.id) return false;
-        if (Double.compare(trainer.costPerHour, costPerHour) != 0) return false;
+        if (Double.compare(trainer.costPerOneWorkout, costPerOneWorkout) != 0) return false;
         if (blocked != trainer.blocked) return false;
         return education != null ? education.equals(trainer.education) : trainer.education == null;
     }
@@ -90,7 +90,7 @@ public class Trainer extends User {
         long temp;
         result = 31 * result + (int) (id ^ (id >>> 32));
         result = 31 * result + (education != null ? education.hashCode() : 0);
-        temp = Double.doubleToLongBits(costPerHour);
+        temp = Double.doubleToLongBits(costPerOneWorkout);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (blocked ? 1 : 0);
         return result;
@@ -101,7 +101,7 @@ public class Trainer extends User {
         final StringBuilder sb = new StringBuilder("Trainer{");
         sb.append("idTrainer=").append(id);
         sb.append(", education='").append(education).append('\'');
-        sb.append(", costPerHour=").append(costPerHour);
+        sb.append(", costPerHour=").append(costPerOneWorkout);
         sb.append(", blocked=").append(blocked);
         sb.append('}');
         return sb.toString();

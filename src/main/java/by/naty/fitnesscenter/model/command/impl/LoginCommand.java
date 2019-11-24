@@ -56,7 +56,7 @@ public class LoginCommand implements Command {
                     if (user.getRole().equals(UserType.ADMIN.getTypeUser())) {
                         List<Client> clients = clientLogic.findAllClients();
                         request.getSession().setAttribute(CLIENTS, clients);
-                        page = ConfigurationManager.getProperty("path.page.admin.main");
+                        page = ConfigurationManager.getProperty("path.page.admin.cabinet");
                         LOG.info("  Admin: " + user.getEmail() + " log in.");
 
                     } else if (user.getRole().equals(UserType.TRAINER.getTypeUser())) {

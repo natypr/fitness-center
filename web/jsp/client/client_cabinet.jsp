@@ -12,6 +12,9 @@
 <h1><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></h1>
 <br/>
 
+<a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
+    <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
+<br/>
 <div>
     <div>
         <strong><fmt:message key="text.clientcabinet.name" bundle="${var}"/></strong>

@@ -47,12 +47,12 @@ public class RegistrationCommand implements Command {
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String page = null;
-        String role = request.getParameter(ROLE);
+        String role = request.getParameter(RADIO_ROLE);
         String name = request.getParameter(NAME);
         String surname = request.getParameter(SURNAME);
         String email = request.getParameter(EMAIL);
         String password = request.getParameter(PASSWORD);
-        String gender = request.getParameter(GENDER);
+        String gender = request.getParameter(RADIO_GENDER);
         String yearOld = request.getParameter(YEAR_OLD);
 
         if (checkRegistration(name, surname, email, password, yearOld)) {

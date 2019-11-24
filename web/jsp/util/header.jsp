@@ -10,6 +10,52 @@
 <body>
 <nav>
     <div>
+        <a href="${pageContext.request.contextPath}/jsp/main.jsp">
+            <fmt:message key="text.header.main" bundle="${var}"/></a>
+
+        <a href="${pageContext.request.contextPath}/jsp/trainer_list.jsp">
+            <fmt:message key="text.header.trainerlist" bundle="${var}"/></a>
+
+        <a href="${pageContext.request.contextPath}/jsp/util/mail.jsp">
+            <fmt:message key="text.header.contacts" bundle="${var}"/></a>
+
+        <a href="${pageContext.request.contextPath}/jsp/util/about.jsp">
+            <fmt:message key="text.header.about" bundle="${var}"/></a>
+
+        <div>
+            <c:choose>
+                <c:when test="${user.role=='client'}">
+                    <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
+                        <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
+                </c:when>
+                <c:when test="${user.role=='trainer'}">
+                    <a href="${pageContext.request.contextPath}/jsp/trainer/trainer_cabinet.jsp">
+                        <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
+                </c:when>
+                <c:when test="${user.role=='admin'}">
+                    <a href="${pageContext.request.contextPath}/jsp/admin/admin_cabinet.jsp">
+                        <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/jsp/login.jsp">
+                        <fmt:message key="text.header.login" bundle="${var}"/></a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <div>
+            <c:if test="${not empty user}">
+                <ctg:role user="${user}"/>
+
+                <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" id="logout"/>
+                    <a href="${pageContext.request.contextPath}/controller?command=logout"></a>
+                    <fmt:message key="text.header.logout" bundle="${var}"/>
+                </form>
+            </c:if>
+        </div>
+
+
         <table>
             <tr>
                 <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
