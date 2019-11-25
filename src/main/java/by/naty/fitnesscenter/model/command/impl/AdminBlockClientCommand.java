@@ -28,6 +28,7 @@ public class AdminBlockClientCommand implements Command {
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String[] checkboxClient = request.getParameterValues(SELECT_CLIENT);
         String actionAdminBlockClient = request.getParameter(BUTTON_ADMIN_BLOCK_CLIENT);
+        String actionAdminUnblockClient = request.getParameter(BUTTON_ADMIN_UNBLOCK_CLIENT);
         ArrayList<Client> clients = new ArrayList<>();
 
         String page;
@@ -42,7 +43,11 @@ public class AdminBlockClientCommand implements Command {
             for (Client client : clients) {
                 if (actionAdminBlockClient != null) {
                     clientLogic.deleteClientById(client.getId());
-                    LOG.info("Delete client");
+                    LOG.info("Blocked client.");
+                }
+                if (actionAdminUnblockClient != null) {
+                    clientLogic.deleteClientById(client.getId());
+                    LOG.info("Unblocked client.");
                 }
             }
             request.getSession().setAttribute(CLIENTS, clientLogic.findAllClients());

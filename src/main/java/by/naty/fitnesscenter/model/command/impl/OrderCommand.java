@@ -34,22 +34,21 @@ public class OrderCommand implements Command {
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String page;
-        String radioSelectTrainer = request.getParameter(RADIO_SELECT_TRAINER);
         String selectTypeOfWorkout = request.getParameter(SELECT_TYPE_OF_WORKOUT);
         String countOfWorkout = request.getParameter(COUNT_OF_WORKOUT);
+        String radioSelectTrainer = request.getParameter(RADIO_SELECT_TRAINER);
         Client client = (Client) request.getSession().getAttribute(CLIENT);
         Order order = new Order();
         try {
             Trainer trainer = trainerLogic.findTrainerByEmail(radioSelectTrainer);
-            //FIXME Order description!
-//            order.setTypeOfWorkout(selectTypeOfWorkout);
-//            order.setCountOfWorkout(Integer.parseInt(countOfWorkout));
-//            order.setIdClient(client.getId());
-//            order.setIdTrainer(trainer.getId());
+            order.setTypeOfWorkout(selectTypeOfWorkout);
+            order.setCountOfWorkout(Integer.parseInt(countOfWorkout));
+            order.setIdTrainer(trainer.getId());
+            order.setIdClient(client.getId());
             orderLogic.createOrder(order);
 
             LOG.info("Create order by " + client.getEmail());
-            request.setAttribute("successfullOrder", MessageManager.getProperty("messages.orderdone"));
+            request.setAttribute(SUCCESSFUL_ORDER, MessageManager.getProperty("messages.orderdone"));
             page = ConfigurationManager.getProperty("path.page.client.order");
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);

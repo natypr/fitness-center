@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.ID;
-import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.ID_CLIENT;
+import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
 public class OrderDaoImpl implements OrderDao {
 
@@ -126,6 +125,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     private Order createOrderFromResult(ResultSet resultSet) throws SQLException {
-        return new Order(resultSet.getLong(ID), resultSet.getLong(ID_CLIENT));
+        return new Order(resultSet.getLong(ID), resultSet.getString(SELECT_TYPE_OF_WORKOUT),
+                resultSet.getInt(COUNT_OF_WORKOUT), resultSet.getLong(ID_TRAINER), resultSet.getLong(ID_CLIENT));
     }
 }

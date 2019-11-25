@@ -9,28 +9,30 @@
     <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
+<br/>
+
+<a href="${pageContext.request.contextPath}/jsp/trainer/update_profile.jsp">
+    <fmt:message key="href.trainercabinet.updateprofile" bundle="${var}"/></a>
+<div>
+    <strong><fmt:message key="text.trainercabinet.name" bundle="${var}"/></strong>
+    ${trainer.name} </br>
+
+    <strong><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></strong>
+    ${trainer.surname} </br>
+
+    <strong><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></strong>
+    ${trainer.gender} </br>
+
+    <strong><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></strong>
+    ${trainer.yearOld} </br>
+
+    <strong><fmt:message key="text.trainercabinet.email" bundle="${var}"/></strong>
+    ${trainer.email} </br></br></br></br>
+</div>
+
 <form name="trainerCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="trainer_cabinet"/>
-
-    <h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
-    <br/>
-
-    <div>
-        <strong><fmt:message key="text.trainercabinet.name" bundle="${var}"/></strong>
-        ${trainer.name} </br>
-
-        <strong><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></strong>
-        ${trainer.surname} </br>
-
-        <strong><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></strong>
-        ${trainer.gender} </br>
-
-        <strong><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></strong>
-        ${trainer.yearOld} </br>
-
-        <strong><fmt:message key="text.trainercabinet.email" bundle="${var}"/></strong>
-        ${trainer.email}</br></br></br></br>
-    </div>
 
     <table border="1" width="60%" cellpadding="5">
         <tr>
@@ -40,13 +42,13 @@
             <th><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></th>
             <th><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></th>
             <th><fmt:message key="text.trainercabinet.email" bundle="${var}"/></th>
+            <th><fmt:message key="text.trainercabinet.discount" bundle="${var}"/></th>
 
-            <th><fmt:message key="text.trainercabinet.typeWorkout" bundle="${var}"/></th>
-            <th><fmt:message key="text.trainercabinet.nameOfWorkout" bundle="${var}"/></th>
+            <th><fmt:message key="text.trainercabinet.typeofworkout" bundle="${var}"/></th>
+            <th><fmt:message key="text.trainercabinet.numberofworkout" bundle="${var}"/></th>
+            <th><fmt:message key="text.trainercabinet.nameofworkout" bundle="${var}"/></th>
             <th><fmt:message key="text.trainercabinet.equipment" bundle="${var}"/></th>
             <th><fmt:message key="text.trainercabinet.description" bundle="${var}"/></th>
-            <th><fmt:message key="text.trainercabinet.costPerOneWorkout" bundle="${var}"/></th>
-            <th><fmt:message key="text.trainercabinet.numberOfVisit" bundle="${var}"/></th>
         </tr>
 
         <c:forEach items="${clientInfo}" var="clientInfo" varStatus="loop">
@@ -57,15 +59,15 @@
                 <td>${clientInfo.client.gender}</td>
                 <td>${clientInfo.client.yearOld}</td>
                 <td>${clientInfo.client.email}</td>
+                <td>${clientInfo.client.discount}</td>
             </tr>
             <c:forEach items="${clientInfo.workoutList}" var="workouts" varStatus="loop">
                 <tr>
                     <td>${workouts.typeWorkout}</td>
+                    <td>${workouts.numberOfVisit}</td>
                     <td>${workouts.nameOfWorkout}</td>
                     <td>${workouts.equipment}</td>
                     <td>${workouts.description}</td>
-                    <td>${workouts.costPerOneWorkout}</td>
-                    <td>${workouts.numberOfVisit}</td>
                 </tr>
             </c:forEach>
         </c:forEach>
@@ -73,30 +75,27 @@
 
 
     </br></br></br></br>
-    <strong> <fmt:message key="text.trainercabinet.typeWorkout" bundle="${var}"/></strong>
-    <input type="text" name="type_workout" value=""/></br>
+    <strong> <fmt:message key="text.trainercabinet.typeofworkout" bundle="${var}"/></strong>
+    <input type="text" name="type_of_workout" value=""/></br>
+
+    <strong><fmt:message key="text.trainercabinet.numberofworkout" bundle="${var}"/></strong>
+    <input type="text" name="number_of_workout" value=""/></br>
 
 
-    <strong><fmt:message key="text.trainercabinet.nameOfWorkout" bundle="${var}"/></strong>
+    <strong><fmt:message key="text.trainercabinet.nameofworkout" bundle="${var}"/></strong>
     <input type="text" name="name_of_workout" value=""/></br>
-
 
     <strong><fmt:message key="text.trainercabinet.equipment" bundle="${var}"/></strong>
     <input type="text" name="equipment" value=""/></br>
 
     <strong><fmt:message key="text.trainercabinet.description" bundle="${var}"/></strong>
-    <input type="text" name="description" value=""/></br>
-
-    <strong><fmt:message key="text.trainercabinet.costPerOneWorkout" bundle="${var}"/></strong>
-    <input type="text" name="cost_per_one_workout" value=""/></br>
-
-    <strong><fmt:message key="text.trainercabinet.numberOfVisit" bundle="${var}"/></strong>
-    <input type="text" name="number_of_visit" value=""/></br></br>
+    <input type="text" name="description" value=""/></br></br>
 
 
-    <input type="submit" name="action_workout" value="Add workout">
-    <input type="submit" name="action_workout" value="Delete workout">
-    <input type="submit" name="action_workout" value="Update workout">
+    <input type="submit" name="action_workout"
+           value="<fmt:message key = "bt.trainercabinet.updateworkout" bundle="${var}"/>">
+    <input type="submit" name="action_workout"
+           value="<fmt:message key = "bt.trainercabinet.addworkout" bundle="${var}"/>">
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

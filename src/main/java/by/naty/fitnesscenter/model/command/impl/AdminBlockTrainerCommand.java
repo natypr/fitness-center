@@ -28,6 +28,7 @@ public class AdminBlockTrainerCommand implements Command {
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String[] checkboxTrainer = request.getParameterValues(SELECT_TRAINER);
         String actionAdminBlockTrainer = request.getParameter(BUTTON_ADMIN_BLOCK_TRAINER);
+        String actionAdminUnblockTrainer = request.getParameter(BUTTON_ADMIN_UNBLOCK_TRAINER);
         ArrayList<Trainer> trainers = new ArrayList<>();
 
         String page;
@@ -42,7 +43,11 @@ public class AdminBlockTrainerCommand implements Command {
             for (Trainer trainer : trainers) {
                 if (actionAdminBlockTrainer != null) {
                     trainerLogic.deleteTrainerById(trainer.getId());
-                    LOG.info("Delete trainer");
+                    LOG.info("Blocked trainer");
+                }
+                if (actionAdminBlockTrainer != null) {
+                    trainerLogic.deleteTrainerById(trainer.getId());
+                    LOG.info("Unblocked trainer");
                 }
             }
             request.getSession().setAttribute(TRAINERS, trainerLogic.findAllTrainers());

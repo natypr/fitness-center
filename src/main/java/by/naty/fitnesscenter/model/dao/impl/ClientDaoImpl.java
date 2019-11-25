@@ -226,12 +226,12 @@ public class ClientDaoImpl implements ClientDao {
 
     private Workout createWorkoutFromResult(ResultSet resultSet) throws SQLException {
         return new Workout(resultSet.getLong(ID),
-                resultSet.getString(TYPE_WORKOUT),
+                resultSet.getString(TYPE_OF_WORKOUT),
                 resultSet.getString(NAME_OF_WORKOUT),
                 resultSet.getString(EQUIPMENT),
                 resultSet.getString(DESCRIPTION),
                 resultSet.getDouble(COST_PER_ONE_WORKOUT),
-                resultSet.getInt(NUMBER_OF_VISIT),
+                resultSet.getInt(NUMBER_OF_WORKOUT),
                 resultSet.getLong(ID_TRAINER),
                 resultSet.getLong(ID_ORDER));
     }

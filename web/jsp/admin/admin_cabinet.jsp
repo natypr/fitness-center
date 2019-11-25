@@ -25,6 +25,8 @@
             <th><fmt:message key="text.admincabinet.gender" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.yearold" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
+            <th><fmt:message key="text.admincabinet.discount" bundle="${var}"/></th>
+            <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
         </tr>
 
         <c:forEach items="${clients}" var="clients">
@@ -38,6 +40,8 @@
                 <td>${clients.gender}</td>
                 <td>${clients.yearOld}</td>
                 <td>${clients.email}</td>
+                <td>${clients.discount}</td>
+                <td>${clients.blocked}</td>
             </tr>
         </c:forEach>
     </table>
@@ -45,6 +49,9 @@
     <br/>
     <input type="submit" value=
     <fmt:message key="bt.admin.block.client" bundle="${var}"/> name="button_admin_block_client">
+
+    <input type="submit" value=
+    <fmt:message key="bt.admin.unblock.client" bundle="${var}"/> name="button_admin_unblock_client">
     <br/><br/>
 </form>
 
@@ -64,6 +71,7 @@
             <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.education" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.costperoneworkout" bundle="${var}"/></th>
+            <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
         </tr>
 
         <c:forEach items="${trainers}" var="trainers">
@@ -77,6 +85,7 @@
                 <td>${trainers.gender}</td>
                 <td>${trainers.yearOld}</td>
                 <td>${trainers.email}</td>
+                <td>${trainers.blocked}</td>
             </tr>
         </c:forEach>
     </table>
@@ -84,6 +93,9 @@
     <br/>
     <input type="submit" value=
     <fmt:message key="bt.admin.block.trainer" bundle="${var}"/> name="button_admin_block_trainer">
+
+    <input type="submit" value=
+    <fmt:message key="bt.admin.unblock.trainer" bundle="${var}"/> name="button_admin_unblock_trainer">
     <br/><br/>
 </form>
 

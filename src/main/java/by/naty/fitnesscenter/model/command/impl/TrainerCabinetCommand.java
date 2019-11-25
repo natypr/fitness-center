@@ -23,7 +23,6 @@ public class TrainerCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
     private static final String ADD_WORKOUT_ACTION = "Add workout";
-    private static final String DELETE_WORKOUT_ACTION = "Delete workout";
     private static final String UPDATE_WORKOUT_ACTION = "Update workout";
 
     private ClientLogic clientLogic;
@@ -39,12 +38,12 @@ public class TrainerCabinetCommand implements Command {
         String[] checkbox = request.getParameterValues(SELECT_CLIENT);
         String actionButtonWorkout = request.getParameter(ACTION_WORKOUT);
 
-        String typeWorkout = request.getParameter(TYPE_WORKOUT);
+        String typeWorkout = request.getParameter(TYPE_OF_WORKOUT);
         String nameOfWorkout = request.getParameter(NAME_OF_WORKOUT);
         String equipment = request.getParameter(EQUIPMENT);
         String description = request.getParameter(DESCRIPTION);
         String costPerOneWorkout = request.getParameter(COST_PER_ONE_WORKOUT);
-        String numberOfVisit = request.getParameter(NUMBER_OF_VISIT);
+        String numberOfVisit = request.getParameter(NUMBER_OF_WORKOUT);
 
         String page;
         ArrayList<Client> clients = new ArrayList<>();
@@ -70,11 +69,6 @@ public class TrainerCabinetCommand implements Command {
                         case ADD_WORKOUT_ACTION: {
                             trainerLogic.createWorkoutForClient(workout);
                             LOG.info("Create workout for client " + client.getEmail());
-                            break;
-                        }
-                        case DELETE_WORKOUT_ACTION: {
-                            trainerLogic.deleteWorkoutById(workout.getId());
-                            LOG.info("Delete workout for client" + client.getEmail());
                             break;
                         }
                         case UPDATE_WORKOUT_ACTION: {

@@ -12,12 +12,12 @@ public class ConstantNameFromJsp {
     public static final String YEAR_OLD = "year_old";
     public static final String DISCOUNT = "discount";
 
-    public static final String TYPE_WORKOUT = "type_workout";
+    public static final String TYPE_OF_WORKOUT = "type_of_workout";
     public static final String NAME_OF_WORKOUT = "name_of_workout";
     public static final String EQUIPMENT = "equipment";
     public static final String DESCRIPTION = "description";
     public static final String COST_PER_ONE_WORKOUT = "cost_per_one_workout";
-    public static final String NUMBER_OF_VISIT = "number_of_visit";
+    public static final String NUMBER_OF_WORKOUT = "number_of_workout";
     public static final String ID_TRAINER = "id_trainer";
     public static final String ID_ORDER = "id_order";
 
@@ -42,7 +42,9 @@ public class ConstantNameFromJsp {
     public static final String SELECT_CLIENT = "select_client";
     public static final String SELECT_TRAINER = "select_trainer";
     public static final String BUTTON_ADMIN_BLOCK_CLIENT = "button_admin_block_client";
+    public static final String BUTTON_ADMIN_UNBLOCK_CLIENT = "button_admin_unblock_client";
     public static final String BUTTON_ADMIN_BLOCK_TRAINER = "button_admin_block_trainer";
+    public static final String BUTTON_ADMIN_UNBLOCK_TRAINER = "button_admin_unblock_trainer";
     public static final String ACTION_WORKOUT = "action_workout";
     public static final String LOCALE = "locale";
     public static final String NEW_LOCALE = "new_locale";
@@ -53,6 +55,7 @@ public class ConstantNameFromJsp {
 
     public static final String PARAM_CHANGE_LANGUAGE = "changeLanguage";
     public static final String CLIENT_INFO = "clientInfo";
+    public static final String SUCCESSFUL_ORDER = "successfulOrder";
     public static final String CLIENTS_OF_TRAINER = "clientsOfTrainer";
     public static final String LIST_OF_CLIENT_INFO = "listOfClientInfo";
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";

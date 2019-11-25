@@ -15,11 +15,22 @@
 <form name="orderPage" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="order"/>
 
+    <h3><fmt:message key="text.order.typeofworkout" bundle="${var}"/></h3>
+    <select name="select_type_of_workout">
+        <option value="aerobic" selected><fmt:message key="text.order.typeofworkout.aerobic" bundle="${var}"/></option>
+        <option value="cardio"><fmt:message key="text.order.typeofworkout.cardio" bundle="${var}"/></option>
+        <option value="power"><fmt:message key="text.order.typeofworkout.power" bundle="${var}"/></option>
+    </select>
+    <br/><br/>
+
+    <strong><fmt:message key="text.order.numberofworkout" bundle="${var}"/></strong><br/>
+    <input type="number" value="1" name="number_of_workout">
+
+
     <h3><fmt:message key="text.order.trainerlist" bundle="${var}"/></h3>
     <table border="1" width="60%" cellpadding="5">
         <tr>
             <th><fmt:message key="text.order.select" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.idtrainer" bundle="${var}"/></th>
             <th><fmt:message key="text.order.name" bundle="${var}"/></th>
             <th><fmt:message key="text.order.surname" bundle="${var}"/></th>
             <th><fmt:message key="text.order.gender" bundle="${var}"/></th>
@@ -31,8 +42,7 @@
 
         <c:forEach items="${trainers}" var="trainers">
             <tr>
-                <td><input type="radio" name="select_trainer" value="${trainers.email}" id="id"/></td>
-                <td>${trainers.id}</td>
+                <td><input type="radio" name="select_trainer" value="${trainers.email}" id="id_trainer"/></td>
                 <td>${trainers.name}</td>
                 <td>${trainers.surname}</td>
                 <td>${trainers.gender}</td>
@@ -44,21 +54,10 @@
         </c:forEach>
     </table>
 
-    <h3><fmt:message key="text.order.typeworkout" bundle="${var}"/></h3>
-    <select name="select_type_of_workout">
-        <option value="aerobic" selected><fmt:message key="text.order.typeworkout.aerobic" bundle="${var}"/></option>
-        <option value="cardio"><fmt:message key="text.order.typeworkout.cardio" bundle="${var}"/></option>
-        <option value="power"><fmt:message key="text.order.typeworkout.power" bundle="${var}"/></option>
-    </select>
-    <br/><br/>
-
-    <strong><fmt:message key="text.order.numberofworkout" bundle="${var}"/></strong><br/>
-    <input type="number" value="1" name="count_of_workout">
-
     <br/>
     <input type="submit" value=<fmt:message key="bt.order.makeorder" bundle="${var}"/> name="make_order">
 
-    <br/> ${successfullOrder} <br/>
+    <br/> ${successfulOrder} <br/>
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

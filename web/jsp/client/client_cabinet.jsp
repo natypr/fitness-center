@@ -14,6 +14,8 @@
 
 <a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
     <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
+<a href="${pageContext.request.contextPath}/jsp/client/update_profile.jsp">
+    <fmt:message key="href.clientcabinet.updateprofile" bundle="${var}"/></a>
 <br/>
 <div>
     <div>
@@ -30,7 +32,10 @@
         ${client.yearOld} </br>
 
         <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
-        ${client.email} </br></br></br></br>
+        ${client.email} </br>
+
+        <strong><fmt:message key="text.clientcabinet.discount" bundle="${var}"/></strong>
+        ${client.discount} </br></br></br></br>
     </div>
 
 
@@ -39,12 +44,13 @@
 
         <table border="1" width="60%" cellpadding="5">
             <tr>
-                <th><fmt:message key="table.client.nameOfWorkout" bundle="${var}"/></th>
-                <th><fmt:message key="table.client.typeWorkout" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.nameofworkout" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.equipment" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.description" bundle="${var}"/></th>
-                <th><fmt:message key="table.client.numberOfVisit" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.button.refuse" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.button.pay" bundle="${var}"/></th>
             </tr>
 
             <c:forEach items="${workout}" var="workout_n" begin="${index}" end="${index}">
@@ -57,6 +63,9 @@
                     <td><input type="submit"
                                value="<fmt:message key="table.client.button.refuse" bundle="${var}"/>"
                                name="refuse"></td>
+                    <td><input type="submit"
+                               value="<fmt:message key="table.client.button.pay" bundle="${var}"/>"
+                               name="pay"></td>
                 </tr>
             </c:forEach>
         </table>
