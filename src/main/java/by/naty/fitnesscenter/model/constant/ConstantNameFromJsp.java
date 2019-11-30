@@ -25,6 +25,8 @@ public class ConstantNameFromJsp {
     public static final String COST_PER_HOUR = "cost_per_hour";
 
     public static final String ID_CLIENT = "id_client";
+    public static final String ID_WORKOUT = "id_workout";
+
 
 
     public static final String USER = "user";
@@ -32,6 +34,7 @@ public class ConstantNameFromJsp {
     public static final String CLIENTS = "clients";
     public static final String TRAINER = "trainer";
     public static final String TRAINERS = "trainers";
+    public static final String ADMIN = "admin";
     public static final String WORKOUT = "workout";
     public static final String WORKOUTS = "workouts";
     public static final String RADIO_ROLE = "radio_role";
@@ -51,7 +54,10 @@ public class ConstantNameFromJsp {
     public static final String PAGE_PATH = "page_path";
     public static final String RADIO_SELECT_TRAINER = "select_trainer";
     public static final String SELECT_TYPE_OF_WORKOUT = "select_type_of_workout";
-    public static final String COUNT_OF_WORKOUT = "count_of_workout";
+//    public static final String COUNT_OF_WORKOUT = "count_of_workout";
+    public static final String IS_PAID = "is_paid";
+    public static final String ORDERS = "orders";
+
 
     public static final String PARAM_CHANGE_LANGUAGE = "changeLanguage";
     public static final String CLIENT_INFO = "clientInfo";

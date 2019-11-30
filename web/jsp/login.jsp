@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.login" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="login"/>
 
@@ -18,7 +18,7 @@
     <fmt:message key="text.login.password" bundle="${var}"/><br/>
     <input type="password" name="password" value=""/>
 
-    <br/> ${errorLoginPassMessage} <br/>
+    <br/> ${sessionScope.errorLoginPassMessage} <br/>
 
     <input type="submit" value="<fmt:message key="bt.login.login" bundle="${var}"/>"/>
 

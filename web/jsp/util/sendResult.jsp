@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.sendresult" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <div>
     <p><fmt:message key="text.sendresult.senging" bundle="${var}"/></p>
     <a href="mail.jsp"><fmt:message key="text.sendresult.return" bundle="${var}"/></a>

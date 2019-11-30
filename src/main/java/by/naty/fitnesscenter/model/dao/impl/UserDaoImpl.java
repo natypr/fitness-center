@@ -20,40 +20,54 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class UserDaoImpl implements UserDao {
 
     private static final String CREATE_USER =
-            "INSERT INTO `user` (role, `name`, surname, email, password) " +
-                    "VALUES (?, ?, ?, ?, ?);";
+            "INSERT INTO `user` (role_num, `name`, surname, gender, year_old, email, password) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     private static final String SELECT_MAX_ID_FROM_USER = "SELECT max(id) FROM `user`;";
 
     private static final String FIND_ALL_USERS =
-            "SELECT id, role, `name`, surname, email, password " +
-                    "FROM `user` ORDER BY `user`.id;";
+            "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "ORDER BY `user`.id;";
 
     private static final String FIND_USER_BY_ID =
-            "SELECT id, role, `name`, surname, email, password " +
-                    "FROM `user` WHERE `user`.id=?;";
+            "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "WHERE `user`.id=?;";
 
     private static final String FIND_USER_BY_EMAIL =
-            "SELECT id, role, `name`, surname, email, password " +
-                    "FROM `user` WHERE `user`.email=?;";
+            "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "WHERE `user`.email=?;";
 
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
-            "SELECT id, role, `name`, surname, email, password " +
-                    "FROM `user` WHERE email=? AND password=?;";
+            "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "WHERE email=? AND password=?;";
 
     private static final String UPDATE_USER =
-            "UPDATE `user` SET id=?, role=?, `name`=?, surname=?, email=?, password=? WHERE id=?;";
+            "UPDATE `user` SET id=?, role_num=?, `name`=?, surname=?, gender=?, year_old=?, email=?, password=? " +
+                    "WHERE id=?;";
 
     private static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id=?;";
 
-    private static String modifyRole(String string) {
+    private static final String BLOCK_USER_BY_ID = "UPDATE `user` SET blocked=1 WHERE id=?;";
+
+    private static final String UNBLOCK_USER_BY_ID = "UPDATE `user` SET blocked=0 WHERE id=?;";
+
+    private static Byte modifyRole(String string) {
         switch (string) {
             case "client":
-                return String.valueOf(2);
+                return 2;//String.valueOf(2);
             case "trainer":
-                return String.valueOf(1);
+                return 1;//String.valueOf(1);
+            default:
+                return 3;
         }
-        return string;
     }
 
     @Override
@@ -132,6 +146,7 @@ public class UserDaoImpl implements UserDao {
             if (resultSet.next()) {
                 user = new User();
                 setUserFromResultSet(resultSet, user);
+//                User user = createUserFromResult(resultSet);
             }
             return user;
         } catch (SQLException | PoolException e) {
@@ -145,9 +160,11 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
 
             statement.setLong(1, user.getId());
-            statement.setString(2, user.getName());
-            statement.setString(3, modifyRole(user.getRole()));
+            statement.setByte(2, modifyRole(user.getRole()));
+            statement.setString(3, user.getName());
             statement.setString(4, user.getSurname());
+            statement.setString(5, user.getGender());
+            statement.setByte(5, user.getYearOld());
             statement.setString(5, user.getEmail());
             statement.setString(6, user.getPassword());
             statement.executeUpdate();
@@ -161,6 +178,30 @@ public class UserDaoImpl implements UserDao {
     public void deleteUserById(long id) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_ID)) {
+
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void blockUserById(long id) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(BLOCK_USER_BY_ID)) {
+
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void unblockUserById(long id) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UNBLOCK_USER_BY_ID)) {
 
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
@@ -186,18 +227,22 @@ public class UserDaoImpl implements UserDao {
     }
 
     private void setPreparedStatement(User user, PreparedStatement statement) throws SQLException {
-        statement.setString(1, user.getRole());
+        statement.setByte(1, modifyRole(user.getRole()));
         statement.setString(2, user.getName());
         statement.setString(3, user.getSurname());
-        statement.setString(4, user.getEmail());
-        statement.setString(5, user.getPassword());
+        statement.setString(4, user.getGender());
+        statement.setByte(5, user.getYearOld());
+        statement.setString(6, user.getEmail());
+        statement.setString(7, user.getPassword());
         statement.executeUpdate();
     }
 
+    //из бд в сущность
     private User createUserFromResult(ResultSet resultSet) throws SQLException {
         return new User(resultSet.getLong(ID), resultSet.getString(ROLE),
                 resultSet.getString(NAME), resultSet.getString(SURNAME),
-                resultSet.getString(EMAIL), resultSet.getString(PASSWORD));
+                resultSet.getString(GENDER), resultSet.getByte(YEAR_OLD),
+                resultSet.getString(EMAIL), resultSet.getString(PASSWORD), false);
     }
 
     private void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
@@ -205,6 +250,8 @@ public class UserDaoImpl implements UserDao {
         user.setRole(resultSet.getString(ROLE));
         user.setName(resultSet.getString(NAME));
         user.setSurname(resultSet.getString(SURNAME));
+        user.setGender(resultSet.getString(GENDER));
+        user.setYearOld(resultSet.getByte(YEAR_OLD));
         user.setEmail(resultSet.getString(EMAIL));
         user.setPassword(resultSet.getString(PASSWORD));
     }

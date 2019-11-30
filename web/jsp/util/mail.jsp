@@ -6,9 +6,10 @@
 <html>
 <head>
     <title><fmt:message key="title.mail" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
+
 <form action="${pageContext.request.contextPath}/mailServlet" method="POST">
     <table>
         <tr>

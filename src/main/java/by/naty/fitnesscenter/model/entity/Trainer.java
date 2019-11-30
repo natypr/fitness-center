@@ -4,44 +4,38 @@ public class Trainer extends User {
     private long id;
     private String education;
     private double costPerOneWorkout;
-    private boolean blocked;
 
     public Trainer() {
     }
 
     public Trainer(User user) {
-        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
         this.education = "master";
         this.costPerOneWorkout = 0.0;
     }
 
+    public Trainer(User user, String education, double costPerOneWorkout) {
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
+        this.education = education;
+        this.costPerOneWorkout = costPerOneWorkout;
+    }
+
     public Trainer(User user, long id, String education, double costPerOneWorkout) {
-        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
         this.id = id;
         this.education = education;
         this.costPerOneWorkout = costPerOneWorkout;
     }
 
-    public Trainer(long id, String education, double costPerOneWorkout, boolean blocked) {
-        this.id = id;
-        this.education = education;
-        this.costPerOneWorkout = costPerOneWorkout;
-        this.blocked = blocked;
-    }
-
-    public Trainer(long idUser, String role, String name, String surname, String email, String password,
-                   long id, String education, double costPerOneWorkout, boolean blocked) {
-        super(idUser, role, name, surname, email, password);
-        this.id = id;
-        this.education = education;
-        this.costPerOneWorkout = costPerOneWorkout;
-        this.blocked = blocked;
-    }
-
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }
@@ -62,14 +56,6 @@ public class Trainer extends User {
         this.costPerOneWorkout = costPerOneWorkout;
     }
 
-    public boolean isBlocked() {
-        return blocked;
-    }
-
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,7 +66,6 @@ public class Trainer extends User {
 
         if (id != trainer.id) return false;
         if (Double.compare(trainer.costPerOneWorkout, costPerOneWorkout) != 0) return false;
-        if (blocked != trainer.blocked) return false;
         return education != null ? education.equals(trainer.education) : trainer.education == null;
     }
 
@@ -92,17 +77,15 @@ public class Trainer extends User {
         result = 31 * result + (education != null ? education.hashCode() : 0);
         temp = Double.doubleToLongBits(costPerOneWorkout);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (blocked ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Trainer{");
-        sb.append("idTrainer=").append(id);
+        sb.append("id=").append(id);
         sb.append(", education='").append(education).append('\'');
-        sb.append(", costPerHour=").append(costPerOneWorkout);
-        sb.append(", blocked=").append(blocked);
+        sb.append(", costPerOneWorkout=").append(costPerOneWorkout);
         sb.append('}');
         return sb.toString();
     }

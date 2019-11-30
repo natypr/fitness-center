@@ -46,7 +46,7 @@ public class ClientUpdateCommand implements Command {
                 client.setYearOld(Byte.parseByte(yearOld));
                 client.setPassword(password);
 
-//                clientLogic.updateClient(client); //FIXME updateClient
+                clientLogic.updateClient(client);
                 LOG.info("Update client");
             }
             request.getSession().setAttribute(CLIENT, client);

@@ -3,8 +3,8 @@ package by.naty.fitnesscenter.model.logic;
 import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.dao.impl.ClientDaoImpl;
 import by.naty.fitnesscenter.model.entity.Client;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.entity.Workout;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
@@ -69,10 +69,10 @@ public class ClientLogic {
     }
 
 
-    public List<Workout> findAllWorkoutForClients(long idClient) throws LogicException {
+    public List<Order> findAllOrderForClients(long idClient) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
-            return clientDAO.findAllWorkoutByIdClient(idClient);
+            return clientDAO.findAllOrderByIdClient(idClient);
         } catch (DaoException e) {
             throw new LogicException(e);
         }

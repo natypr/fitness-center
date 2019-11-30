@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.profile" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h3><fmt:message key="text.profile.welcome" bundle="${var}"/></h3>
 <br/>
 <fmt:message key="text.profile.hellouser" bundle="${var}"/>

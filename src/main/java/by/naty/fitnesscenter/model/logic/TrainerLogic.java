@@ -2,9 +2,9 @@ package by.naty.fitnesscenter.model.logic;
 
 import by.naty.fitnesscenter.model.dao.TrainerDao;
 import by.naty.fitnesscenter.model.dao.impl.TrainerDaoImpl;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.entity.Workout;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
@@ -69,19 +69,19 @@ public class TrainerLogic {
     }
 
 
-    public Workout createWorkoutForClient(Workout workout) throws LogicException {
+    public Order createOrderForClient(Order order) throws LogicException {
         TrainerDao trainerDAO = new TrainerDaoImpl();
         try {
-            return trainerDAO.createWorkoutForClient(workout);
+            return trainerDAO.createOrderForClient(order);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
     }
 
-    public void updateWorkout(Workout workout) throws LogicException {
+    public void updateWorkout(Order order) throws LogicException {
         TrainerDao trainerDAO = new TrainerDaoImpl();
         try {
-            trainerDAO.updateWorkout(workout);
+            trainerDAO.updateWorkout(order);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
@@ -90,7 +90,7 @@ public class TrainerLogic {
     public void deleteWorkoutById(long idWorkout) throws LogicException {
         TrainerDao trainerDAO = new TrainerDaoImpl();
         try {
-            trainerDAO.deleteWorkoutById(idWorkout);
+            trainerDAO.deleteOrderForClientById(idWorkout);
         } catch (DaoException e) {
             throw new LogicException(e);
         }

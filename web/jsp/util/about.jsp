@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.about" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <div>
     <h1><fmt:message key="text.about.fitnesscenter" bundle="${var}"/></h1>
     <p>

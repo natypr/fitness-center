@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.updateprofile" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></h1>
 <br/>
 
@@ -17,26 +17,26 @@
 
     <div>
         <strong><fmt:message key="text.updateprofile.name" bundle="${var}"/></strong>
-        <input type="text" name="name" value=""/>
+        <input type="text" name="name" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.surname" bundle="${var}"/></strong>
-        <input type="text" name="surname" value=""/>
+        <input type="text" name="surname" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.gender" bundle="${var}"/></strong>
-        <input type="text" name="gender" value=""/>
+        <input type="text" name="gender" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.yearold" bundle="${var}"/></strong>
-        <input type="text" name="year_old" value=""/>
+        <input type="text" name="year_old" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.password" bundle="${var}"/></strong>
-        <input type="text" name="password" value=""/>
+        <input type="text" name="password" value=""/></br></br></br>
 
         <br/>
         <input type="submit" value=
         <fmt:message key="bt.updateprofile" bundle="${var}"/> name="update_profile"/>
     </div>
 
-    <br/> ${successfullyUpdated} <br/>
+    <br/> ${sessionScope.successfullyUpdated} <br/>
 
     <br/><br/><br/>
     <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">

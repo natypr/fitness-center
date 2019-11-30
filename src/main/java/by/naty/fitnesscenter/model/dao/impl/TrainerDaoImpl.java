@@ -1,9 +1,9 @@
 package by.naty.fitnesscenter.model.dao.impl;
 
 import by.naty.fitnesscenter.model.dao.TrainerDao;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.entity.Workout;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
@@ -19,37 +19,50 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class TrainerDaoImpl implements TrainerDao {
 
     private static final String CREATE_TRAINER =
-            "INSERT INTO trainer (id, education, cost_per_hour)  VALUES (?, ?, ?);";
+            "INSERT INTO trainer (id, education, cost_per_one_workout)  VALUES (?, ?, ?);";
 
     private static final String FIND_ALL_TRAINERS =
-            "SELECT `user`.id, role, `name`, surname, email, password, education, cost_per_hour " +
-                    "FROM `user` RIGHT JOIN trainer ON `user`.id=trainer.id";
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, education, cost_per_one_workout " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "RIGHT JOIN trainer ON `user`.id=trainer.id";
 
     private static final String FIND_TRAINER_BY_ID =
-            "SELECT `user`.id, role, `name`, surname, email, password,  education, cost_per_hour " +
-                    "FROM `user` JOIN trainer ON trainer.id=`user`.id WHERE `trainer`.id = ?;";
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, education, cost_per_one_workout " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "JOIN trainer ON `user`.id=trainer.id WHERE `trainer`.id = ?;";
 
     private static final String FIND_TRAINER_BY_EMAIL =
-            "SELECT `user`.id, role, `name`, surname, email, password,  education, cost_per_hour " +
-                    "FROM `user` JOIN trainer ON trainer.id=`user`.id WHERE email = ?;";
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, education, cost_per_one_workout " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "JOIN trainer ON trainer.id=`user`.id WHERE email = ?;";
 
     private static final String UPDATE_TRAINER =
-            "UPDATE trainer SET trainer.id=?, education=?, cost_per_hous=?  WHERE trainer.id=?;";
+            "UPDATE trainer SET trainer.id=?, education=?, cost_per_one_workout=?  WHERE trainer.id=?;";
 
     private static final String SELECT_USER_FROM_TRAINER_TABLE = "SELECT `user`.id FROM trainer WHERE trainer.id=?;";
 
     private static final String DELETE_TRAINER_BY_ID = "DELETE FROM trainer WHERE id=?;";
 
-    private static final String CREATE_WORKOUT_FOR_CLIENT =
-            "INSERT INTO workout (typeWorkout, nameOfWorkout, equipment, description, " +
-                    "costPerOneWorkout, numberOfVisit, idTrainer, idOrder) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String CREATE_ORDER_FOR_CLIENT =
+            "INSERT INTO order (type_of_workout, number_of_workout, id_trainer, id_workout, id_client) " +
+                    "VALUES (?, ?, ?, ?, ?);";
 
-    private static final String SELECT_MAX_ID_FOR_WORKOUT = "SELECT max(id) FROM workout;";
+    private static final String SELECT_MAX_ID_FOR_ORDER = "SELECT max(id) FROM `order`;";
 
-    private static final String UPDATE_WORKOUT =
+/*    private static final String UPDATE_WORKOUT =
             "UPDATE workout SET id=?, typeWorkout=?, nameOfWorkout=?, equipment=?, description=?, " +
-                    "costPerOneWorkout=?, numberOfVisit=?, idTrainer=?, idOrder=? WHERE id=?;";
+                    "costPerOneWorkout=?, numberOfVisit=?, idTrainer=?, idOrder=? WHERE id=?;";*/
+
+    //trainer update order (create workout where order.id_workout=workout.id)
+    private static final String UPDATE_WORKOUT =
+            "INSERT INTO workout (id, equipment, description) VALUES (?, ?, ?);";
+
+    //trainer add order (create order with workout)
+    private static final String TRAINER_ADD_ORDER =
+            "INSERT INTO order () VALUES ();";
 
     private static final String DELETE_EXERCISES_BY_ID = "DELETE FROM workout WHERE id=?;";
 
@@ -76,7 +89,7 @@ public class TrainerDaoImpl implements TrainerDao {
 
             statement.executeQuery(FIND_ALL_TRAINERS);
             ResultSet resultSet = statement.getResultSet();
-            List<Trainer> trainers = new ArrayList<>();
+            List<Trainer> trainers = new ArrayList<>(); //LOOKME return only with is_blocked false
             while (resultSet.next()) {
                 trainers.add(createTrainerFromResult(resultSet));
             }
@@ -152,53 +165,45 @@ public class TrainerDaoImpl implements TrainerDao {
     }
 
     @Override
-    public Workout createWorkoutForClient(Workout workout) throws DaoException {
+    public Order createOrderForClient(Order order) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE_WORKOUT_FOR_CLIENT);
-             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FOR_WORKOUT)) {
+             PreparedStatement statement = connection.prepareStatement(CREATE_ORDER_FOR_CLIENT);
+             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FOR_ORDER)) {
 
-            statement.setString(1, workout.getTypeWorkout());
-            statement.setString(2, workout.getNameOfWorkout());
-            statement.setString(3, workout.getEquipment());
-            statement.setString(4, workout.getDescription());
-            statement.setDouble(5, workout.getCostPerOneWorkout());
-            statement.setDouble(6, workout.getNumberOfVisit());
-            statement.setDouble(7, workout.getIdTrainer());
-            statement.setDouble(8, workout.getIdOrder());
+            statement.setString(1, order.getTypeOfWorkout());
+            statement.setInt(2, order.getNumberOfWorkout());
+            statement.setLong(3, order.getIdTrainer());
+//            statement.setString(3, order.getEquipment());
+//            statement.setString(4, order.getDescription());
+    //            statement.setDouble(5, order.getIdWorkout()); //LOOKME add id workout
+            statement.setDouble(5, order.getIdClient());
             statement.executeUpdate();
             ResultSet resultSet = preStatement.executeQuery();
             if (resultSet.next()) {
-                workout.setId(resultSet.getLong(1));
+                order.setId(resultSet.getLong(1));
             }
-            return workout;
+            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Workout updateWorkout(Workout workout) throws DaoException {
+    public Order updateWorkout(Order order) throws DaoException {   //LOOKME and id to order.id.
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_WORKOUT)) {
 
-            statement.setLong(1, workout.getId());
-            statement.setString(2, workout.getTypeWorkout());
-            statement.setString(3, workout.getNameOfWorkout());
-            statement.setString(4, workout.getEquipment());
-            statement.setString(5, workout.getDescription());
-            statement.setDouble(6, workout.getCostPerOneWorkout());
-            statement.setDouble(7, workout.getNumberOfVisit());
-            statement.setDouble(8, workout.getIdTrainer());
-            statement.setDouble(9, workout.getIdOrder());
-            statement.executeUpdate();
-            return workout;
+            statement.setLong(1, order.getId());
+            statement.setString(2, order.getEquipment());
+            statement.setString(3, order.getDescription());
+            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteWorkoutById(long id) throws DaoException {
+    public void deleteOrderForClientById(long id) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_EXERCISES_BY_ID)) {
 
@@ -211,14 +216,16 @@ public class TrainerDaoImpl implements TrainerDao {
 
     private User createUserFromTrainer(Trainer trainer) {
         return new User(trainer.getId(), trainer.getRole(), trainer.getName(), trainer.getSurname(),
-                trainer.getEmail(), trainer.getPassword());
+                trainer.getGender(), trainer.getYearOld(),
+                trainer.getEmail(), trainer.getPassword(), trainer.isBlocked());
     }
 
+    //из бд в с
     private Trainer createTrainerFromResult(ResultSet resultSet) throws SQLException, DaoException {
         long id = resultSet.getLong(ID);
         Optional<User> user = new UserDaoImpl().findUserById(id);
-        return new Trainer(user.get(), resultSet.getInt(ID),
+        return new Trainer(user.get(), resultSet.getLong(ID),
                 resultSet.getString(EDUCATION),
-                resultSet.getDouble(COST_PER_HOUR));
+                resultSet.getDouble(COST_PER_ONE_WORKOUT));
     }
 }

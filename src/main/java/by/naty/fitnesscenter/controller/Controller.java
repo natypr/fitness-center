@@ -9,8 +9,6 @@ import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.PoolConfig;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.LocaleType;
-import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,9 +26,7 @@ public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
 
     private static final String COMMAND = "command";
-    private static final String LOCALE = "locale";
-    private static final String NULL_PAGE = "nullPage";
-    private static final String PAGE_PASS = "pagePath";
+    private static final String PAGE_PASS = "page_path";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -61,20 +57,14 @@ public class Controller extends HttpServlet {
                 LOG.debug("Dispatch type is Redirect.");
                 String defaultPage = ConfigurationManager.getProperty("path.page.index");
                 if (commandRouter.getPage().isEmpty()) {
-                    LOG.info("Null page.");
-                    String locale = (String) request.getSession().getAttribute(LOCALE);
-                    LocaleType localeType = LocaleType.defineLocale(locale);
-
-                    request.getSession().setAttribute(NULL_PAGE, localeType.getProperty("message.null.page"));
+                    LOG.info("Null page. Command not transferred.");
                     response.sendRedirect(request.getContextPath() + defaultPage);
                 }
-
                 String page = commandRouter.getPage();
                 request.getSession().setAttribute(PAGE_PASS, page);
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandException e) {
-            request.getSession().setAttribute(NULL_PAGE, MessageManager.getProperty("message.null.page"));
             LOG.error("Command not defined. ", e);
             String page = ConfigurationManager.getProperty("path.page.error");
             request.getRequestDispatcher(page).forward(request, response);

@@ -24,11 +24,12 @@ public class UserLogic {
         }
     }
 
-    public User addUser(String role, String name, String surname, String email, String password) throws LogicException {
+    public User addUser(String role, String name, String surname, String gender,
+                        byte yearOld, String email, String password) throws LogicException {
         UserDao userDAO = new UserDaoImpl();
         try {
             String encryptedPassword = MD5.encrypt(password);
-            User user = new User(0, role, name, surname, email, encryptedPassword);
+            User user = new User(0, role, name, surname, gender, yearOld, email, encryptedPassword, false);
             userDAO.createUser(user);
             return user;
         } catch (DaoException exc) {
@@ -85,6 +86,24 @@ public class UserLogic {
         UserDao userDAO = new UserDaoImpl();
         try {
             userDAO.deleteUserById(id);
+        } catch (DaoException e) {
+            throw new LogicException(e);
+        }
+    }
+
+    public void blockUserById(long id) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
+        try {
+            userDAO.blockUserById(id);
+        } catch (DaoException e) {
+            throw new LogicException(e);
+        }
+    }
+
+    public void unblockUserById(long id) throws LogicException {
+        UserDao userDAO = new UserDaoImpl();
+        try {
+            userDAO.unblockUserById(id);
         } catch (DaoException e) {
             throw new LogicException(e);
         }

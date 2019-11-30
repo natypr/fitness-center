@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.trainerlist" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h3><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/>: </h3>
 
 <table border="1" width="60%" cellpadding="5">
@@ -20,7 +20,7 @@
         <th><fmt:message key="text.trainerlist.education" bundle="${var}"/></th>
         <th><fmt:message key="text.trainerlist.costperoneworkout" bundle="${var}"/></th>
     </tr>
-    <c:forEach items="${trainers}" var="trainers">
+    <c:forEach items="${sessionScope.trainers}" var="trainers">
         <tr>
             <td>${trainers.name}</td>
             <td>${trainers.surname}</td>

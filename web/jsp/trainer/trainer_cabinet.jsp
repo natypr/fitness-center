@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.trainercabinet" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
 <br/>
 
@@ -16,19 +16,19 @@
     <fmt:message key="href.trainercabinet.updateprofile" bundle="${var}"/></a>
 <div>
     <strong><fmt:message key="text.trainercabinet.name" bundle="${var}"/></strong>
-    ${trainer.name} </br>
+    ${sessionScope.trainer.name} </br>
 
     <strong><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></strong>
-    ${trainer.surname} </br>
+    ${sessionScope.trainer.surname} </br>
 
     <strong><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></strong>
-    ${trainer.gender} </br>
+    ${sessionScope.trainer.gender} </br>
 
     <strong><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></strong>
-    ${trainer.yearOld} </br>
+    ${sessionScope.trainer.yearOld} </br>
 
     <strong><fmt:message key="text.trainercabinet.email" bundle="${var}"/></strong>
-    ${trainer.email} </br></br></br></br>
+    ${sessionScope.trainer.email} </br></br></br></br>
 </div>
 
 <form name="trainerCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
@@ -51,7 +51,7 @@
             <th><fmt:message key="text.trainercabinet.description" bundle="${var}"/></th>
         </tr>
 
-        <c:forEach items="${clientInfo}" var="clientInfo" varStatus="loop">
+        <c:forEach items="${sessionScope.clientInfo}" var="clientInfo" varStatus="loop">
             <tr>
                 <td><input type="checkbox" name="select_client" value="${clientInfo.client.email}" id=""/></td>
                 <td>${clientInfo.client.name}</td>
@@ -95,7 +95,7 @@
     <input type="submit" name="action_workout"
            value="<fmt:message key = "bt.trainercabinet.updateworkout" bundle="${var}"/>">
     <input type="submit" name="action_workout"
-           value="<fmt:message key = "bt.trainercabinet.addworkout" bundle="${var}"/>">
+           value="<fmt:message key = "bt.trainercabinet.adviseworkout" bundle="${var}"/>">
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

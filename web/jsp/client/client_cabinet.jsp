@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.clientcabinet" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></h1>
 <br/>
 
@@ -53,7 +53,7 @@
                 <th><fmt:message key="table.client.button.pay" bundle="${var}"/></th>
             </tr>
 
-            <c:forEach items="${workout}" var="workout_n" begin="${index}" end="${index}">
+            <c:forEach items="${sessionScope.orders}" var="workout_n" begin="${index}" end="${index}">
                 <tr>
                     <td>${workout_n.nameOfWorkout}</td>
                     <td>${workout_n.typeWorkout}</td>

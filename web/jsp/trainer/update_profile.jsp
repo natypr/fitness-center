@@ -6,36 +6,36 @@
 <html>
 <head>
     <title><fmt:message key="title.updateprofile" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></h1>
 <br/>
 
 <form name="trainerUpdate" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="trainer_update"/>
 
-    <div>
+    <br>
         <strong><fmt:message key="text.updateprofile.name" bundle="${var}"/></strong>
-        <input type="text" name="name" value=""/>
+        <input type="text" name="name" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.surname" bundle="${var}"/></strong>
-        <input type="text" name="surname" value=""/>
+        <input type="text" name="surname" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.gender" bundle="${var}"/></strong>
-        <input type="text" name="gender" value=""/>
+        <input type="text" name="gender" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.yearold" bundle="${var}"/></strong>
-        <input type="text" name="year_old" value=""/>
+        <input type="text" name="year_old" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.password" bundle="${var}"/></strong>
-        <input type="text" name="password" value=""/>
+        <input type="text" name="password" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.education" bundle="${var}"/></strong>
-        <input type="text" name="education" value=""/>
+        <input type="text" name="education" value=""/></br>
 
         <strong><fmt:message key="text.updateprofile.costperoneworkout" bundle="${var}"/></strong>
-        <input type="text" name="cost_per_one_workout" value=""/>
+        <input type="text" name="cost_per_one_workout" value=""/></br></br></br>
 
         <br/>
         <input type="submit" value=

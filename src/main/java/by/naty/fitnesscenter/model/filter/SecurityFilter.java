@@ -1,3 +1,4 @@
+/*
 package by.naty.fitnesscenter.model.filter;
 
 import by.naty.fitnesscenter.model.entity.User;
@@ -44,3 +45,4 @@ public class SecurityFilter implements Filter {
     public void destroy() {
     }
 }
+*/

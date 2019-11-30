@@ -6,8 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.error" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
+<body>
+<c:import url="/jsp/util/header.jsp"/>
 <div>
     <br>
     <h1><fmt:message key="text.error.pagenotfound" bundle="${var}"/></h1>

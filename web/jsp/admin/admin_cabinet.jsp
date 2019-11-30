@@ -6,9 +6,9 @@
 <html>
 <head>
     <title><fmt:message key="title.admincabinet" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></h1>
 <br/>
 

@@ -6,9 +6,10 @@
 <html>
 <head>
     <title><fmt:message key="title.reg" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
+
 <form name="signForm" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="registration"/>
 
@@ -37,7 +38,7 @@
     <fmt:message key="radio.reg.genderF" bundle="${var}"/>
 
     <br/><fmt:message key="text.reg.yearold" bundle="${var}"/><br/>
-    <input type="text" name="year_old" value=""/>
+    <input type="text" name="year_old" value="" required/>
 
 
     <br/><fmt:message key="text.reg.email" bundle="${var}"/><br/>
@@ -50,7 +51,7 @@
 
     <input type="submit" value="<fmt:message key = "bt.reg.signup" bundle="${var}"/>">
 
-    <br/> ${errorLoginPassMessage} <br/>
+    <br/> ${sessionScope.errorLoginPassMessage} <br/>
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

@@ -1,7 +1,7 @@
 package by.naty.fitnesscenter.model.dao;
 
 import by.naty.fitnesscenter.model.entity.Client;
-import by.naty.fitnesscenter.model.entity.Workout;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.DaoException;
 
 import java.util.List;
@@ -65,13 +65,13 @@ public interface ClientDao {
 
 
     /**
-     * Finds workouts by id client.
+     * Finds orders by id client.
      *
      * @param idClient the id client
-     * @return the list of workouts
+     * @return the list of orders
      * @throws DaoException the dao exception
      */
-    List<Workout> findAllWorkoutByIdClient(long idClient) throws DaoException;
+    List<Order> findAllOrderByIdClient(long idClient) throws DaoException;
 
     /**
      * Finds all clients by id trainer.

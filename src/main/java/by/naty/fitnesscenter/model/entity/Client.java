@@ -1,70 +1,45 @@
 package by.naty.fitnesscenter.model.entity;
 
+import java.util.List;
+
 public class Client extends User {
     private long id;
-    private String gender;
-    private byte yearOld;
     private double discount;
-    private boolean blocked;
+    private List<Order> orderList;
 
     public Client() {
     }
 
-    public Client(User user, String gender, byte yearOld, double discount) {
-        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
-        this.gender = gender;
-        this.yearOld = yearOld;
-        this.discount = discount;
+    public Client(User user) {
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
+        this.discount = 0;
+        this.orderList = null;
     }
 
-    public Client(User user, long id, String gender, byte yearOld, double discount) {
-        super(user.getId(), user.getRole(), user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+    public Client(User user, double discount, List<Order> orderList) {
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
+        this.discount = discount;
+        this.orderList = orderList;
+    }
+
+    public Client(User user, long id, double discount, List<Order> orderList) {
+        super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
+                user.getEmail(), user.getPassword());
         this.id = id;
-        this.gender = gender;
-        this.yearOld = yearOld;
         this.discount = discount;
+        this.orderList = orderList;
     }
 
-    public Client(long id, String gender, byte yearOld, double discount, boolean blocked) {
-        this.id = id;
-        this.gender = gender;
-        this.yearOld = yearOld;
-        this.discount = discount;
-        this.blocked = blocked;
-    }
-
-    public Client(long idUser, String role, String name, String surname, String email, String password,
-                  long id, String gender, byte yearOld, double discount, boolean blocked) {
-        super(idUser, role, name, surname, email, password);
-        this.id = id;
-        this.gender = gender;
-        this.yearOld = yearOld;
-        this.discount = discount;
-        this.blocked = blocked;
-    }
-
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public byte getYearOld() {
-        return yearOld;
-    }
-
-    public void setYearOld(byte yearOld) {
-        this.yearOld = yearOld;
     }
 
     public double getDiscount() {
@@ -75,12 +50,12 @@ public class Client extends User {
         this.discount = discount;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public List<Order> getOrderList() {
+        return orderList;
     }
 
-    public void setBlocked(boolean blocked) {
-        this.blocked = blocked;
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 
     @Override
@@ -92,10 +67,8 @@ public class Client extends User {
         Client client = (Client) o;
 
         if (id != client.id) return false;
-        if (yearOld != client.yearOld) return false;
         if (Double.compare(client.discount, discount) != 0) return false;
-        if (blocked != client.blocked) return false;
-        return gender != null ? gender.equals(client.gender) : client.gender == null;
+        return orderList != null ? orderList.equals(client.orderList) : client.orderList == null;
     }
 
     @Override
@@ -103,22 +76,18 @@ public class Client extends User {
         int result = super.hashCode();
         long temp;
         result = 31 * result + (int) (id ^ (id >>> 32));
-        result = 31 * result + (gender != null ? gender.hashCode() : 0);
-        result = 31 * result + (int) yearOld;
         temp = Double.doubleToLongBits(discount);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (blocked ? 1 : 0);
+        result = 31 * result + (orderList != null ? orderList.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Client{");
-        sb.append("idClient=").append(id);
-        sb.append(", gender='").append(gender).append('\'');
-        sb.append(", yearOld='").append(yearOld).append('\'');
+        sb.append("id=").append(id);
         sb.append(", discount=").append(discount);
-        sb.append(", blocked=").append(blocked);
+        sb.append(", orderList=").append(orderList);
         sb.append('}');
         return sb.toString();
     }

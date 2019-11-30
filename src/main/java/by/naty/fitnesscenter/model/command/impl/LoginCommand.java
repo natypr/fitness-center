@@ -16,9 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
@@ -54,6 +52,9 @@ public class LoginCommand implements Command {
                     request.getSession().setAttribute(TRAINERS, trainers);
 
                     if (user.getRole().equals(UserType.ADMIN.getTypeUser())) {
+                        User admin = userLogic.findUserByEmail(login);
+                        request.getSession().setAttribute(ADMIN, admin);
+
                         List<Client> clients = clientLogic.findAllClients();
                         request.getSession().setAttribute(CLIENTS, clients);
                         page = ConfigurationManager.getProperty("path.page.admin.cabinet");
@@ -66,13 +67,6 @@ public class LoginCommand implements Command {
                         List<Client> listOfAllClientsByIdTrainer = clientLogic.findAllClientsByIdTrainer(trainer.getId());
                         request.getSession().setAttribute(CLIENTS_OF_TRAINER, listOfAllClientsByIdTrainer);
 
-                        Map<Client, List<Workout>> listOfClientInfo = new HashMap<>();
-                        for (Client client : listOfAllClientsByIdTrainer) {
-                            List<Workout> workouts = clientLogic.findAllWorkoutForClients(client.getId());
-                            listOfClientInfo.put(client, workouts);
-                        }
-
-                        request.getSession().setAttribute(LIST_OF_CLIENT_INFO, listOfClientInfo);
                         page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                         LOG.info("  Trainer: " + user.getEmail() + " log in.");
 
@@ -80,11 +74,8 @@ public class LoginCommand implements Command {
                         Client client = clientLogic.findClientByEmail(login);
                         request.getSession().setAttribute(CLIENT, client);
 
-//                        List<Order> orders = (List<Order>) orderLogic.findOrderByEmailClient(client.getEmail());
-//                        request.getSession().setAttribute("order", orders); FIXME OrderLogic.findOrderByEmailClient()
-
-                        List<Workout> workouts = clientLogic.findAllWorkoutForClients(client.getId());
-                        request.getSession().setAttribute(WORKOUTS, workouts);
+                        List<Order> orders = clientLogic.findAllOrderForClients(client.getId());
+                        request.getSession().setAttribute(ORDERS, orders);
 
                         page = ConfigurationManager.getProperty("path.page.client.cabinet");
                         LOG.info(" Client: " + user.getEmail() + " log in.");

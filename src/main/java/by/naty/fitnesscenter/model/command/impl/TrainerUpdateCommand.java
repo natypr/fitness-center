@@ -44,13 +44,13 @@ public class TrainerUpdateCommand implements Command {
 
                 trainer.setName(name);
                 trainer.setSurname(surname);
-//                trainer.setGender(gender);        //FIXME gender, yearOld to user
-//                trainer.setYearOld(Byte.parseByte(yearOld));
+                trainer.setGender(gender);
+                trainer.setYearOld(Byte.parseByte(yearOld));
                 trainer.setPassword(password);
                 trainer.setEducation(education);
                 trainer.setCostPerOneWorkout(Double.parseDouble(costPerOneWorkout));
 
-//                trainerLogic.updateTrainer(trainer); //FIXME updateTrainer
+                trainerLogic.updateTrainer(trainer);
                 LOG.info("Update trainer");
             }
             request.getSession().setAttribute(TRAINER, trainer);

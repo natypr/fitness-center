@@ -20,7 +20,7 @@ public interface OrderDao {
     void createOrder(Order order) throws DaoException;
 
     /**
-     * Finds all orders.
+     * Finds all orders. (deprecated)
      *
      * @return the list of orders
      * @throws DaoException the dao exception
@@ -46,7 +46,7 @@ public interface OrderDao {
     Optional<Order> findOrderByEmailClient(String email) throws DaoException;
 
     /**
-     * Updates order.
+     * Updates order. (deprecated)
      *
      * @param order the order
      * @return the updated order

@@ -71,4 +71,20 @@ public interface UserDao {
      * @throws DaoException the dao exception
      */
     void deleteUserById(long id) throws DaoException;
+
+    /**
+     * Blocks user by id.
+     *
+     * @param id the id of user
+     * @throws DaoException the dao exception
+     */
+    void blockUserById(long id) throws DaoException;
+
+    /**
+     * Unblocks user by id.
+     *
+     * @param id the id of user
+     * @throws DaoException the dao exception
+     */
+    void unblockUserById(long id) throws DaoException;
 }

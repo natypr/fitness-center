@@ -6,12 +6,15 @@
 <html>
 <head>
     <title><fmt:message key="title.order" bundle="${var}"/></title>
-    <c:import url="/jsp/util/header.jsp"/>
 </head>
 <body>
+<c:import url="/jsp/util/header.jsp"/>
 <h1><fmt:message key="text.order.orderpage" bundle="${var}"/></h1>
 <br/>
 
+<a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
+    <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+</br>
 <form name="orderPage" method="POST" action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="order"/>
 
@@ -40,7 +43,7 @@
             <th><fmt:message key="text.order.costperoneworkout" bundle="${var}"/></th>
         </tr>
 
-        <c:forEach items="${trainers}" var="trainers">
+        <c:forEach items="${sessionScope.trainers}" var="trainers">
             <tr>
                 <td><input type="radio" name="select_trainer" value="${trainers.email}" id="id_trainer"/></td>
                 <td>${trainers.name}</td>
@@ -57,7 +60,7 @@
     <br/>
     <input type="submit" value=<fmt:message key="bt.order.makeorder" bundle="${var}"/> name="make_order">
 
-    <br/> ${successfulOrder} <br/>
+    <br/> ${sessionScope.successfulOrder} <br/>
 </form>
 
 <c:import url="/jsp/util/footer.jsp"/>

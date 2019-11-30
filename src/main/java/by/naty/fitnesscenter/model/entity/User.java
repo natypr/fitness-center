@@ -5,27 +5,37 @@ public class User {
     private String role;
     private String name;
     private String surname;
+    private String gender;
+    private byte yearOld;
     private String email;
     private String password;
+    private boolean blocked;
 
     public User() {
     }
 
-    public User(String role, String name, String surname, String email, String password) {
+    public User(String role, String name, String surname,
+                String gender, byte yearOld, String email, String password) {
         this.role = role;
         this.name = name;
         this.surname = surname;
+        this.gender = gender;
+        this.yearOld = yearOld;
         this.email = email;
         this.password = password;
     }
 
-    public User(long id, String role, String name, String surname, String email, String password) {
+    public User(long id, String role, String name, String surname,
+                String gender, byte yearOld, String email, String password, boolean blocked) {
         this.id = id;
         this.role = role;
         this.name = name;
         this.surname = surname;
+        this.gender = gender;
+        this.yearOld = yearOld;
         this.email = email;
         this.password = password;
+        this.blocked = blocked;
     }
 
     public long getId() {
@@ -60,6 +70,22 @@ public class User {
         this.surname = surname;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public byte getYearOld() {
+        return yearOld;
+    }
+
+    public void setYearOld(byte yearOld) {
+        this.yearOld = yearOld;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -76,6 +102,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,9 +118,12 @@ public class User {
         User user = (User) o;
 
         if (id != user.id) return false;
+        if (yearOld != user.yearOld) return false;
+        if (blocked != user.blocked) return false;
         if (role != null ? !role.equals(user.role) : user.role != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
+        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         return password != null ? password.equals(user.password) : user.password == null;
     }
@@ -97,20 +134,26 @@ public class User {
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (int) yearOld;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (blocked ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");
-        sb.append("idUser=").append(id);
-        sb.append(", role=").append(role);
+        sb.append("id=").append(id);
+        sb.append(", role='").append(role).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", surname='").append(surname).append('\'');
+        sb.append(", gender='").append(gender).append('\'');
+        sb.append(", yearOld=").append(yearOld);
         sb.append(", email='").append(email).append('\'');
         sb.append(", password='").append(password).append('\'');
+        sb.append(", blocked=").append(blocked);
         sb.append('}');
         return sb.toString();
     }

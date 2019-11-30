@@ -58,8 +58,9 @@ public class RegistrationCommand implements Command {
         if (checkRegistration(name, surname, email, password, yearOld)) {
             if (role.equals(CLIENT_ROLE)) {
                 LOG.debug("Role is Client.");
-                User user = new User(UserType.CLIENT.getTypeUser(), name, surname, email, password);
-                Client client = new Client(user, gender, Byte.parseByte(yearOld), 0.0);
+                User user = new User(UserType.CLIENT.getTypeUser(),
+                        name, surname, gender, Byte.parseByte(yearOld), email, password);
+                Client client = new Client(user);
 
                 request.getSession().setAttribute(CLIENT, client);
                 try {
@@ -68,7 +69,8 @@ public class RegistrationCommand implements Command {
                     throw new CommandException(e);
                 }
             } else {
-                User user = new User(UserType.TRAINER.getTypeUser(), name, surname, email, password);
+                User user = new User(UserType.TRAINER.getTypeUser(),
+                        name, surname, gender, Byte.parseByte(yearOld), email, password);
                 Trainer trainer = new Trainer(user);
 
                 request.getSession().setAttribute(TRAINER, trainer);
@@ -82,7 +84,7 @@ public class RegistrationCommand implements Command {
             LOG.info(name + " (" + email + ") is registered now.");
         } else {
             LOG.debug("Data isn't correct.");
-            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+            request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
             page = ConfigurationManager.getProperty("path.page.reg");
         }
         return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);

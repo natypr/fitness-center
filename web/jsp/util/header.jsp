@@ -4,15 +4,9 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="messages" var="var"/>
 <%@ taglib prefix="ctg" uri="customtags" %>
-<html>
-<head>
-</head>
-<body>
+
 <nav>
     <div>
-        <a href="${pageContext.request.contextPath}/jsp/main.jsp">
-            <fmt:message key="text.header.main" bundle="${var}"/></a>
-
         <a href="${pageContext.request.contextPath}/jsp/trainer_list.jsp">
             <fmt:message key="text.header.trainerlist" bundle="${var}"/></a>
 
@@ -24,15 +18,15 @@
 
         <div>
             <c:choose>
-                <c:when test="${user.role=='client'}">
+                <c:when test="${sessionScope.user.role=='client'}">
                     <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
                         <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
                 </c:when>
-                <c:when test="${user.role=='trainer'}">
+                <c:when test="${sessionScope.user.role=='trainer'}">
                     <a href="${pageContext.request.contextPath}/jsp/trainer/trainer_cabinet.jsp">
                         <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
                 </c:when>
-                <c:when test="${user.role=='admin'}">
+                <c:when test="${sessionScope.user.role=='admin'}">
                     <a href="${pageContext.request.contextPath}/jsp/admin/admin_cabinet.jsp">
                         <fmt:message key="text.header.mycabinet" bundle="${var}"/></a>
                 </c:when>
@@ -43,9 +37,9 @@
             </c:choose>
         </div>
 
-        <div>
-            <c:if test="${not empty user}">
-                <ctg:role user="${user}"/>
+<%--        <div>
+            <c:if test="${not empty sessionScope.user}">
+                <ctg:role user="${sessionScope.user}"/>
 
                 <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="command" id="logout"/>
@@ -53,7 +47,7 @@
                     <fmt:message key="text.header.logout" bundle="${var}"/>
                 </form>
             </c:if>
-        </div>
+        </div>--%>
 
 
         <table>
@@ -85,5 +79,3 @@
         </table>
     </div>
 </nav>
-</body>
-</html>

@@ -29,12 +29,12 @@ public class ClientCabinetCommand implements Command {
         String actionButton = request.getParameter(REFUSE);
 
         if (actionButton.equals(REFUSE)) {
-            //TODO удаляем !?
+
             LOG.info("User deleted workout.");
         }
         String page;
         try {
-            request.getSession().setAttribute(WORKOUT, clientLogic.findAllWorkoutForClients(client.getId()));
+            request.getSession().setAttribute(WORKOUT, clientLogic.findAllOrderForClients(client.getId()));
             LOG.info("Set attribute workout.");
             page = ConfigurationManager.getProperty("path.page.client.cabinet");
             return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);

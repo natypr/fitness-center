@@ -2,8 +2,8 @@ package by.naty.fitnesscenter.model.dao.impl;
 
 import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.entity.Client;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.entity.Workout;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
@@ -22,30 +22,36 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class ClientDaoImpl implements ClientDao {
 
     private static final String CREATE_CLIENT =
-            "INSERT INTO client (`id`, `gender`, `year_old`, `discount`) VALUES (?, ?, ?, ?);";
+            "INSERT INTO client (`id`, `discount`) VALUES (?, ?);";
 
     private static final String FIND_ALL_CLIENTS =
-            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
-                    "FROM `user` RIGHT JOIN `client` ON `user`.id=client.id";
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, discount " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "RIGHT JOIN `client` ON `user`.id=client.id";
 
     private static final String FIND_CLIENT_BY_ID =
-            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
-                    "FROM `user` JOIN `client` ON `user`.`id_user`=`client`.`id_user` " +
-                    "WHERE `client`.`id_user` = ?;";
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, discount " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "JOIN `client` ON `user`.id=`client`.id " +
+                    "WHERE `client`.id = ?;";
 
     private static final String FIND_CLIENT_BY_EMAIL =
-            "SELECT `user`.id, role, `name`, surname, email, password, gender, year_old, discount " +
-                    "FROM `user` JOIN `client` ON `user`.id=client.id " +
+            "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, discount " +
+                    "FROM `user` " +
+                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
+                    "JOIN `client` ON `user`.id=client.id " +
                     "WHERE email=?;";
 
     private static final String UPDATE_CLIENT =
-            "UPDATE client SET client.id=?, gender=?, year_old=?, discount=? WHERE client.id=?;";
+            "UPDATE client SET client.id=?, discount=? WHERE client.id=?;";
 
     private static final String SELECT_USER_FROM_CLIENT_TABLE = "SELECT `user`.id FROM client WHERE client.id=?;";
 
     private static final String DELETE_CLIENT_BY_ID = "DELETE FROM client WHERE client.id=?;";
 
-    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT =
+/*    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT =
             "SELECT `workout`.id, type_workout, name_of_workout, number_of_visit, id_trainer, id_order " +
                     "FROM client " +
                     "JOIN `order` ON client.id=`order`.id_client " +
@@ -57,7 +63,25 @@ public class ClientDaoImpl implements ClientDao {
                     "FROM workout " +
                     "JOIN `order` ON workout.id_order=`order`.id " +
                     "JOIN `user` ON `order`.id_client=`user`.id " +
-                    "WHERE workout.id_trainer=?;";
+                    "WHERE workout.id_trainer=?;";*/
+
+    private static final String FIND_ALL_ORDER_BY_ID_CLIENT =
+            "SELECT `order`.id, type_of_workout, number_of_workout, email, equipment, description, is_paid " +
+                    "FROM client " +
+                    "JOIN `order` ON client.id=`order`.id_client " +
+                    "JOIN trainer ON `order`.id_trainer=trainer.id " +
+                    "JOIN user ON trainer.id=`user`.id " +
+                    "JOIN workout ON `order`.id_workout=workout.id " +
+                    "WHERE client.id=?;";
+
+    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
+            "SELECT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
+                    "FROM `trainer` " +
+                    "JOIN `order` ON `order`.id_trainer=`trainer`.id " +
+                    "JOIN `user` ON `order`.id_client=`user`.id " +
+                    "JOIN `role_legend` ON `user`.`role_num`=`role_legend`.`role_num`" +
+                    "JOIN `client` ON `client`.`id`=`user`.id " +
+                    "WHERE trainer.id=?;";
 
     @Override
     public void createClient(Client client) throws DaoException {
@@ -67,9 +91,7 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(CREATE_CLIENT)) {
 
             statement.setLong(1, user.getId());
-            statement.setString(2, client.getGender());
-            statement.setByte(3, client.getYearOld());
-            statement.setDouble(4, client.getDiscount());
+            statement.setDouble(2, client.getDiscount());
             statement.executeUpdate();
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
@@ -137,9 +159,7 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_CLIENT)) {
 
             statement.setLong(1, client.getId());
-            statement.setString(2, client.getGender());
-            statement.setByte(3, client.getYearOld());
-            statement.setDouble(4, client.getDiscount());
+            statement.setDouble(2, client.getDiscount());
             statement.executeUpdate();
             return client;
         } catch (SQLException | PoolException e) {
@@ -150,7 +170,7 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public void deleteClientById(long id) throws DaoException {
         User user = selectUserFromClientTable(id, SELECT_USER_FROM_CLIENT_TABLE);
-        new UserDaoImpl().deleteUserById(user.getId());
+        new UserDaoImpl().blockUserById(user.getId());
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CLIENT_BY_ID)) {
 
@@ -161,18 +181,35 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
+/*    public Optional<Order> findExercisesForClient(long id) throws DaoException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_ORDER_FOR_CLIENT)){
+
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            Optional<Order> orderOptional = Optional.empty();
+            if (resultSet.next()){
+                orderOptional = Optional.of(createOrderFromResult(resultSet));
+            }
+            return orderOptional;
+
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }*/
+
     @Override
-    public List<Workout> findAllWorkoutByIdClient(long idClient) throws DaoException {
+    public List<Order> findAllOrderByIdClient(long idClient) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ALL_WORKOUT_BY_ID_CLIENT)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_ORDER_BY_ID_CLIENT)) {
 
             statement.setLong(1, idClient);
             ResultSet resultSet = statement.executeQuery();
-            List<Workout> workouts = new ArrayList<>();
+            List<Order> orders = new ArrayList<>();
             while (resultSet.next()) {
-                workouts.add(createWorkoutFromResult(resultSet));
+                orders.add(createOrderFromResult(resultSet));
             }
-            return workouts;
+            return orders;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
@@ -197,15 +234,15 @@ public class ClientDaoImpl implements ClientDao {
 
     private User createUserFromClient(Client client) {
         return new User(client.getId(), client.getRole(), client.getName(), client.getSurname(),
-                client.getEmail(), client.getPassword());
+                client.getGender(), client.getYearOld(),
+                client.getEmail(), client.getPassword(), client.isBlocked());
     }
 
     private Client createClientFromResult(ResultSet resultSet) throws SQLException, DaoException {
         long id = resultSet.getLong(ID);
         Optional<User> user = new UserDaoImpl().findUserById(id);
         return new Client(user.get(), resultSet.getLong(ID),
-                resultSet.getString(GENDER), resultSet.getByte(YEAR_OLD),
-                resultSet.getDouble(DISCOUNT));
+                resultSet.getDouble(DISCOUNT), null);
     }
 
     User selectUserFromClientTable(long idUser, String sufctFinal) throws DaoException {
@@ -224,15 +261,14 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
-    private Workout createWorkoutFromResult(ResultSet resultSet) throws SQLException {
-        return new Workout(resultSet.getLong(ID),
+    private Order createOrderFromResult(ResultSet resultSet) throws SQLException {
+        return new Order(resultSet.getLong(ID),
                 resultSet.getString(TYPE_OF_WORKOUT),
-                resultSet.getString(NAME_OF_WORKOUT),
-                resultSet.getString(EQUIPMENT),
-                resultSet.getString(DESCRIPTION),
-                resultSet.getDouble(COST_PER_ONE_WORKOUT),
                 resultSet.getInt(NUMBER_OF_WORKOUT),
                 resultSet.getLong(ID_TRAINER),
-                resultSet.getLong(ID_ORDER));
+                resultSet.getString(EQUIPMENT),
+                resultSet.getString(DESCRIPTION),
+                resultSet.getLong(ID_CLIENT),
+                resultSet.getBoolean(IS_PAID));
     }
 }
