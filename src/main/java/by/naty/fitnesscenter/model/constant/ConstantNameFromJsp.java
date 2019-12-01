@@ -30,6 +30,7 @@ public class ConstantNameFromJsp {
 
 
     public static final String USER = "user";
+    public static final String USERS = "users";
     public static final String CLIENT = "client";
     public static final String CLIENTS = "clients";
     public static final String TRAINER = "trainer";
@@ -43,10 +44,10 @@ public class ConstantNameFromJsp {
 
     public static final String REFUSE = "refuse";
     public static final String LOGIN = "login";
-    public static final String SELECT_CLIENT = "select_client";
+    public static final String SELECT_USER = "select_user";
     public static final String SELECT_TRAINER = "select_trainer";
-    public static final String BUTTON_ADMIN_BLOCK_CLIENT = "button_admin_block_client";
-    public static final String BUTTON_ADMIN_UNBLOCK_CLIENT = "button_admin_unblock_client";
+    public static final String BUTTON_ADMIN_BLOCK_USER = "button_admin_block_user";
+    public static final String BUTTON_ADMIN_UNBLOCK_USER = "button_admin_unblock_user";
     public static final String BUTTON_ADMIN_BLOCK_TRAINER = "button_admin_block_trainer";
     public static final String BUTTON_ADMIN_UNBLOCK_TRAINER = "button_admin_unblock_trainer";
     public static final String ACTION_WORKOUT = "action_workout";

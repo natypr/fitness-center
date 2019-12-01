@@ -57,7 +57,10 @@ public class LoginCommand implements Command {
                         switch (role) {
                             case ADMIN:
                                 List<User> users = userLogic.findAllUsers();
-                                request.getSession().setAttribute(CLIENTS, users);
+                                request.getSession().setAttribute(USERS, users);
+
+                                List<Client> clients = clientLogic.findAllClients();
+                                request.getSession().setAttribute(CLIENTS, clients);
 
                                 page = ConfigurationManager.getProperty("path.page.admin.cabinet");
                                 LOG.info("  Admin: " + user.getEmail() + " log in.");

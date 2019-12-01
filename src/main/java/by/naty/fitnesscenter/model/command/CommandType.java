@@ -15,8 +15,7 @@ public enum CommandType {
     TRAINER_CABINET(new TrainerCabinetCommand(new ClientLogic(), new TrainerLogic())),
     CLIENT_UPDATE(new ClientUpdateCommand(new ClientLogic())),
     TRAINER_UPDATE(new TrainerUpdateCommand(new TrainerLogic())),
-    ADMIN_BLOCK_CLIENT(new AdminBlockClientCommand(new UserLogic())),
-    ADMIN_BLOCK_TRAINER(new AdminBlockTrainerCommand(new TrainerLogic())),
+    ADMIN_BLOCK_USER(new AdminBlockUserCommand(new UserLogic())),
     ORDER(new OrderCommand(new TrainerLogic(), new OrderLogic()));
 
     private Command command;

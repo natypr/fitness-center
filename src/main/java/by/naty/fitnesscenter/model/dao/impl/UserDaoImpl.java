@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserDao {
                     "WHERE email=? AND password=?;";
 
     private static final String UPDATE_USER =
-            "UPDATE `user` SET id=?, role_num=?, `name`=?, surname=?, gender=?, year_old=?, email=?, password=? " +
+            "UPDATE `user` SET id=?, role_num=?, `name`=?, surname=?, gender=?, year_old=?, email=?, password=?, blocked=? " +
                     "WHERE id=?;";
 
     private static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id=?;";
@@ -68,6 +68,10 @@ public class UserDaoImpl implements UserDao {
             default:
                 return 3;
         }
+    }
+
+    private static Byte modifyBlockedToByte(boolean bool) {
+        return bool ? (byte)1 : (byte)0;
     }
 
     @Override
@@ -162,9 +166,10 @@ public class UserDaoImpl implements UserDao {
             statement.setString(3, user.getName());
             statement.setString(4, user.getSurname());
             statement.setString(5, user.getGender());
-            statement.setByte(5, user.getYearOld());
-            statement.setString(5, user.getEmail());
-            statement.setString(6, user.getPassword());
+            statement.setByte(6, user.getYearOld());
+            statement.setString(7, user.getEmail());
+            statement.setString(8, user.getPassword());
+            statement.setByte(9, modifyBlockedToByte(user.isBlocked())); //FIXME No value specified for parameter 10
             statement.executeUpdate();
             return user;
         } catch (SQLException | PoolException e) {

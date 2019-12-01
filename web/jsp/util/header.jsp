@@ -5,9 +5,9 @@
 <fmt:setBundle basename="messages" var="var"/>
 <%@ taglib prefix="ctg" uri="customtags" %>
 
-<nav>
+<header>
+<nav class="body-bar">
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/header.css"/>">
-    <div class="body-bar">
 
             <ul class="menu-bar">
                 <li class="button-bar"><a href="${pageContext.request.contextPath}/jsp/trainer_list.jsp">
@@ -84,5 +84,5 @@
                 </li>
             </ul>
 
-    </div>
 </nav>
+</header>

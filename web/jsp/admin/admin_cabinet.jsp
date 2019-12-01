@@ -12,88 +12,43 @@
 <h1><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></h1>
 <br/>
 
+<a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
+    <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
+
 <form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="admin_block_client"/>
+    <input type="hidden" name="command" value="admin_block_user"/>
 
-    <h3><fmt:message key="text.admincabinet.listofclient" bundle="${var}"/></h3>
+    <h3><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></h3>
     <table border="1" width="60%" cellpadding="5">
         <tr>
             <th><fmt:message key="text.admincabinet.select" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.idclient" bundle="${var}"/></th>
+            <th><fmt:message key="text.admincabinet.id" bundle="${var}"/></th>
+            <th><fmt:message key="text.admincabinet.role" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.name" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.surname" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.gender" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.yearold" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
         </tr>
 
-        <c:forEach items="${sessionScope.clients}" var="client">
+        <c:forEach items="${sessionScope.users}" var="user">
             <tr>
-                <td>
-                    <div><input type="checkbox" name="select_client" value="${client.id}" /></div>
-                </td>
-                <td>${client.id}</td>
-                <td>${client.name}</td>
-                <td>${client.surname}</td>
-                <td>${client.gender}</td>
-                <td>${client.yearOld}</td>
-                <td>${client.email}</td>
-                <td>${client.blocked}</td>
+                <td><input type="checkbox" name="select_user" value="${user.id}" /></td>
+                <td>${user.id}</td>
+                <td>${user.role}</td>
+                <td>${user.name}</td>
+                <td>${user.surname}</td>
+                <td>${user.email}</td>
+                <td>${user.blocked}</td>
             </tr>
         </c:forEach>
     </table>
 
     <br/>
     <input type="submit" value=
-    <fmt:message key="bt.admin.block.client" bundle="${var}"/> name="button_admin_block_client">
+    <fmt:message key="bt.admin.block.user" bundle="${var}"/> name="button_admin_block_user">
 
     <input type="submit" value=
-    <fmt:message key="bt.admin.unblock.client" bundle="${var}"/> name="button_admin_unblock_client">
-    <br/><br/>
-</form>
-
-
-<form name="adminCabinetTrainers" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="admin_block_trainer"/>
-
-    <h3><fmt:message key="text.admincabinet.listoftrainers" bundle="${var}"/></h3>
-    <table border="1" width="60%" cellpadding="5">
-        <tr>
-            <th><fmt:message key="text.admincabinet.select" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.idtrainer" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.name" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.surname" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.gender" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.yearold" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.education" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.costperoneworkout" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
-        </tr>
-
-        <c:forEach items="${sessionScope.trainers}" var="trainers">
-            <tr>
-                <td>
-                    <div><input type="checkbox" name="select_trainer" value="${trainers.email}" id="id_trainer"/></div>
-                </td>
-                <td>${trainers.id}</td>
-                <td>${trainers.name}</td>
-                <td>${trainers.surname}</td>
-                <td>${trainers.gender}</td>
-                <td>${trainers.yearOld}</td>
-                <td>${trainers.email}</td>
-                <td>${trainers.blocked}</td>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <br/>
-    <input type="submit" value=
-    <fmt:message key="bt.admin.block.trainer" bundle="${var}"/> name="button_admin_block_trainer">
-
-    <input type="submit" value=
-    <fmt:message key="bt.admin.unblock.trainer" bundle="${var}"/> name="button_admin_unblock_trainer">
+    <fmt:message key="bt.admin.unblock.user" bundle="${var}"/> name="button_admin_unblock_user">
     <br/><br/>
 </form>
 

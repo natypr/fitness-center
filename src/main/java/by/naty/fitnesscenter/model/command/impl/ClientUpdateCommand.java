@@ -25,24 +25,22 @@ public class ClientUpdateCommand implements Command {
 
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
-        Client clientCurrent = (Client) request.getSession().getAttribute(CLIENT);
+        Client currentClient = (Client) request.getSession().getAttribute(CLIENT);
         String actionUpdateProfile = request.getParameter("update_profile");
 
         String page;
-        Client client = clientCurrent;
+        Client client = currentClient;
         try {
             if (actionUpdateProfile != null) {
                 String name = request.getParameter(NAME);
                 String surname = request.getParameter(SURNAME);
-                //String gender = request.getParameter(GENDER);
                 String yearOld = request.getParameter(YEAR_OLD);
                 String password = request.getParameter(PASSWORD);
 
-                client = clientLogic.findClientByEmail(clientCurrent.getEmail());
+                client = clientLogic.findClientById(currentClient.getId());
 
                 client.setName(name);
                 client.setSurname(surname);
-              //  client.setGender(gender);
                 client.setYearOld(Byte.parseByte(yearOld));
                 client.setPassword(password);
 

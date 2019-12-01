@@ -33,7 +33,7 @@ public class TrainerCabinetCommand implements Command {
 
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
-        String[] checkbox = request.getParameterValues(SELECT_CLIENT);
+        String[] checkbox = request.getParameterValues(SELECT_USER);
         String actionButtonWorkout = request.getParameter(ACTION_WORKOUT);
 
         String typeOfWorkout = request.getParameter(TYPE_OF_WORKOUT);
