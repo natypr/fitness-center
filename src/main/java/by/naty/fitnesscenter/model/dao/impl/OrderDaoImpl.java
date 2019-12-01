@@ -51,6 +51,8 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public void createOrder(Order order) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             // create workout
+
              PreparedStatement statement = connection.prepareStatement(CREATE_ORDER)) {
 
             statement.setLong(1, order.getId());

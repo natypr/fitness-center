@@ -11,11 +11,11 @@ public enum CommandType {
     LOGIN(new LoginCommand(new UserLogic(), new ClientLogic(), new TrainerLogic(), new OrderLogic())),
     LOGOUT(new LogoutCommand()),
     REGISTRATION(new RegistrationCommand(new UserLogic())),
-    CLIENT_CABINET(new ClientCabinetCommand(new ClientLogic())),
+    CLIENT_CABINET(new ClientCabinetCommand(new ClientLogic(), new OrderLogic())),
     TRAINER_CABINET(new TrainerCabinetCommand(new ClientLogic(), new TrainerLogic())),
     CLIENT_UPDATE(new ClientUpdateCommand(new ClientLogic())),
     TRAINER_UPDATE(new TrainerUpdateCommand(new TrainerLogic())),
-    ADMIN_BLOCK_CLIENT(new AdminBlockClientCommand(new ClientLogic())),
+    ADMIN_BLOCK_CLIENT(new AdminBlockClientCommand(new UserLogic())),
     ADMIN_BLOCK_TRAINER(new AdminBlockTrainerCommand(new TrainerLogic())),
     ORDER(new OrderCommand(new TrainerLogic(), new OrderLogic()));
 

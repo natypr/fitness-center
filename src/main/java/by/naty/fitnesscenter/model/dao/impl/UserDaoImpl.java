@@ -144,9 +144,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                user = new User();
-                setUserFromResultSet(resultSet, user);
-//                User user = createUserFromResult(resultSet);
+                user = createUserFromResult(resultSet);
             }
             return user;
         } catch (SQLException | PoolException e) {
@@ -237,22 +235,12 @@ public class UserDaoImpl implements UserDao {
         statement.executeUpdate();
     }
 
-    //из бд в сущность
+    //from database to entity
     private User createUserFromResult(ResultSet resultSet) throws SQLException {
         return new User(resultSet.getLong(ID), resultSet.getString(ROLE),
                 resultSet.getString(NAME), resultSet.getString(SURNAME),
                 resultSet.getString(GENDER), resultSet.getByte(YEAR_OLD),
-                resultSet.getString(EMAIL), resultSet.getString(PASSWORD), false);
-    }
-
-    private void setUserFromResultSet(ResultSet resultSet, User user) throws SQLException {
-        user.setId(resultSet.getLong(ID));
-        user.setRole(resultSet.getString(ROLE));
-        user.setName(resultSet.getString(NAME));
-        user.setSurname(resultSet.getString(SURNAME));
-        user.setGender(resultSet.getString(GENDER));
-        user.setYearOld(resultSet.getByte(YEAR_OLD));
-        user.setEmail(resultSet.getString(EMAIL));
-        user.setPassword(resultSet.getString(PASSWORD));
+                resultSet.getString(EMAIL), resultSet.getString(PASSWORD),
+                resultSet.getByte(BLOCKED) != 0);
     }
 }

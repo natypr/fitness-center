@@ -38,7 +38,7 @@
     <fmt:message key="radio.reg.genderF" bundle="${var}"/>
 
     <br/><fmt:message key="text.reg.yearold" bundle="${var}"/><br/>
-    <input type="text" name="year_old" value="" required/>
+    <input type="number" value="0" name="year_old" required/>
 
 
     <br/><fmt:message key="text.reg.email" bundle="${var}"/><br/>

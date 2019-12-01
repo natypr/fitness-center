@@ -89,7 +89,7 @@ public class TrainerDaoImpl implements TrainerDao {
 
             statement.executeQuery(FIND_ALL_TRAINERS);
             ResultSet resultSet = statement.getResultSet();
-            List<Trainer> trainers = new ArrayList<>(); //LOOKME return only with is_blocked false
+            List<Trainer> trainers = new ArrayList<>();
             while (resultSet.next()) {
                 trainers.add(createTrainerFromResult(resultSet));
             }

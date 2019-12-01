@@ -2,10 +2,10 @@ package by.naty.fitnesscenter.model.command.impl;
 
 import by.naty.fitnesscenter.model.command.Command;
 import by.naty.fitnesscenter.model.command.CommandRouter;
-import by.naty.fitnesscenter.model.entity.Client;
+import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
+import by.naty.fitnesscenter.model.logic.UserLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,10 +18,10 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class AdminBlockClientCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private ClientLogic clientLogic;
+    private UserLogic userLogic;
 
-    public AdminBlockClientCommand(ClientLogic clientLogic) {
-        this.clientLogic = clientLogic;
+    public AdminBlockClientCommand(UserLogic userLogic) {
+        this.userLogic = userLogic;
     }
 
     @Override
@@ -29,28 +29,28 @@ public class AdminBlockClientCommand implements Command {
         String[] checkboxClient = request.getParameterValues(SELECT_CLIENT);
         String actionAdminBlockClient = request.getParameter(BUTTON_ADMIN_BLOCK_CLIENT);
         String actionAdminUnblockClient = request.getParameter(BUTTON_ADMIN_UNBLOCK_CLIENT);
-        ArrayList<Client> clients = new ArrayList<>();
+        ArrayList<User> usersToProcess = new ArrayList<>();
 
-        String page;
+        String page;    //LOOKME 4: блокировка user (пока таблицы клиентов)
         try {
             if (checkboxClient != null) {
                 for (String s : checkboxClient) {
-                    Client currentClient = clientLogic.findClientByEmail(s);
-                    LOG.info("Find client " + currentClient);
-                    clients.add(currentClient);
+                    User currentUser = userLogic.findUserById(Long.parseLong(s));
+                    LOG.info("Find client " + currentUser);
+                    usersToProcess.add(currentUser);
                 }
             }
-            for (Client client : clients) {
+            for (User user : usersToProcess) {
                 if (actionAdminBlockClient != null) {
-                    clientLogic.deleteClientById(client.getId());
+                    userLogic.blockUserById(user.getId());
                     LOG.info("Blocked client.");
                 }
                 if (actionAdminUnblockClient != null) {
-                    clientLogic.deleteClientById(client.getId());
+                    userLogic.unblockUserById(user.getId());
                     LOG.info("Unblocked client.");
                 }
             }
-            request.getSession().setAttribute(CLIENTS, clientLogic.findAllClients());
+            request.getSession().setAttribute(CLIENTS, userLogic.findAllUsers());
             page = ConfigurationManager.getProperty("path.page.admin.cabinet");
             return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
         } catch (LogicException e) {

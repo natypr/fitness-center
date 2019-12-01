@@ -25,23 +25,21 @@
             <th><fmt:message key="text.admincabinet.gender" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.yearold" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.discount" bundle="${var}"/></th>
             <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
         </tr>
 
-        <c:forEach items="${clients}" var="clients">
+        <c:forEach items="${sessionScope.clients}" var="client">
             <tr>
                 <td>
-                    <div><input type="checkbox" name="select_client" value="${clients.email}" id="id_client"/></div>
+                    <div><input type="checkbox" name="select_client" value="${client.id}" /></div>
                 </td>
-                <td>${clients.id}</td>
-                <td>${clients.name}</td>
-                <td>${clients.surname}</td>
-                <td>${clients.gender}</td>
-                <td>${clients.yearOld}</td>
-                <td>${clients.email}</td>
-                <td>${clients.discount}</td>
-                <td>${clients.blocked}</td>
+                <td>${client.id}</td>
+                <td>${client.name}</td>
+                <td>${client.surname}</td>
+                <td>${client.gender}</td>
+                <td>${client.yearOld}</td>
+                <td>${client.email}</td>
+                <td>${client.blocked}</td>
             </tr>
         </c:forEach>
     </table>
@@ -74,7 +72,7 @@
             <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
         </tr>
 
-        <c:forEach items="${trainers}" var="trainers">
+        <c:forEach items="${sessionScope.trainers}" var="trainers">
             <tr>
                 <td>
                     <div><input type="checkbox" name="select_trainer" value="${trainers.email}" id="id_trainer"/></div>

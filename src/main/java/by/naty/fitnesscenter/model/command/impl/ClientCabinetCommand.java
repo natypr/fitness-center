@@ -3,9 +3,11 @@ package by.naty.fitnesscenter.model.command.impl;
 import by.naty.fitnesscenter.model.command.Command;
 import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.Client;
+import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
+import by.naty.fitnesscenter.model.logic.OrderLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,9 +20,11 @@ public class ClientCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
     private ClientLogic clientLogic;
+    private OrderLogic orderLogic;
 
-    public ClientCabinetCommand(ClientLogic clientLogic) {
+    public ClientCabinetCommand(ClientLogic clientLogic, OrderLogic orderLogic) {
         this.clientLogic = clientLogic;
+        this.orderLogic = orderLogic;
     }
 
     @Override
@@ -29,7 +33,7 @@ public class ClientCabinetCommand implements Command {
         String actionButton = request.getParameter(REFUSE);
 
         if (actionButton.equals(REFUSE)) {
-
+            //LOOKME : orderLogic.deleteOrderById(order.getId());
             LOG.info("User deleted workout.");
         }
         String page;

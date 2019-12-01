@@ -32,7 +32,7 @@ public class ClientLogic {
         }
     }
 
-    public Client findClientById(int id) throws LogicException {
+    public Client findClientById(long id) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findClientById(id).get();

@@ -46,20 +46,22 @@
             <tr>
                 <th><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
-                <th><fmt:message key="table.client.nameofworkout" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.emailoftrainer" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.equipment" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.description" bundle="${var}"/></th>
+                <th><fmt:message key="table.client.ispaid" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.button.refuse" bundle="${var}"/></th>
                 <th><fmt:message key="table.client.button.pay" bundle="${var}"/></th>
             </tr>
 
-            <c:forEach items="${sessionScope.orders}" var="workout_n" begin="${index}" end="${index}">
+            <c:forEach items="${sessionScope.orders}" var="order" begin="${index}" end="${index}">
                 <tr>
-                    <td>${workout_n.nameOfWorkout}</td>
-                    <td>${workout_n.typeWorkout}</td>
-                    <td>${workout_n.equipment}</td>
-                    <td>${workout_n.description}</td>
-                    <td>${workout_n.numberOfVisit}</td>
+                    <td>${order.typeOfWorkout}</td>
+                    <td>${order.numberOfWorkout}</td>
+                    <td>${trainer.email}</td>
+                    <td>${order.equipment}</td>
+                    <td>${order.description}</td>
+                    <td>${order.isPaid}</td>
                     <td><input type="submit"
                                value="<fmt:message key="table.client.button.refuse" bundle="${var}"/>"
                                name="refuse"></td>

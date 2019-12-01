@@ -34,7 +34,7 @@ public class ClientUpdateCommand implements Command {
             if (actionUpdateProfile != null) {
                 String name = request.getParameter(NAME);
                 String surname = request.getParameter(SURNAME);
-                String gender = request.getParameter(GENDER);
+                //String gender = request.getParameter(GENDER);
                 String yearOld = request.getParameter(YEAR_OLD);
                 String password = request.getParameter(PASSWORD);
 
@@ -42,7 +42,7 @@ public class ClientUpdateCommand implements Command {
 
                 client.setName(name);
                 client.setSurname(surname);
-                client.setGender(gender);
+              //  client.setGender(gender);
                 client.setYearOld(Byte.parseByte(yearOld));
                 client.setPassword(password);
 

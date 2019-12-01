@@ -39,6 +39,7 @@ public class ConstantNameFromJsp {
     public static final String WORKOUTS = "workouts";
     public static final String RADIO_ROLE = "radio_role";
     public static final String RADIO_GENDER = "radio_gender";
+    public static final String BLOCKED = "blocked";
 
     public static final String REFUSE = "refuse";
     public static final String LOGIN = "login";
