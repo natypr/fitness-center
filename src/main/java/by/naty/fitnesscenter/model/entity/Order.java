@@ -8,7 +8,7 @@ public class Order {
     private String equipment;
     private String description;
     private long idClient;
-    private boolean isPaid;
+    private boolean paid;
 
     public Order() {
     }
@@ -20,21 +20,23 @@ public class Order {
         this.numberOfWorkout = numberOfWorkout;
         this.idTrainer = idTrainer;
         this.idClient = idClient;
-        this.isPaid = false;
+        this.paid = false;
     }
 
     public Order(long id, String typeOfWorkout, int numberOfWorkout, long idTrainer,
-                 long idClient, boolean isPaid) {
+                 long idClient, boolean paid) {
         this.id = id;
         this.typeOfWorkout = typeOfWorkout;
         this.numberOfWorkout = numberOfWorkout;
         this.idTrainer = idTrainer;
+        this.equipment = "water";
+        this.description = "for health";
         this.idClient = idClient;
-        this.isPaid = isPaid;
+        this.paid = paid;
     }
 
     public Order(long id, String typeOfWorkout, int numberOfWorkout, long idTrainer,
-                 String equipment, String description, long idClient, boolean isPaid) {
+                 String equipment, String description, long idClient, boolean paid) {
         this.id = id;
         this.typeOfWorkout = typeOfWorkout;
         this.numberOfWorkout = numberOfWorkout;
@@ -42,7 +44,7 @@ public class Order {
         this.equipment = equipment;
         this.description = description;
         this.idClient = idClient;
-        this.isPaid = isPaid;
+        this.paid = paid;
     }
 
     public long getId() {
@@ -102,11 +104,11 @@ public class Order {
     }
 
     public boolean isPaid() {
-        return isPaid;
+        return paid;
     }
 
     public void setPaid(boolean paid) {
-        isPaid = paid;
+        this.paid = paid;
     }
 
     @Override
@@ -120,7 +122,7 @@ public class Order {
         if (numberOfWorkout != order.numberOfWorkout) return false;
         if (idTrainer != order.idTrainer) return false;
         if (idClient != order.idClient) return false;
-        if (isPaid != order.isPaid) return false;
+        if (paid != order.paid) return false;
         if (typeOfWorkout != null ? !typeOfWorkout.equals(order.typeOfWorkout) : order.typeOfWorkout != null)
             return false;
         if (equipment != null ? !equipment.equals(order.equipment) : order.equipment != null) return false;
@@ -136,7 +138,7 @@ public class Order {
         result = 31 * result + (equipment != null ? equipment.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (int) (idClient ^ (idClient >>> 32));
-        result = 31 * result + (isPaid ? 1 : 0);
+        result = 31 * result + (paid ? 1 : 0);
         return result;
     }
 
@@ -150,7 +152,7 @@ public class Order {
         sb.append(", equipment='").append(equipment).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", idClient=").append(idClient);
-        sb.append(", isPaid=").append(isPaid);
+        sb.append(", isPaid=").append(paid);
         sb.append('}');
         return sb.toString();
     }

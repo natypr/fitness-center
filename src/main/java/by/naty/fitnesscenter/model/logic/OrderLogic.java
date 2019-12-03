@@ -28,6 +28,15 @@ public class OrderLogic {
         }
     }
 
+    public List<Order> findAllOrdersByIdTrainer(long id) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
+        try {
+            return orderDAO.findAllOrdersByIdTrainer(id);
+        } catch (DaoException e) {
+            throw new LogicException(e);
+        }
+    }
+
     public Order findOrderById(Long id) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
@@ -55,10 +64,10 @@ public class OrderLogic {
         }
     }
 
-    public void deleteOrderById(Order order) throws LogicException {
+    public void deleteOrderById(long id) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
-            orderDAO.deleteOrderById(order.getId());
+            orderDAO.deleteOrderById(id);
         } catch (DaoException e) {
             throw new LogicException(e);
         }

@@ -17,54 +17,46 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class OrderDaoImpl implements OrderDao {
 
     private static final String CREATE_ORDER =
-            "INSERT INTO `order` (id, type_of_workout, number_of_workout, id_trainer, id_client, is_paid) " +
-                    "VALUES (?, ?, ?, ?, ?, ?);";
+            "INSERT INTO `order` (type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    private static final String SELECT_MAX_ID_FROM_ORDER = "SELECT max(id) FROM `order`;";
 
     private static final String FIND_ALL_ORDERS =
-            "SELECT id, type_of_workout, number_of_workout, id_trainer, id_workout, id_client, is_paid " +
+            "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
                     "FROM order ORDER BY id;";
 
+    private static final String FIND_ALL_ORDERS_BY_ID_TRAINER =
+            "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
+                    "FROM order WHERE id_trainer=? " +
+                    "ORDER BY id;";
+
     private static final String FIND_ORDER_BY_ID =
-            "SELECT id, type_of_workout, number_of_workout, id_trainer, id_workout, id_client, is_paid " +
-                    "FROM order  WHERE id=?;";
+            "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
+                    "FROM `order` WHERE `order`.id=?;";
 
     private static final String FIND_ORDER_BY_EMAIL =
-            "SELECT id, type_of_workout, number_of_workout, id_trainer, id_workout, id_client, is_paid " +
+            "SELECT type_of_workout, number_of_workout, email, equipment, description, is_paid " +
                     "FROM `order` " +
                     "JOIN `client` ON `client`.`id`=`order`.`id_client` " +
-                    "JOIN `user` ON `user`.`id`=`client`.`id` WHERE `user`.`email`=?;";
+                    "JOIN `user` ON `user`.`id`=`client`.`id` " +
+                    "JOIN trainer ON `user`.`id`=`trainer`.`id` " +
+                    "WHERE `user`.`email`=?;";
 
     private static final String UPDATE_ORDER =
-            "UPDATE order SET id=?, type_of_workout=? number_of_workout=? id_trainer=? id_client=? " +
+            "UPDATE order SET id=?, type_of_workout=?, number_of_workout=?, id_trainer=?, " +
+                    "equipment=?, description=?, id_client=?, is_paid=? " +
                     "WHERE id=?;";
 
-    private static final String DELETE_ORDER_BY_ID = "DELETE FROM order WHERE id=?;";
+    private static final String DELETE_ORDER_BY_ID = "DELETE FROM `order` WHERE `order`.id=?;";
 
     private static Byte modifyIsPaidToByte(boolean bool) {
-        return bool ? (byte)1 : (byte)0;
+        return bool ? (byte) 1 : (byte) 0;
     }
-
-//    private static boolean modifyIsPaidToBoolean(byte bytePaid) {
-//        return bytePaid != 0;
-//    }
 
     @Override
     public void createOrder(Order order) throws DaoException {
-        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             // create workout
-
-             PreparedStatement statement = connection.prepareStatement(CREATE_ORDER)) {
-
-            statement.setLong(1, order.getId());
-            statement.setString(2, order.getTypeOfWorkout());
-            statement.setInt(3, order.getNumberOfWorkout());
-            statement.setLong(4, order.getIdTrainer());
-            statement.setLong(5, order.getIdClient());
-            statement.setByte(6, modifyIsPaidToByte(order.isPaid()));
-            statement.executeUpdate();
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
-        }
+        new OrderDaoImpl().createOrderWithMaxId(order);
     }
 
     @Override
@@ -73,6 +65,23 @@ public class OrderDaoImpl implements OrderDao {
              Statement statement = connection.createStatement()) {
 
             statement.executeQuery(FIND_ALL_ORDERS);
+            ResultSet resultSet = statement.getResultSet();
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                orders.add(createOrderFromResult(resultSet));
+            }
+            return orders;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Order> findAllOrdersByIdTrainer(long id) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             Statement statement = connection.createStatement()) {
+
+            statement.executeQuery(FIND_ALL_ORDERS_BY_ID_TRAINER);
             ResultSet resultSet = statement.getResultSet();
             List<Order> orders = new ArrayList<>();
             while (resultSet.next()) {
@@ -147,6 +156,33 @@ public class OrderDaoImpl implements OrderDao {
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
+    }
+
+    private Order createOrderWithMaxId(Order order) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(CREATE_ORDER);
+             PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FROM_ORDER)) {
+
+            setPreparedStatement(order, statement);
+            ResultSet resultSet = preStatement.executeQuery();
+            if (resultSet.next()) {
+                order.setId(resultSet.getLong(1));
+            }
+            return order;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    private void setPreparedStatement(Order order, PreparedStatement statement) throws SQLException {
+        statement.setString(1, order.getTypeOfWorkout());
+        statement.setInt(2, order.getNumberOfWorkout());
+        statement.setLong(3, order.getIdTrainer());
+        statement.setString(4, "Water");
+        statement.setString(5, "For health");
+        statement.setLong(6, order.getIdClient());
+        statement.setByte(7, modifyIsPaidToByte(order.isPaid()));
+        statement.executeUpdate();
     }
 
     //из бд в с

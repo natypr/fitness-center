@@ -41,15 +41,15 @@
                 </li>
 
 
-                <%--                <c:if test="${not empty sessionScope.user}">
-                                    <ctg:role user="${sessionScope.user}"/>
+                                <c:if test="${not empty sessionScope.user}">
+<%--                                    <ctg:role user="${sessionScope.user}"/>--%>
 
                                     <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
                                         <input type="hidden" name="command" id="logout"/>
                                         <li class="button-bar"><a href="${pageContext.request.contextPath}/controller?command=logout"></a>
                                             <fmt:message key="text.header.logout" bundle="${var}"/></li>
                                     </form>
-                                </c:if>--%>
+                                </c:if>
 
                 <li class="button-bar">
                     <table>

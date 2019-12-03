@@ -58,15 +58,21 @@ public class ConstantNameFromJsp {
     public static final String SELECT_TYPE_OF_WORKOUT = "select_type_of_workout";
 //    public static final String COUNT_OF_WORKOUT = "count_of_workout";
     public static final String IS_PAID = "is_paid";
+    public static final String ORDER = "order";
     public static final String ORDERS = "orders";
+    public static final String SELECT_ORDER = "select_order";
+    public static final String UPDATE_PROFILE = "update_profile";
+
 
 
     public static final String PARAM_CHANGE_LANGUAGE = "changeLanguage";
     public static final String CLIENT_INFO = "clientInfo";
     public static final String SUCCESSFUL_ORDER = "successfulOrder";
+    public static final String SUCCESSFULLY_UPDATED = "successfullyUpdated";
     public static final String CLIENTS_OF_TRAINER = "clientsOfTrainer";
     public static final String LIST_OF_CLIENT_INFO = "listOfClientInfo";
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
+    public static final String ORDER_SUCCESSFULLY_DELETED = "orderSuccessfullyDeleted";
 
     private ConstantNameFromJsp(){
 

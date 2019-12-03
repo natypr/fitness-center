@@ -25,9 +25,6 @@
         <strong><fmt:message key="text.updateprofile.yearold" bundle="${var}"/></strong>
         <input type="number" value="0" name="year_old" required/></br>
 
-        <strong><fmt:message key="text.updateprofile.password" bundle="${var}"/></strong>
-        <input type="text" name="password" value="" required pattern="^([A-Za-z0-9_-]{8,})$"/></br></br></br>
-
         <br/>
         <input type="submit" value=
         <fmt:message key="bt.updateprofile" bundle="${var}"/> name="update_profile"/>

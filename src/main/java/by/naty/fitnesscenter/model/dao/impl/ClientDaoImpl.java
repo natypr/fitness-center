@@ -45,7 +45,7 @@ public class ClientDaoImpl implements ClientDao {
                     "WHERE email=?;";
 
     private static final String UPDATE_CLIENT =
-            "UPDATE client SET client.id=?, discount=? WHERE client.id=?;";
+            "UPDATE client SET discount=? WHERE client.id=?;";
 
     private static final String SELECT_USER_FROM_CLIENT_TABLE = "SELECT `user`.id FROM client WHERE client.id=?;";
 
@@ -66,13 +66,10 @@ public class ClientDaoImpl implements ClientDao {
                     "WHERE workout.id_trainer=?;";*/
 
     private static final String FIND_ALL_ORDER_BY_ID_CLIENT =
-            "SELECT `order`.id, type_of_workout, number_of_workout, email, equipment, description, is_paid " +
-                    "FROM client " +
-                    "JOIN `order` ON client.id=`order`.id_client " +
-                    "JOIN trainer ON `order`.id_trainer=trainer.id " +
-                    "JOIN user ON trainer.id=`user`.id " +
-                    "JOIN workout ON `order`.id_workout=workout.id " +
-                    "WHERE client.id=?;";
+            "SELECT o.id, o.type_of_workout, o.number_of_workout, o.id_trainer, u.email, o.equipment, o.description, o.id_client, o.is_paid " +
+                    "FROM `order` as o " +
+                    "INNER JOIN user as u ON o.id_trainer=u.id " +
+                    "WHERE o.id_client=?;";
 
     private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
             "SELECT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
@@ -158,8 +155,9 @@ public class ClientDaoImpl implements ClientDao {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_CLIENT)) {
 
-            statement.setLong(1, client.getId());
-            statement.setDouble(2, client.getDiscount());
+            statement.setDouble(1, client.getDiscount());
+            statement.setLong(2, client.getId());
+
             statement.executeUpdate();
             return client;
         } catch (SQLException | PoolException e) {

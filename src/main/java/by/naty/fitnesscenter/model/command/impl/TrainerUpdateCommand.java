@@ -7,6 +7,7 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,33 +26,30 @@ public class TrainerUpdateCommand implements Command {
 
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
-        Trainer trainerCurrent = (Trainer) request.getSession().getAttribute(TRAINER);
-        String actionUpdateProfile = request.getParameter("update_profile");
+        Trainer currentTrainer = (Trainer) request.getSession().getAttribute(TRAINER);
+        String actionUpdateProfile = request.getParameter(UPDATE_PROFILE);
 
         String page;
-        Trainer trainer = trainerCurrent;
+        Trainer trainer = currentTrainer;
         try {
             if (actionUpdateProfile != null) {
                 String name = request.getParameter(NAME);
                 String surname = request.getParameter(SURNAME);
-                String gender = request.getParameter(GENDER);
                 String yearOld = request.getParameter(YEAR_OLD);
-                String password = request.getParameter(PASSWORD);
                 String education = request.getParameter(EDUCATION);
                 String costPerOneWorkout = request.getParameter(COST_PER_ONE_WORKOUT);
 
-                trainer = trainerLogic.findTrainerByEmail(trainerCurrent.getEmail());
-
+                trainer = trainerLogic.findTrainerById(currentTrainer.getId());
                 trainer.setName(name);
                 trainer.setSurname(surname);
-                trainer.setGender(gender);
                 trainer.setYearOld(Byte.parseByte(yearOld));
-                trainer.setPassword(password);
                 trainer.setEducation(education);
                 trainer.setCostPerOneWorkout(Double.parseDouble(costPerOneWorkout));
 
                 trainerLogic.updateTrainer(trainer);
-                LOG.info("Update trainer");
+                LOG.info("Update trainer " + trainer.getEmail());
+                request.getSession().setAttribute(
+                        SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
             }
             request.getSession().setAttribute(TRAINER, trainer);
 

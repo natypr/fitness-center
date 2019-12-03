@@ -17,32 +17,26 @@
 
     <br>
         <strong><fmt:message key="text.updateprofile.name" bundle="${var}"/></strong>
-        <input type="text" name="name" value=""/></br>
+        <input type="text" name="name" value="" required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/></br>
 
         <strong><fmt:message key="text.updateprofile.surname" bundle="${var}"/></strong>
-        <input type="text" name="surname" value=""/></br>
-
-        <strong><fmt:message key="text.updateprofile.gender" bundle="${var}"/></strong>
-        <input type="text" name="gender" value=""/></br>
+        <input type="text" name="surname" value="" required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/></br>
 
         <strong><fmt:message key="text.updateprofile.yearold" bundle="${var}"/></strong>
-        <input type="text" name="year_old" value=""/></br>
-
-        <strong><fmt:message key="text.updateprofile.password" bundle="${var}"/></strong>
-        <input type="text" name="password" value=""/></br>
+        <input type="number" value="0" name="year_old" required/></br>
 
         <strong><fmt:message key="text.updateprofile.education" bundle="${var}"/></strong>
-        <input type="text" name="education" value=""/></br>
+        <input type="text" name="education" value="" required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,29})$"/></br>
 
         <strong><fmt:message key="text.updateprofile.costperoneworkout" bundle="${var}"/></strong>
-        <input type="text" name="cost_per_one_workout" value=""/></br></br></br>
+        <input type="text" name="cost_per_one_workout" value="" required pattern="^([0-9.,]{1,8})$"/></br></br></br>
 
         <br/>
         <input type="submit" value=
         <fmt:message key="bt.updateprofile" bundle="${var}"/> name="update_profile"/>
     </div>
 
-    <br/> ${successfullyUpdated} <br/>
+    <br/> ${sessionScope.successfullyUpdated} <br/>
 
     <br/><br/><br/>
     <a href="${pageContext.request.contextPath}/jsp/trainer/trainer_cabinet.jsp">

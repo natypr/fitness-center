@@ -7,37 +7,79 @@ import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
+import by.naty.fitnesscenter.model.logic.OrderLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.List;
 
 import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
 public class TrainerCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private static final String ADVISE_WORKOUT_ACTION = "Advise workout";
-    private static final String UPDATE_WORKOUT_ACTION = "Update workout";
+//    private static final String ADVISE_WORKOUT_ACTION = "Advise workout";
+//    private static final String UPDATE_WORKOUT_ACTION = "Update workout";
 
     private ClientLogic clientLogic;
     private TrainerLogic trainerLogic;
+    private OrderLogic orderLogic;
 
-    public TrainerCabinetCommand(ClientLogic clientLogic, TrainerLogic trainerLogic) {
+    public TrainerCabinetCommand(ClientLogic clientLogic, TrainerLogic trainerLogic, OrderLogic orderLogic) {
         this.clientLogic = clientLogic;
         this.trainerLogic = trainerLogic;
+        this.orderLogic = orderLogic;
     }
 
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
-        String[] checkbox = request.getParameterValues(SELECT_USER);
+        Order currentOrder = (Order) request.getSession().getAttribute(ORDER);
         String actionButtonWorkout = request.getParameter(ACTION_WORKOUT);
 
-        String typeOfWorkout = request.getParameter(TYPE_OF_WORKOUT);
-        String numberOfWorkout = request.getParameter(NUMBER_OF_WORKOUT);
+        Order trainer = (Order) request.getSession().getAttribute(TRAINER);
+        List<Order> orders;
+        try {
+            orders = orderLogic.findAllOrdersByIdTrainer(trainer.getId());
+            request.getSession().setAttribute(ORDERS, orders);
+        } catch (LogicException e) {
+            LOG.error("All orders by id trainer not found.");
+        }
+
+        String page;
+        Order order = currentOrder;
+        try {
+            if (actionButtonWorkout != null) {
+                String equipment = request.getParameter(EQUIPMENT);
+                String description = request.getParameter(DESCRIPTION);
+
+                order = orderLogic.findOrderById(currentOrder.getId());
+                order.setEquipment(equipment);
+                order.setDescription(description);
+
+                orderLogic.updateOrder(order);
+                LOG.info("Update order id: " + order.getId());
+            }
+            request.getSession().setAttribute(ORDER, order);
+
+            page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
+            return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
+        } catch (LogicException e) {
+            throw new CommandException(e.getMessage(), e);
+        }
+    }
+
+
+    /*@Override
+    public CommandRouter execute(HttpServletRequest request) throws CommandException {
+        String[] checkbox = request.getParameterValues(SELECT_USER);
+        String radio = request.getParameter(SELECT_USER);
+        String actionButtonWorkout = request.getParameter(ACTION_WORKOUT);
+
         String equipment = request.getParameter(EQUIPMENT);
         String description = request.getParameter(DESCRIPTION);
 
@@ -81,5 +123,5 @@ public class TrainerCabinetCommand implements Command {
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);
         }
-    }
+    }*/
 }

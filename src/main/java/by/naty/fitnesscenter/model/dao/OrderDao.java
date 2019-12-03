@@ -28,6 +28,14 @@ public interface OrderDao {
     List<Order> findAllOrders() throws DaoException;
 
     /**
+     * Finds all orders by id trainer.
+     *
+     * @return the list of orders by id trainer
+     * @throws DaoException the dao exception
+     */
+    List<Order> findAllOrdersByIdTrainer(long id) throws DaoException;
+
+    /**
      * Finds order by id.
      *
      * @param id the id of order

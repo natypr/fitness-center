@@ -175,7 +175,7 @@ public class TrainerDaoImpl implements TrainerDao {
             statement.setLong(3, order.getIdTrainer());
 //            statement.setString(3, order.getEquipment());
 //            statement.setString(4, order.getDescription());
-    //            statement.setDouble(5, order.getIdWorkout()); //LOOKME add id workout
+    //            statement.setDouble(5, order.getIdWorkout());
             statement.setDouble(5, order.getIdClient());
             statement.executeUpdate();
             ResultSet resultSet = preStatement.executeQuery();
@@ -189,7 +189,7 @@ public class TrainerDaoImpl implements TrainerDao {
     }
 
     @Override
-    public Order updateWorkout(Order order) throws DaoException {   //LOOKME and id to order.id.
+    public Order updateWorkout(Order order) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_WORKOUT)) {
 

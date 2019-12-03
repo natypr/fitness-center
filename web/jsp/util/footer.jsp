@@ -5,8 +5,8 @@
 <fmt:setBundle basename="messages" var="var"/>
 
 <footer class="footer_part">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="<c:url value="/css/footer.css"/>">
+<%--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">--%>
+<%--    <link rel="stylesheet" type="text/css" href="<c:url value="/css/footer.css"/>">--%>
 
     <div class="footer_icons">
         <a href="#" class="social-icon facebook"></a>

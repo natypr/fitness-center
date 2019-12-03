@@ -32,7 +32,7 @@ public class TrainerLogic {
         }
     }
 
-    public Trainer findTrainerById(int id) throws LogicException {
+    public Trainer findTrainerById(long id) throws LogicException {
         TrainerDao trainerDAO = new TrainerDaoImpl();
         try {
             return trainerDAO.findTrainerById(id).get();

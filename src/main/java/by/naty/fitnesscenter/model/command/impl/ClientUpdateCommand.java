@@ -7,6 +7,7 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public class ClientUpdateCommand implements Command {
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         Client currentClient = (Client) request.getSession().getAttribute(CLIENT);
-        String actionUpdateProfile = request.getParameter("update_profile");
+        String actionUpdateProfile = request.getParameter(UPDATE_PROFILE);
 
         String page;
         Client client = currentClient;
@@ -35,17 +36,16 @@ public class ClientUpdateCommand implements Command {
                 String name = request.getParameter(NAME);
                 String surname = request.getParameter(SURNAME);
                 String yearOld = request.getParameter(YEAR_OLD);
-                String password = request.getParameter(PASSWORD);
 
                 client = clientLogic.findClientById(currentClient.getId());
-
                 client.setName(name);
                 client.setSurname(surname);
                 client.setYearOld(Byte.parseByte(yearOld));
-                client.setPassword(password);
 
                 clientLogic.updateClient(client);
-                LOG.info("Update client");
+                LOG.info("Update client " + client.getEmail());
+                request.getSession().setAttribute(
+                        SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
             }
             request.getSession().setAttribute(CLIENT, client);
 
