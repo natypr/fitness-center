@@ -6,6 +6,7 @@
 <html>
 <head>
     <title><fmt:message key="title.profile" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>

@@ -53,7 +53,7 @@ public class AdminBlockUserCommand implements Command {
                     LOG.info("Unblocked user: " + user.getEmail());
                 }
             }
-            request.getSession().setAttribute(CLIENTS, userLogic.findAllUsers());
+            request.getSession().setAttribute(USERS, userLogic.findAllUsers());
             page = ConfigurationManager.getProperty("path.page.admin.cabinet");
             return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
         } catch (LogicException e) {

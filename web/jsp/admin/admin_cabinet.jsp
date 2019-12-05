@@ -6,51 +6,60 @@
 <html>
 <head>
     <title><fmt:message key="title.admincabinet" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>
-<h1><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></h1>
-<br/>
 
-<a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
-    <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
+<div class="container-fluid">
+    <p class="text-center"><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></p>
 
-<form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="admin_block_user"/>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-10">
 
-    <h3><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></h3>
-    <table border="1" width="60%" cellpadding="5">
-        <tr>
-            <th><fmt:message key="text.admincabinet.select" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.id" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.role" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.name" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.surname" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
-            <th><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
-        </tr>
+            <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
+                <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
 
-        <c:forEach items="${sessionScope.users}" var="user">
-            <tr>
-                <td><input type="checkbox" name="select_user" value="${user.id}" /></td>
-                <td>${user.id}</td>
-                <td>${user.role}</td>
-                <td>${user.name}</td>
-                <td>${user.surname}</td>
-                <td>${user.email}</td>
-                <td>${user.blocked}</td>
-            </tr>
-        </c:forEach>
-    </table>
+            <form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="admin_block_user"/>
 
-    <br/>
-    <input type="submit" value=
-    <fmt:message key="bt.admin.block.user" bundle="${var}"/> name="button_admin_block_user">
+                <p class="text-center"><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></p>
+                <table class="table table-hover">
+                    <caption><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></caption>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><fmt:message key="text.admincabinet.select" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.id" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.role" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.name" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.surname" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.email" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.admincabinet.blocked" bundle="${var}"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${sessionScope.users}" var="user">
+                        <tr>
+                            <td><input type="checkbox" name="select_user" value="${user.id}"/></td>
+                            <th scope="row">${user.id}</th>
+                            <td>${user.role}</td>
+                            <td>${user.name}</td>
+                            <td>${user.surname}</td>
+                            <td>${user.email}</td>
+                            <td>${user.blocked}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
 
-    <input type="submit" value=
-    <fmt:message key="bt.admin.unblock.user" bundle="${var}"/> name="button_admin_unblock_user">
-    <br/><br/>
-</form>
+                <button type="submit" class="btn btn btn-outline-success" name="button_admin_unblock_user">
+                    <fmt:message key="bt.admin.unblock.user" bundle="${var}"/></button>
+                <button type="submit" class="btn btn-outline-danger" name="button_admin_block_user">
+                    <fmt:message key="bt.admin.block.user" bundle="${var}"/></button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <c:import url="/jsp/util/footer.jsp"/>
 </body>

@@ -6,62 +6,88 @@
 <html>
 <head>
     <title><fmt:message key="title.order" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>
-<h1><fmt:message key="text.order.orderpage" bundle="${var}"/></h1>
-<br/>
 
-<a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
-    <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
-</br>
-<form name="orderPage" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="order"/>
+<div class="container-fluid">
+    <p class="text-center"><fmt:message key="text.order.orderpage" bundle="${var}"/></p>
 
-    <h3><fmt:message key="text.order.typeofworkout" bundle="${var}"/></h3>
-    <select name="select_type_of_workout">
-        <option value="aerobic" selected><fmt:message key="text.order.typeofworkout.aerobic" bundle="${var}"/></option>
-        <option value="cardio"><fmt:message key="text.order.typeofworkout.cardio" bundle="${var}"/></option>
-        <option value="power"><fmt:message key="text.order.typeofworkout.power" bundle="${var}"/></option>
-    </select>
-    <br/><br/>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-10">
 
-    <strong><fmt:message key="text.order.numberofworkout" bundle="${var}"/></strong><br/>
-    <input type="number" value="1" name="number_of_workout">
+            <form name="orderPage" method="POST" action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="order"/>
 
+                <div class="col col-lg-3 justify-content-md-left">
+                    <div class="form-group">
+                        <select class="custom-select" name="select_type_of_workout" required>
+                            <option value=""><fmt:message key="text.order.typeofworkout" bundle="${var}"/></option>
+                            <option value="aerobic"><fmt:message key="text.order.typeofworkout.aerobic"
+                                                                 bundle="${var}"/></option>
+                            <option value="cardio"><fmt:message key="text.order.typeofworkout.cardio"
+                                                                bundle="${var}"/></option>
+                            <option value="power"><fmt:message key="text.order.typeofworkout.power"
+                                                               bundle="${var}"/></option>
+                        </select>
+                    </div>
 
-    <h3><fmt:message key="text.order.trainerlist" bundle="${var}"/></h3>
-    <table border="1" width="60%" cellpadding="5">
-        <tr>
-            <th><fmt:message key="text.order.select" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.name" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.surname" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.gender" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.yearold" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.email" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.education" bundle="${var}"/></th>
-            <th><fmt:message key="text.order.costperoneworkout" bundle="${var}"/></th>
-        </tr>
+                    <div class="form-group">
+                        <input type="number" class="form-control"
+                               placeholder="<fmt:message key="text.order.numberofworkout" bundle="${var}"/>"
+                               name="number_of_workout"
+                               value="" required pattern="^([0-9]{1,3})$"/>
+                    </div>
+                </div>
 
-        <c:forEach items="${sessionScope.trainers}" var="trainers">
-            <tr>
-                <td><input type="radio" name="select_trainer" value="${trainers.email}" id="id_trainer"/></td>
-                <td>${trainers.name}</td>
-                <td>${trainers.surname}</td>
-                <td>${trainers.gender}</td>
-                <td>${trainers.yearOld}</td>
-                <td>${trainers.email}</td>
-                <td>${trainers.education}</td>
-                <td>${trainers.costPerOneWorkout}</td>
-            </tr>
-        </c:forEach>
-    </table>
+                <p class="text-center"><fmt:message key="text.order.trainerlist" bundle="${var}"/></p>
+                <table class="table table-hover">
+                    <caption><fmt:message key="text.order.trainerlist" bundle="${var}"/></caption>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><fmt:message key="text.order.select" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.name" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.surname" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.gender" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.yearold" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.email" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.education" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.order.costperoneworkout" bundle="${var}"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${sessionScope.trainers}" var="trainer">
+                        <tr>
+                            <td><input type="radio" name="select_trainer" value="${trainer.email}" id="id_trainer"/>
+                            </td>
+                            <td>${trainer.name}</td>
+                            <td>${trainer.surname}</td>
+                            <td>${trainer.gender}</td>
+                            <td>${trainer.yearOld}</td>
+                            <td>${trainer.email}</td>
+                            <td>${trainer.education}</td>
+                            <td>${trainer.costPerOneWorkout}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
 
-    <br/>
-    <input type="submit" value=<fmt:message key="bt.order.makeorder" bundle="${var}"/> name="make_order">
+                <c:if test="${not empty sessionScope.successfulOrder}">
+                    <div class="alert alert-success" role="alert">
+                            ${sessionScope.successfulOrder}
+                    </div>
+                </c:if>
 
-    <br/> ${sessionScope.successfulOrder} <br/>
-</form>
+                <button type="submit" class="btn btn-primary" name="make_order"><fmt:message key="bt.order.makeorder"
+                                                                                             bundle="${var}"/></button>
+            </form>
+
+            <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
+                <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+        </div>
+    </div>
+</div>
 
 <c:import url="/jsp/util/footer.jsp"/>
 </body>

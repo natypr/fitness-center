@@ -6,31 +6,47 @@
 <html>
 <head>
     <title><fmt:message key="title.trainerlist" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>
-<h3><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/>: </h3>
 
-<table border="1" width="60%" cellpadding="5">
-    <tr>
-        <th><fmt:message key="text.trainerlist.name" bundle="${var}"/></th>
-        <th><fmt:message key="text.trainerlist.surname" bundle="${var}"/></th>
-        <th><fmt:message key="text.trainerlist.gender" bundle="${var}"/></th>
-        <th><fmt:message key="text.trainerlist.yearold" bundle="${var}"/></th>
-        <th><fmt:message key="text.trainerlist.education" bundle="${var}"/></th>
-        <th><fmt:message key="text.trainerlist.costperoneworkout" bundle="${var}"/></th>
-    </tr>
-    <c:forEach items="${sessionScope.trainers}" var="trainers">
-        <tr>
-            <td>${trainers.name}</td>
-            <td>${trainers.surname}</td>
-            <td>${trainers.gender}</td>
-            <td>${trainers.yearOld}</td>
-            <td>${trainers.education}</td>
-            <td>${trainers.costPerOneWorkout}</td>
-        </tr>
-    </c:forEach>
-</table>
+<div class="container-fluid">
+    <p class="text-center"><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></p>
+
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-10">
+
+            <table class="table table-hover">
+                <caption><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></caption>
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col"><fmt:message key="text.trainerlist.id" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.name" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.surname" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.gender" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.yearold" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.education" bundle="${var}"/></th>
+                    <th scope="col"><fmt:message key="text.trainerlist.costperoneworkout" bundle="${var}"/></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${sessionScope.trainers}" var="trainer">
+                    <tr>
+                        <th scope="row">${trainer.id}</th>
+                        <td>${trainer.name}</td>
+                        <td>${trainer.surname}</td>
+                        <td>${trainer.gender}</td>
+                        <td>${trainer.yearOld}</td>
+                        <td>${trainer.education}</td>
+                        <td>${trainer.costPerOneWorkout}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 <c:import url="/jsp/util/footer.jsp"/>
 </body>

@@ -72,4 +72,13 @@ public class OrderLogic {
             throw new LogicException(e);
         }
     }
+
+    public Order payOrder(Order order) throws LogicException {
+        OrderDao orderDAO = new OrderDaoImpl();
+        try {
+            return orderDAO.payOrder(order);
+        } catch (DaoException e) {
+            throw new LogicException(e);
+        }
+    }
 }

@@ -6,74 +6,97 @@
 <html>
 <head>
     <title><fmt:message key="title.clientcabinet" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>
-<h1><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></h1>
-<br/>
 
-<a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
-    <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
-<a href="${pageContext.request.contextPath}/jsp/client/update_profile.jsp">
-    <fmt:message key="href.clientcabinet.updateprofile" bundle="${var}"/></a>
-<br/>
+<div class="container-fluid">
+    <p class="text-center"><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></p>
 
-<div>
-    <strong><fmt:message key="text.clientcabinet.name" bundle="${var}"/></strong>
-    ${client.name} </br>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-10">
 
-    <strong><fmt:message key="text.clientcabinet.surname" bundle="${var}"/></strong>
-    ${client.surname} </br>
+            <div>
+                <strong><fmt:message key="text.clientcabinet.name" bundle="${var}"/></strong>
+                ${client.name} </br>
 
-    <strong><fmt:message key="text.clientcabinet.gender" bundle="${var}"/></strong>
-    ${client.gender} </br>
+                <strong><fmt:message key="text.clientcabinet.surname" bundle="${var}"/></strong>
+                ${client.surname} </br>
 
-    <strong><fmt:message key="text.clientcabinet.yearold" bundle="${var}"/></strong>
-    ${client.yearOld} </br>
+                <strong><fmt:message key="text.clientcabinet.gender" bundle="${var}"/></strong>
+                ${client.gender} </br>
 
-    <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
-    ${client.email} </br>
+                <strong><fmt:message key="text.clientcabinet.yearold" bundle="${var}"/></strong>
+                ${client.yearOld} </br>
 
-    <strong><fmt:message key="text.clientcabinet.discount" bundle="${var}"/></strong>
-    ${client.discount} </br></br></br></br>
+                <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
+                ${client.email} </br>
+
+                <strong><fmt:message key="text.clientcabinet.discount" bundle="${var}"/></strong>
+                ${client.discount}
+            </div>
+
+
+            <a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
+                <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
+            <a href="${pageContext.request.contextPath}/jsp/client/update_profile.jsp">
+                <fmt:message key="href.clientcabinet.updateprofile" bundle="${var}"/></a>
+
+
+            <form name="clientCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="client_cabinet"/>
+
+                <table class="table table-hover">
+                    <caption><fmt:message key="text.client.orderlist" bundle="${var}"/></caption>
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col"><fmt:message key="table.client.select" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.idtrainer" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.equipment" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.description" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="table.client.ispaid" bundle="${var}"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${sessionScope.orders}" var="order">
+                        <tr>
+                            <td><input type="radio" name="select_order" value="${order.id}" id="id_order"/></td>
+                            <td>${order.typeOfWorkout}</td>
+                            <td>${order.numberOfWorkout}</td>
+                            <td>${order.idTrainer}</td>
+                            <td>${order.equipment}</td>
+                            <td>${order.description}</td>
+                            <td>${order.paid}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+
+                <p><fmt:message key="table.client.text.help.pay" bundle="${var}"/></p>
+
+                <c:if test="${not empty sessionScope.selectOrderRadio}">
+                    <div class="alert alert-warning" role="alert">
+                            ${sessionScope.selectOrderRadio}
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty sessionScope.orderSuccessfullyDeleted}">
+                    <div class="alert alert-danger" role="alert">
+                            ${sessionScope.orderSuccessfullyDeleted}
+                    </div>
+                </c:if>
+
+                <button type="submit" class="btn btn btn-outline-success" name="pay"><fmt:message
+                        key="table.client.button.pay" bundle="${var}"/></button>
+                <button type="submit" class="btn btn-outline-danger" name="refuse"><fmt:message
+                        key="table.client.button.refuse" bundle="${var}"/></button>
+            </form>
+        </div>
+    </div>
 </div>
-
-
-<form name="clientCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="client_cabinet"/>
-
-    <table border="1" width="60%" cellpadding="5">
-        <tr>
-            <th><fmt:message key="table.client.select" bundle="${var}"/></th>
-            <th><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
-            <th><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
-            <th><fmt:message key="table.client.equipment" bundle="${var}"/></th>
-            <th><fmt:message key="table.client.description" bundle="${var}"/></th>
-            <th><fmt:message key="table.client.ispaid" bundle="${var}"/></th>
-            <%--                <th><fmt:message key="table.client.button.refuse" bundle="${var}"/></th>--%>
-            <%--                <th><fmt:message key="table.client.button.pay" bundle="${var}"/></th>--%>
-        </tr>
-
-        <c:forEach items="${sessionScope.orders}" var="order" begin="${index}" end="${index}">
-            <tr>
-                <td><input type="radio" name="select_order" value="${order.id}" id="id_order"/></td>
-                <td>${order.typeOfWorkout}</td>
-                <td>${order.numberOfWorkout}</td>
-                <td>${order.equipment}</td>
-                <td>${order.description}</td>
-                <td>${order.paid}</td>
-                    <%--                    <td><input type="submit" value="<fmt:message key="table.client.button.refuse" bundle="${var}"/>"--%>
-                    <%--                               name="refuse"></td>--%>
-                    <%--                    <td><input type="submit" value="<fmt:message key="table.client.button.pay" bundle="${var}"/>"--%>
-                    <%--                               name="pay"></td>--%>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <input type="submit" value="<fmt:message key="table.client.button.refuse" bundle="${var}"/>" name="refuse">
-    <br/> ${sessionScope.orderSuccessfullyDeleted} <br/>
-</form>
-
 
 <c:import url="/jsp/util/footer.jsp"/>
 </body>

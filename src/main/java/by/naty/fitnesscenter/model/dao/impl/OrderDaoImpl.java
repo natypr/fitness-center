@@ -50,6 +50,8 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String DELETE_ORDER_BY_ID = "DELETE FROM `order` WHERE `order`.id=?;";
 
+    private static final String PAY_ORDER = "UPDATE `order` SET is_paid=1 WHERE id=?;";
+
     private static Byte modifyIsPaidToByte(boolean bool) {
         return bool ? (byte) 1 : (byte) 0;
     }
@@ -153,6 +155,19 @@ public class OrderDaoImpl implements OrderDao {
 
             statement.setLong(1, id);
             statement.executeUpdate();
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public Order payOrder(Order order) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(PAY_ORDER)) {
+
+            statement.setLong(1, order.getId());
+            statement.executeUpdate();
+            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }

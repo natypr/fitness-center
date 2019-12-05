@@ -6,29 +6,52 @@
 <html>
 <head>
     <title><fmt:message key="title.login" bundle="${var}"/></title>
+    <c:import url="/jsp/util/head_link.jsp"/>
 </head>
 <body>
 <c:import url="/jsp/util/header.jsp"/>
-<form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="login"/>
 
-    <fmt:message key="text.login.login" bundle="${var}"/><br/>
-    <input type="text" name="login" value=""/><br/>
+<div class="container-fluid">
+    <p class="text-center"><fmt:message key="text.login.login" bundle="${var}"/></p>
 
-    <fmt:message key="text.login.password" bundle="${var}"/><br/>
-    <input type="password" name="password" value=""/>
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-5">
+            <form name="loginForm" method="POST" action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="login"/>
 
-    <br/> ${sessionScope.errorLoginPassMessage} <br/>
+                <div class="form-group">
+                    <input type="text" name="login" class="form-control"
+                           placeholder="<fmt:message key="text.login.login" bundle="${var}"/>"
+                           aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted"><fmt:message key="text.login.helptext"
+                                                                                    bundle="${var}"/></small>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control"
+                           placeholder="<fmt:message key="text.login.password" bundle="${var}"/>" id="idPassword1">
+                </div>
 
-    <input type="submit" value="<fmt:message key="bt.login.login" bundle="${var}"/>"/>
+                <c:if test="${not empty sessionScope.errorLoginPassMessage}">
+                    <div class="alert alert-danger" role="alert">
+                            ${sessionScope.errorLoginPassMessage}
+                    </div>
+                </c:if>
 
-    </br>
-    <a href="${pageContext.request.contextPath}/jsp/registration.jsp">
-        <fmt:message key="href.login.reg" bundle="${var}"/></a>
-    </br>
-    <a href="${pageContext.request.contextPath}/jsp/profile.jsp">
-        <fmt:message key="href.login.main" bundle="${var}"/></a>
-</form>
+                <button type="submit" class="btn btn-primary"><fmt:message key="bt.login.login"
+                                                                           bundle="${var}"/></button>
+
+                <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
+                    <a href="${pageContext.request.contextPath}/jsp/registration.jsp"
+                       class="text-warning stretched-link"><fmt:message key="href.login.reg" bundle="${var}"/></a>
+                </p>
+                <p class="card-text bg-light text-dark" style="transform: rotate(0);">
+                    <a href="${pageContext.request.contextPath}/jsp/profile.jsp"
+                       class="text-warning stretched-link"><fmt:message key="href.login.main" bundle="${var}"/></a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
 
 <c:import url="/jsp/util/footer.jsp"/>
 </body>

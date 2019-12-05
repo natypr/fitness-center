@@ -69,4 +69,13 @@ public interface OrderDao {
      * @throws DaoException the dao exception
      */
     void deleteOrderById(long id) throws DaoException;
+
+    /**
+     * Payment for order.
+     *
+     * @param order the order
+     * @return the updated order
+     * @throws DaoException the dao exception
+     */
+    Order payOrder(Order order) throws DaoException;
 }

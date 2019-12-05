@@ -43,6 +43,7 @@ public class ConstantNameFromJsp {
     public static final String BLOCKED = "blocked";
 
     public static final String REFUSE = "refuse";
+    public static final String PAY = "pay";
     public static final String LOGIN = "login";
     public static final String SELECT_USER = "select_user";
     public static final String SELECT_TRAINER = "select_trainer";
@@ -73,6 +74,7 @@ public class ConstantNameFromJsp {
     public static final String LIST_OF_CLIENT_INFO = "listOfClientInfo";
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
     public static final String ORDER_SUCCESSFULLY_DELETED = "orderSuccessfullyDeleted";
+    public static final String SELECT_ORDER_RADIO = "selectOrderRadio";
 
     private ConstantNameFromJsp(){
 
