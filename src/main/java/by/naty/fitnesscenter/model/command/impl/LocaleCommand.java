@@ -26,9 +26,10 @@ public class LocaleCommand implements Command {
 
         request.getSession().setAttribute(LOCALE, locale);
         CommandRouter commandRouter = new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
-        commandRouter.setDispatchType(CommandRouter.DispatchType.REDIRECT);
 
+        commandRouter.setDispatchType(CommandRouter.DispatchType.REDIRECT);
         commandRouter.setPage(userLogic.returnSamePage(page));
+
         LOG.info("Changing language. Now " + locale);
         return commandRouter;
     }

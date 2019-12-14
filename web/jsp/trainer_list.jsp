@@ -17,33 +17,37 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <table class="table table-hover">
-                <caption><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></caption>
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col"><fmt:message key="text.trainerlist.id" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.name" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.surname" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.gender" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.yearold" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.education" bundle="${var}"/></th>
-                    <th scope="col"><fmt:message key="text.trainerlist.costperoneworkout" bundle="${var}"/></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${sessionScope.trainers}" var="trainer">
+            <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
+                <input type="hidden" name="command" value="show_trainer_list"/>
+
+                <table class="table table-hover">
+                    <caption><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></caption>
+                    <thead class="thead-dark">
                     <tr>
-                        <th scope="row">${trainer.id}</th>
-                        <td>${trainer.name}</td>
-                        <td>${trainer.surname}</td>
-                        <td>${trainer.gender}</td>
-                        <td>${trainer.yearOld}</td>
-                        <td>${trainer.education}</td>
-                        <td>${trainer.costPerOneWorkout}</td>
+                        <th scope="col"><fmt:message key="text.trainerlist.id" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.name" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.surname" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.gender" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.yearold" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.education" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainerlist.costperoneworkout" bundle="${var}"/></th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${sessionScope.trainers}" var="trainer">
+                        <tr>
+                            <th scope="row">${trainer.id}</th>
+                            <td>${trainer.name}</td>
+                            <td>${trainer.surname}</td>
+                            <td>${trainer.gender}</td>
+                            <td>${trainer.yearOld}</td>
+                            <td>${trainer.education}</td>
+                            <td>${trainer.costPerOneWorkout}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </form>
         </div>
     </div>
 </div>

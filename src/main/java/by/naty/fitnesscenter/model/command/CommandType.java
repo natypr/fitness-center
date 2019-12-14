@@ -16,7 +16,8 @@ public enum CommandType {
     CLIENT_UPDATE(new ClientUpdateCommand(new ClientLogic())),
     TRAINER_UPDATE(new TrainerUpdateCommand(new TrainerLogic())),
     ADMIN_BLOCK_USER(new AdminBlockUserCommand(new UserLogic())),
-    ORDER(new OrderCommand(new TrainerLogic(), new OrderLogic()));
+    ORDER(new OrderCommand(new TrainerLogic(), new OrderLogic())),
+    SHOW_TRAINER_LIST(new ShowTrainerListCommand(new TrainerLogic()));
 
     private Command command;
 

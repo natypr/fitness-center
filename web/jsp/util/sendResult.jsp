@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 <div>
     <p><fmt:message key="text.sendresult.senging" bundle="${var}"/></p>
-    <a href="mail.jsp"><fmt:message key="text.sendresult.return" bundle="${var}"/></a>
+    <a href="../contacts.jsp"><fmt:message key="text.sendresult.return" bundle="${var}"/></a>
 </div>
 
 <c:import url="/jsp/util/footer.jsp"/>

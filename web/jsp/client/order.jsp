@@ -79,12 +79,20 @@
                     </div>
                 </c:if>
 
-                <button type="submit" class="btn btn-primary" name="make_order"><fmt:message key="bt.order.makeorder"
-                                                                                             bundle="${var}"/></button>
-            </form>
 
-            <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
-                <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+                <div class="text-center">
+                    <button type="submit" class="btn btn btn-outline-success" name="make_order">
+                        <fmt:message key="bt.order.makeorder" bundle="${var}"/></button>
+                </div>
+
+                <div class="form-group">
+                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
+                        <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp"
+                           class="text-warning stretched-link">
+                            <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+                    </p>
+                </div>
+            </form>
         </div>
     </div>
 </div>

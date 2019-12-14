@@ -7,7 +7,6 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/jsp/main.jsp">
-        <img src="/jsp/png/fire-alt-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
         <fmt:message key="text.header.fitnesscenter" bundle="${var}"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
