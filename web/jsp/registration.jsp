@@ -95,8 +95,10 @@
                     </div>
                 </c:if>
 
-                <button type="submit" class="btn btn-primary"><fmt:message key="bt.reg.signup"
-                                                                           bundle="${var}"/></button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success">
+                        <fmt:message key="bt.reg.signup" bundle="${var}"/></button>
+                </div>
             </form>
         </div>
     </div>

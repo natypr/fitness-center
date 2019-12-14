@@ -56,6 +56,7 @@ public class ConstantNameFromJsp {
     public static final String NEW_LOCALE = "new_locale";
     public static final String PAGE_PATH = "page_path";
     public static final String RADIO_SELECT_TRAINER = "select_trainer";
+    public static final String SELECT_WORKOUT_RADIO = "select_trainer";
     public static final String SELECT_TYPE_OF_WORKOUT = "select_type_of_workout";
 //    public static final String COUNT_OF_WORKOUT = "count_of_workout";
     public static final String IS_PAID = "is_paid";
@@ -63,6 +64,7 @@ public class ConstantNameFromJsp {
     public static final String ORDERS = "orders";
     public static final String SELECT_ORDER = "select_order";
     public static final String UPDATE_PROFILE = "update_profile";
+    public static final String UPDATE_ORDER = "update_order";
 
 
 
@@ -75,6 +77,7 @@ public class ConstantNameFromJsp {
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
     public static final String ORDER_SUCCESSFULLY_DELETED = "orderSuccessfullyDeleted";
     public static final String SELECT_ORDER_RADIO = "selectOrderRadio";
+    public static final String ORDER_SUCCESSFULLY_UPDATED = "orderSuccessfullyUpdated";
 
     private ConstantNameFromJsp(){
 

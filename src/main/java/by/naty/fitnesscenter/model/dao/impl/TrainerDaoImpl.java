@@ -40,7 +40,7 @@ public class TrainerDaoImpl implements TrainerDao {
                     "JOIN trainer ON trainer.id=`user`.id WHERE email = ?;";
 
     private static final String UPDATE_TRAINER =
-            "UPDATE trainer SET trainer.id=?, education=?, cost_per_one_workout=?  WHERE trainer.id=?;";
+            "UPDATE trainer SET education=?, cost_per_one_workout=?  WHERE trainer.id=?;";
 
     private static final String SELECT_USER_FROM_TRAINER_TABLE = "SELECT `user`.id FROM trainer WHERE trainer.id=?;";
 
@@ -140,9 +140,9 @@ public class TrainerDaoImpl implements TrainerDao {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_TRAINER)) {
 
-            statement.setLong(1, trainer.getId());
-            statement.setString(2, trainer.getEducation());
-            statement.setDouble(3, trainer.getCostPerOneWorkout());
+            statement.setString(1, trainer.getEducation());
+            statement.setDouble(2, trainer.getCostPerOneWorkout());
+            statement.setLong(3, trainer.getId());
             statement.executeUpdate();
             return trainer;
         } catch (SQLException | PoolException e) {

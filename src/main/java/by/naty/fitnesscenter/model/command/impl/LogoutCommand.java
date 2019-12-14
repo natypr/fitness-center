@@ -22,7 +22,7 @@ public class LogoutCommand implements Command {
     public CommandRouter execute(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(USER);
         Object locale = request.getSession().getAttribute(PARAM_CHANGE_LANGUAGE);
-        String page = ConfigurationManager.getProperty("path.page.index");
+        String page = ConfigurationManager.getProperty("path.page.login");
 
         request.getSession().invalidate();
         request.getSession().setAttribute(PARAM_CHANGE_LANGUAGE, locale);

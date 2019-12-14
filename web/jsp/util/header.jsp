@@ -6,7 +6,9 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#"><fmt:message key="text.header.fitnesscenter" bundle="${var}"/></a>
+    <a class="navbar-brand" href="${pageContext.request.contextPath}/jsp/main.jsp">
+        <img src="/jsp/png/fire-alt-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+        <fmt:message key="text.header.fitnesscenter" bundle="${var}"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -14,16 +16,12 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/trainer_list.jsp"><fmt:message
-                        key="text.header.trainerlist" bundle="${var}"/></a>
+                <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=show_trainer_list">
+                    <fmt:message key="text.header.trainerlist" bundle="${var}"/></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/util/mail.jsp"><fmt:message
+                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/contacts.jsp"><fmt:message
                         key="text.header.contacts" bundle="${var}"/></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/jsp/util/about.jsp"> <fmt:message
-                        key="text.header.about" bundle="${var}"/></a>
             </li>
             <li class="nav-item">
                 <c:choose>
@@ -49,16 +47,13 @@
 
             <c:if test="${not empty sessionScope.user}">
                 <%--                <ctg:role user="${sessionScope.user}"/>--%>
-
-                <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" id="logout"/>
-                    <li class="button-bar"><a href="${pageContext.request.contextPath}/controller?command=logout"></a>
-                        <fmt:message key="text.header.logout" bundle="${var}"/></li>
-                </form>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=logout">
+                        <fmt:message key="text.header.logout" bundle="${var}"/></a>
+                </li>
             </c:if>
 
-            <form name="localeForm" method="POST"
-                  action="${pageContext.request.contextPath}/controller">
+            <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                 <input type="hidden" name="command" value="locale"/>
                 <input type="hidden" name="new_locale" value="ru_RU"/>
@@ -67,8 +62,7 @@
                        height="30" width="40"
                        alt="<fmt:message key="button.locale.language.ru" bundle="${var}"/>">
             </form>
-            <form name="localeForm" method="POST"
-                  action="${pageContext.request.contextPath}/controller">
+            <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                 <input type="hidden" name="command" value="locale"/>
                 <input type="hidden" name="new_locale" value="en_US"/>
@@ -78,7 +72,10 @@
                        alt="<fmt:message key="button.locale.language.us" bundle="${var}"/>">
             </form>
 
-            <ctg:info-time-tag/>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#"><ctg:info-time-tag/></a>
+            </li>
 
         </ul>
     </div>

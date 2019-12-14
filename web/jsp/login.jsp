@@ -37,17 +37,17 @@
                     </div>
                 </c:if>
 
-                <button type="submit" class="btn btn-primary"><fmt:message key="bt.login.login"
-                                                                           bundle="${var}"/></button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success"><fmt:message key="bt.login.login"
+                                                                                       bundle="${var}"/></button>
+                </div>
 
-                <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                    <a href="${pageContext.request.contextPath}/jsp/registration.jsp"
-                       class="text-warning stretched-link"><fmt:message key="href.login.reg" bundle="${var}"/></a>
-                </p>
-                <p class="card-text bg-light text-dark" style="transform: rotate(0);">
-                    <a href="${pageContext.request.contextPath}/jsp/profile.jsp"
-                       class="text-warning stretched-link"><fmt:message key="href.login.main" bundle="${var}"/></a>
-                </p>
+                <div class="form-group">
+                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
+                        <a href="${pageContext.request.contextPath}/jsp/registration.jsp"
+                           class="text-warning stretched-link"><fmt:message key="href.login.reg" bundle="${var}"/></a>
+                    </p>
+                </div>
             </form>
         </div>
     </div>

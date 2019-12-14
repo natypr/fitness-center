@@ -17,26 +17,59 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <div>
-                <strong><fmt:message key="text.clientcabinet.name" bundle="${var}"/></strong>
-                ${client.name} </br>
-
-                <strong><fmt:message key="text.clientcabinet.surname" bundle="${var}"/></strong>
-                ${client.surname} </br>
-
-                <strong><fmt:message key="text.clientcabinet.gender" bundle="${var}"/></strong>
-                ${client.gender} </br>
-
-                <strong><fmt:message key="text.clientcabinet.yearold" bundle="${var}"/></strong>
-                ${client.yearOld} </br>
-
-                <strong><fmt:message key="text.clientcabinet.email" bundle="${var}"/></strong>
-                ${client.email} </br>
-
-                <strong><fmt:message key="text.clientcabinet.discount" bundle="${var}"/></strong>
-                ${client.discount}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.name" bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.name}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.surname"
+                                                                   bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.surname}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.gender" bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.gender}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.yearold"
+                                                                   bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.yearOld}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.email" bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.email}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <p class="font-weight-bolder"><fmt:message key="text.clientcabinet.discount"
+                                                                   bundle="${var}"/></p>
+                    </div>
+                    <div class="col-3">
+                        <p>${client.discount}</p>
+                    </div>
+                </div>
             </div>
-
 
             <a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
                 <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
@@ -89,10 +122,13 @@
                     </div>
                 </c:if>
 
-                <button type="submit" class="btn btn btn-outline-success" name="pay"><fmt:message
-                        key="table.client.button.pay" bundle="${var}"/></button>
-                <button type="submit" class="btn btn-outline-danger" name="refuse"><fmt:message
-                        key="table.client.button.refuse" bundle="${var}"/></button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn btn-outline-success" name="pay">
+                        <fmt:message key="table.client.button.pay" bundle="${var}"/></button>
+
+                    <button type="submit" class="btn btn-outline-danger" name="refuse">
+                        <fmt:message key="table.client.button.refuse" bundle="${var}"/></button>
+                </div>
             </form>
         </div>
     </div>

@@ -17,8 +17,13 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
-                <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
+            <div class="form-group">
+                <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
+                    <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp"
+                       class="text-warning stretched-link">
+                        <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
+                </p>
+            </div>
 
             <form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="admin_block_user"/>
@@ -52,10 +57,12 @@
                     </tbody>
                 </table>
 
-                <button type="submit" class="btn btn btn-outline-success" name="button_admin_unblock_user">
-                    <fmt:message key="bt.admin.unblock.user" bundle="${var}"/></button>
-                <button type="submit" class="btn btn-outline-danger" name="button_admin_block_user">
-                    <fmt:message key="bt.admin.block.user" bundle="${var}"/></button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn btn-outline-success" name="button_admin_unblock_user">
+                        <fmt:message key="bt.admin.unblock.user" bundle="${var}"/></button>
+                    <button type="submit" class="btn btn-outline-danger" name="button_admin_block_user">
+                        <fmt:message key="bt.admin.block.user" bundle="${var}"/></button>
+                </div>
             </form>
         </div>
     </div>

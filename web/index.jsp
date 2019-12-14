@@ -5,6 +5,6 @@
     <title>Fitness_center</title>
 </head>
 <body>
-    <jsp:forward page="jsp/registration.jsp"/>
+    <jsp:forward page="jsp/main.jsp"/>
 </body>
 </html>

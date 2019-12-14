@@ -26,7 +26,8 @@
                             <label for="idName1"><fmt:message key="text.updateprofile.name" bundle="${var}"/></label>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" id="idName1" name="name" value="" required
+                            <input type="text" class="form-control" id="idName1" name="name" value="${client.name}"
+                                   required
                                    pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
                         </div>
                     </div>
@@ -38,7 +39,8 @@
                                                                  bundle="${var}"/></label>
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" id="idSurname1" name="surname" value="" required
+                            <input type="text" class="form-control" id="idSurname1" name="surname"
+                                   value="${client.surname}" required
                                    pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
                         </div>
                     </div>
@@ -50,8 +52,8 @@
                                                                  bundle="${var}"/></label>
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" id="idYearOld1" name="year_old" value=""
-                                   required/>
+                            <input type="number" class="form-control" id="idYearOld1" name="year_old"
+                                   value="${client.yearOld}" required pattern="^([0-9]{1,2})$"/>
                         </div>
                     </div>
                 </div>
@@ -62,11 +64,19 @@
                     </div>
                 </c:if>
 
-                <button type="submit" class="btn btn-primary" name="update_profile"><fmt:message key="bt.updateprofile"
-                                                                                                 bundle="${var}"/></button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn btn-outline-success" name="update_profile">
+                        <fmt:message key="bt.updateprofile" bundle="${var}"/></button>
+                </div>
 
-                <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
-                    <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+                <div class="form-group">
+                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
+                        <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp"
+                           class="text-warning stretched-link">
+                            <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+                    </p>
+                </div>
+
             </form>
         </div>
     </div>
