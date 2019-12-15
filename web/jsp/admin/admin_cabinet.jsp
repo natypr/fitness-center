@@ -12,23 +12,18 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></p>
+    <h1><fmt:message key="text.admincabinet.cabinet" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <div class="form-group">
-                <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                    <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp"
-                       class="text-warning stretched-link">
-                        <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
-                </p>
-            </div>
+            <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
+                <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
 
             <form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="admin_block_user"/>
 
-                <p class="text-center"><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></p>
+                <h3><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></h3>
                 <table class="table table-hover">
                     <caption><fmt:message key="text.admincabinet.listofuser" bundle="${var}"/></caption>
                     <thead class="thead-dark">

@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></p>
+    <h1><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">

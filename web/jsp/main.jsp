@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.main.fitnesscenter" bundle="${var}"/></p>
+    <h1><fmt:message key="text.main.fitnesscenter" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
@@ -21,7 +21,7 @@
             <p><fmt:message key="text.main.description2" bundle="${var}"/></p>
             <p><fmt:message key="text.main.description3" bundle="${var}"/></p>
 
-            <p class="text-center"><fmt:message key="text.main.advantages" bundle="${var}"/></p>
+            <h3><fmt:message key="text.main.advantages" bundle="${var}"/></h3>
             <ul>
                 <li><fmt:message key="adv1" bundle="${var}"/></li>
                 <li><fmt:message key="adv2" bundle="${var}"/></li>

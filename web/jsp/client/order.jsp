@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.order.orderpage" bundle="${var}"/></p>
+    <h1><fmt:message key="text.order.orderpage" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <p class="text-center"><fmt:message key="text.order.trainerlist" bundle="${var}"/></p>
+                <h3><fmt:message key="text.order.trainerlist" bundle="${var}"/></h3>
                 <table class="table table-hover">
                     <caption><fmt:message key="text.order.trainerlist" bundle="${var}"/></caption>
                     <thead class="thead-dark">
@@ -81,17 +81,13 @@
 
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn btn-outline-success" name="make_order">
+                    <button type="submit" class="btn btn btn-outline-dark" name="make_order">
                         <fmt:message key="bt.order.makeorder" bundle="${var}"/></button>
                 </div>
 
-                <div class="form-group">
-                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                        <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp"
-                           class="text-warning stretched-link">
-                            <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
-                    </p>
-                </div>
+                <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
+                    <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
+
             </form>
         </div>
     </div>

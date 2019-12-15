@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></p>
+    <h1><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-5">
@@ -27,16 +27,15 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idName1" name="name" value="${client.name}"
-                                   required
-                                   pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                                   required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idSurname1"><fmt:message key="text.updateprofile.surname"
-                                                                 bundle="${var}"/></label>
+                            <label for="idSurname1">
+                                <fmt:message key="text.updateprofile.surname" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
@@ -48,8 +47,8 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idYearOld1"><fmt:message key="text.updateprofile.yearold"
-                                                                 bundle="${var}"/></label>
+                            <label for="idYearOld1">
+                                <fmt:message key="text.updateprofile.yearold" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="number" class="form-control" id="idYearOld1" name="year_old"
@@ -65,17 +64,12 @@
                 </c:if>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn btn-outline-success" name="update_profile">
+                    <button type="submit" class="btn btn btn-outline-dark" name="update_profile">
                         <fmt:message key="bt.updateprofile" bundle="${var}"/></button>
                 </div>
 
-                <div class="form-group">
-                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                        <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp"
-                           class="text-warning stretched-link">
-                            <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
-                    </p>
-                </div>
+                <a href="${pageContext.request.contextPath}/jsp/client/client_cabinet.jsp">
+                    <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
 
             </form>
         </div>

@@ -35,6 +35,7 @@ public class TrainerCabinetCommand implements Command {
 
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
+        LOG.debug("In trainer cabinet command.");
         Trainer trainer = (Trainer) request.getSession().getAttribute(TRAINER);
         String radioSelectOrder = request.getParameter(SELECT_ORDER);
         String actionUpdateOrder = request.getParameter(UPDATE_ORDER);
@@ -43,9 +44,12 @@ public class TrainerCabinetCommand implements Command {
         try {
             List<Client> clients = clientLogic.findAllClientsByIdTrainer(trainer.getId());
             for (Client client : clients) {
+                LOG.debug("Clients: " + clients);
                 List<Order> ordersOfClient = clientLogic.findAllOrderForClients(client.getId());
+                LOG.debug("Orders of client: " + ordersOfClient);
                 client.setOrderList(ordersOfClient);
             }
+            LOG.debug("Clients: " + clients);
             request.getSession().setAttribute(CLIENTS, clients);
 
             if (radioSelectOrder != null) {

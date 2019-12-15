@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.reg.registration" bundle="${var}"/></p>
+    <h1><fmt:message key="text.reg.registration" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-5">
@@ -96,7 +96,7 @@
                 </c:if>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn-outline-success">
+                    <button type="submit" class="btn btn-outline-dark">
                         <fmt:message key="bt.reg.signup" bundle="${var}"/></button>
                 </div>
             </form>

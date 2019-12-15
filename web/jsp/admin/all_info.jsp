@@ -15,7 +15,7 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <p class="text-center"><fmt:message key="text.allinfo.clientlist" bundle="${var}"/></p>
+            <h3><fmt:message key="text.allinfo.clientlist" bundle="${var}"/></h3>
             <table class="table table-hover">
                 <caption><fmt:message key="text.allinfo.clientlist" bundle="${var}"/></caption>
                 <thead class="thead-dark">
@@ -47,7 +47,7 @@
             </table>
 
 
-            <p class="text-center"><fmt:message key="text.allinfo.trainerlist" bundle="${var}"/></p>
+            <h3><fmt:message key="text.allinfo.trainerlist" bundle="${var}"/></h3>
             <table class="table table-hover">
                 <caption><fmt:message key="text.allinfo.trainerlist" bundle="${var}"/></caption>
                 <thead class="thead-dark">
@@ -79,6 +79,9 @@
                 </c:forEach>
                 </tbody>
             </table>
+
+            <a href="${pageContext.request.contextPath}/jsp/admin/admin_cabinet.jsp">
+                <fmt:message key="bt.main.return" bundle="${var}"/></a>
         </div>
     </div>
 </div>

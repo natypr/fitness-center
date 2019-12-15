@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></p>
+    <h1><fmt:message key="text.clientcabinet.cabinet" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
@@ -71,11 +71,16 @@
                 </div>
             </div>
 
-            <a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
-                <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
-            <a href="${pageContext.request.contextPath}/jsp/client/update_profile.jsp">
-                <fmt:message key="href.clientcabinet.updateprofile" bundle="${var}"/></a>
-
+            <div class="form-group row">
+                <div class="col-3">
+                    <a href="${pageContext.request.contextPath}/jsp/client/order.jsp">
+                        <fmt:message key="href.clientcabinet.makeorder" bundle="${var}"/></a>
+                </div>
+                <div class="col">
+                    <a href="${pageContext.request.contextPath}/jsp/client/update_profile.jsp">
+                        <fmt:message key="href.clientcabinet.updateprofile" bundle="${var}"/></a>
+                </div>
+            </div>
 
             <form name="clientCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="client_cabinet"/>

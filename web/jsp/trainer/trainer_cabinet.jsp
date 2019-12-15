@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></p>
+    <h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
@@ -28,8 +28,8 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="font-weight-bolder"><fmt:message key="text.trainercabinet.surname"
-                                                                   bundle="${var}"/></p>
+                        <p class="font-weight-bolder">
+                            <fmt:message key="text.trainercabinet.surname" bundle="${var}"/></p>
                     </div>
                     <div class="col-3">
                         <p>${trainer.surname}</p>
@@ -37,8 +37,8 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="font-weight-bolder"><fmt:message key="text.trainercabinet.gender"
-                                                                   bundle="${var}"/></p>
+                        <p class="font-weight-bolder">
+                            <fmt:message key="text.trainercabinet.gender" bundle="${var}"/></p>
                     </div>
                     <div class="col-3">
                         <p>${trainer.gender}</p>
@@ -46,8 +46,8 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="font-weight-bolder"><fmt:message key="text.trainercabinet.yearold"
-                                                                   bundle="${var}"/></p>
+                        <p class="font-weight-bolder">
+                            <fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></p>
                     </div>
                     <div class="col-3">
                         <p>${trainer.yearOld}</p>
@@ -63,8 +63,8 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="font-weight-bolder"><fmt:message key="text.trainercabinet.education"
-                                                                   bundle="${var}"/></p>
+                        <p class="font-weight-bolder">
+                            <fmt:message key="text.trainercabinet.education" bundle="${var}"/></p>
                     </div>
                     <div class="col-3">
                         <p>${trainer.education}</p>
@@ -72,8 +72,8 @@
                 </div>
                 <div class="row">
                     <div class="col-2">
-                        <p class="font-weight-bolder"><fmt:message key="text.trainercabinet.costperoneworkout"
-                                                                   bundle="${var}"/></p>
+                        <p class="font-weight-bolder">
+                            <fmt:message key="text.trainercabinet.costperoneworkout" bundle="${var}"/></p>
                     </div>
                     <div class="col-3">
                         <p>${trainer.costPerOneWorkout}</p>
@@ -81,13 +81,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                    <a href="${pageContext.request.contextPath}/jsp/trainer/update_profile.jsp"
-                       class="text-warning stretched-link">
-                        <fmt:message key="href.trainercabinet.updateprofile" bundle="${var}"/></a>
-                </p>
-            </div>
+            <a href="${pageContext.request.contextPath}/jsp/trainer/update_profile.jsp">
+                <fmt:message key="href.trainercabinet.updateprofile" bundle="${var}"/></a>
 
             <form name="trainerCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="trainer_cabinet"/>
@@ -139,11 +134,11 @@
                 <div class="col col-lg-7 text-center">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-2">
-                                <label for="idEquipment1"><fmt:message key="text.trainercabinet.equipment"
-                                                                       bundle="${var}"/></label>
+                            <div class="col-3">
+                                <label for="idEquipment1">
+                                    <fmt:message key="text.trainercabinet.equipment" bundle="${var}"/></label>
                             </div>
-                            <div class="col-5">
+                            <div class="col">
                                 <input type="text" class="form-control" id="idEquipment1" name="equipment" value=""
                                        required pattern="^([A-Za-z ,-_]{1,40})|([А-Яа-я ,-_]{1,40})$"/>
                             </div>
@@ -151,11 +146,11 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-2">
-                                <label for="idDescription1"><fmt:message key="text.trainercabinet.description"
-                                                                         bundle="${var}"/></label>
+                            <div class="col-3">
+                                <label for="idDescription1">
+                                    <fmt:message key="text.trainercabinet.description" bundle="${var}"/></label>
                             </div>
-                            <div class="col-5">
+                            <div class="col">
                                 <input type="text" class="form-control" id="idDescription1" name="description"
                                        value=""
                                        required pattern="^([A-Za-z ,-_]{1,100})|([А-Яа-я ,-_]{1,100})$"/>
@@ -175,10 +170,11 @@
                         </div>
                     </c:if>
 
-                    <button type="submit" class="btn btn btn-outline-danger" name="update_order"><fmt:message
-                            key="bt.trainercabinet.updateworkout" bundle="${var}"/></button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn btn-outline-dark" name="update_order">
+                            <fmt:message key="bt.trainercabinet.updateworkout" bundle="${var}"/></button>
+                    </div>
                 </div>
-
             </form>
         </div>
     </div>

@@ -12,7 +12,7 @@
 <c:import url="/jsp/util/header.jsp"/>
 
 <div class="container-fluid">
-    <p class="text-center"><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></p>
+    <h1><fmt:message key="text.updateprofile.updateprofile" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
         <div class="col col-lg-5">
@@ -90,17 +90,12 @@
                 </c:if>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn btn-outline-success" name="update_profile">
+                    <button type="submit" class="btn btn btn-outline-dark" name="update_profile">
                         <fmt:message key="bt.updateprofile" bundle="${var}"/></button>
                 </div>
 
-                <div class="form-group">
-                    <p class="card-text bg-light text-secondary" style="transform: rotate(0);">
-                        <a href="${pageContext.request.contextPath}/jsp/trainer/trainer_cabinet.jsp"
-                           class="text-warning stretched-link">
-                            <fmt:message key="href.clientcabinet" bundle="${var}"/></a>
-                    </p>
-                </div>
+                <a href="${pageContext.request.contextPath}/jsp/trainer/trainer_cabinet.jsp">
+                    <fmt:message key="href.trainercabinet" bundle="${var}"/></a>
             </form>
         </div>
     </div>

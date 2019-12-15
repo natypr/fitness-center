@@ -53,7 +53,7 @@ public class LoginCommand implements Command {
                         request.getSession().setAttribute(TRAINERS, trainers);
 
                         UserType role = UserType.valueOf(user.getRole().toUpperCase());
-                        LOG.debug(role + " " + CLIENT);
+                        LOG.debug("Role is " + role);
                         switch (role) {
                             case ADMIN:
                                 List<User> users = userLogic.findAllUsers();
@@ -71,6 +71,8 @@ public class LoginCommand implements Command {
 
                                 List<Client> listOfAllClientsByIdTrainer = clientLogic.findAllClientsByIdTrainer(trainer.getId());
                                 request.getSession().setAttribute(CLIENTS_OF_TRAINER, listOfAllClientsByIdTrainer);
+
+                                LOG.debug("List of all clients by id trainer: " + listOfAllClientsByIdTrainer);
 
                                 page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                                 LOG.info("  Trainer: " + user.getEmail() + " log in.");
