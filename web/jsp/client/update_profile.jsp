@@ -27,7 +27,7 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idName1" name="name" value="${client.name}"
-                                   required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                                   required pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
                         </div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
                                    value="${client.surname}" required
-                                   pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                                   pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
                         </div>
                     </div>
                 </div>

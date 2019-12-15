@@ -51,20 +51,6 @@ public class ClientDaoImpl implements ClientDao {
 
     private static final String DELETE_CLIENT_BY_ID = "DELETE FROM client WHERE client.id=?;";
 
-/*    private static final String FIND_ALL_WORKOUT_BY_ID_CLIENT =
-            "SELECT `workout`.id, type_workout, name_of_workout, number_of_visit, id_trainer, id_order " +
-                    "FROM client " +
-                    "JOIN `order` ON client.id=`order`.id_client " +
-                    "JOIN workout ON `order`.id=workout.id_order " +
-                    "WHERE client.id=?;";
-
-    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
-            "SELECT `user`.id, role, `name`, surname, email, password " +
-                    "FROM workout " +
-                    "JOIN `order` ON workout.id_order=`order`.id " +
-                    "JOIN `user` ON `order`.id_client=`user`.id " +
-                    "WHERE workout.id_trainer=?;";*/
-
     private static final String FIND_ALL_ORDER_BY_ID_CLIENT =
             "SELECT o.id, o.type_of_workout, o.number_of_workout, o.id_trainer, u.email, o.equipment, o.description, o.id_client, o.is_paid " +
                     "FROM `order` as o " +
@@ -101,10 +87,12 @@ public class ClientDaoImpl implements ClientDao {
              Statement statement = connection.createStatement()) {
 
             statement.executeQuery(FIND_ALL_CLIENTS);
-            ResultSet resultSet = statement.getResultSet();
-            List<Client> clients = new ArrayList<>();
-            while (resultSet.next()) {
-                clients.add(createClientFromResult(resultSet));
+            List<Client> clients;
+            try (ResultSet resultSet = statement.getResultSet()) {
+                clients = new ArrayList<>();
+                while (resultSet.next()) {
+                    clients.add(createClientFromResult(resultSet));
+                }
             }
             return clients;
         } catch (SQLException | PoolException e) {
@@ -118,13 +106,15 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(FIND_CLIENT_BY_ID)) {
 
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<Client> clientOptionalById = Optional.empty();
-            if (resultSet.next()) {
-                Client client = createClientFromResult(resultSet);
-                clientOptionalById = Optional.of(client);
+            Optional<Client> clientOptional;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                clientOptional = Optional.empty();
+                if (resultSet.next()) {
+                    Client client = createClientFromResult(resultSet);
+                    clientOptional = Optional.of(client);
+                }
             }
-            return clientOptionalById;
+            return clientOptional;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
@@ -136,20 +126,22 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(FIND_CLIENT_BY_EMAIL)) {
 
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<Client> clientOptionalByEmail = Optional.empty();
-            if (resultSet.next()) {
-                Client client = createClientFromResult(resultSet);
-                clientOptionalByEmail = Optional.of(client);
+            Optional<Client> clientOptional;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                clientOptional = Optional.empty();
+                if (resultSet.next()) {
+                    Client client = createClientFromResult(resultSet);
+                    clientOptional = Optional.of(client);
+                }
             }
-            return clientOptionalByEmail;
+            return clientOptional;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
     }
 
     @Override
-    public Client updateClient(Client client) throws DaoException {
+    public void updateClient(Client client) throws DaoException {
         User user = createUserFromClient(client);
         new UserDaoImpl().updateUser(user);
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
@@ -159,7 +151,6 @@ public class ClientDaoImpl implements ClientDao {
             statement.setLong(2, client.getId());
 
             statement.executeUpdate();
-            return client;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
@@ -179,33 +170,18 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
-/*    public Optional<Order> findExercisesForClient(long id) throws DaoException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(FIND_ORDER_FOR_CLIENT)){
-
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<Order> orderOptional = Optional.empty();
-            if (resultSet.next()){
-                orderOptional = Optional.of(createOrderFromResult(resultSet));
-            }
-            return orderOptional;
-
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
-        }
-    }*/
-
     @Override
     public List<Order> findAllOrderByIdClient(long idClient) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_ORDER_BY_ID_CLIENT)) {
 
             statement.setLong(1, idClient);
-            ResultSet resultSet = statement.executeQuery();
-            List<Order> orders = new ArrayList<>();
-            while (resultSet.next()) {
-                orders.add(createOrderFromResult(resultSet));
+            List<Order> orders;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                orders = new ArrayList<>();
+                while (resultSet.next()) {
+                    orders.add(createOrderFromResult(resultSet));
+                }
             }
             return orders;
         } catch (SQLException | PoolException e) {
@@ -219,10 +195,12 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_CLIENTS_BY_ID_TRAINER)) {
 
             statement.setLong(1, idTrainer);
-            ResultSet resultSet = statement.executeQuery();
-            List<Client> clients = new ArrayList<>();
-            while (resultSet.next()) {
-                clients.add(createClientFromResult(resultSet));
+            List<Client> clients;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                clients = new ArrayList<>();
+                while (resultSet.next()) {
+                    clients.add(createClientFromResult(resultSet));
+                }
             }
             return clients;
         } catch (SQLException | PoolException e) {
@@ -248,10 +226,12 @@ public class ClientDaoImpl implements ClientDao {
              PreparedStatement statement = connection.prepareStatement(sufctFinal)) {
 
             statement.setLong(1, idUser);
-            ResultSet resultSet = statement.executeQuery();
-            User user = new User();
-            if (resultSet.next()) {
-                user.setId(resultSet.getLong(ID));
+            User user;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                user = new User();
+                if (resultSet.next()) {
+                    user.setId(resultSet.getLong(ID));
+                }
             }
             return user;
         } catch (SQLException | PoolException e) {

@@ -45,7 +45,7 @@ public class TrainerCabinetCommand implements Command {
             List<Client> clients = clientLogic.findAllClientsByIdTrainer(trainer.getId());
             for (Client client : clients) {
                 LOG.debug("Clients: " + clients);
-                List<Order> ordersOfClient = clientLogic.findAllOrderForClients(client.getId());
+                List<Order> ordersOfClient = clientLogic.findAllOrderByIdClients(client.getId());
                 LOG.debug("Orders of client: " + ordersOfClient);
                 client.setOrderList(ordersOfClient);
             }
@@ -69,7 +69,7 @@ public class TrainerCabinetCommand implements Command {
 
                         List<Client> newClients = clientLogic.findAllClientsByIdTrainer(trainer.getId());
                         for (Client client : newClients) {
-                            List<Order> ordersOfClient = clientLogic.findAllOrderForClients(client.getId());
+                            List<Order> ordersOfClient = clientLogic.findAllOrderByIdClients(client.getId());
                             client.setOrderList(ordersOfClient);
                         }
                         request.getSession().setAttribute(CLIENTS, newClients);

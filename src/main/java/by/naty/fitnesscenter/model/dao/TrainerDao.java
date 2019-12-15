@@ -1,6 +1,5 @@
 package by.naty.fitnesscenter.model.dao;
 
-import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.exception.DaoException;
 
@@ -50,10 +49,9 @@ public interface TrainerDao {
      * Updates trainer.
      *
      * @param trainer the trainer
-     * @return the updated trainer
      * @throws DaoException the dao exception
      */
-    Trainer updateTrainer(Trainer trainer) throws DaoException;
+    void updateTrainer(Trainer trainer) throws DaoException;
 
     /**
      * Deletes trainer by id. (deprecated)
@@ -62,31 +60,4 @@ public interface TrainerDao {
      * @throws DaoException the dao exception
      */
     void deleteTrainerById(long id) throws DaoException;
-
-
-    /**
-     * Creates order for client.
-     *
-     * @param order the order
-     * @return the order
-     * @throws DaoException the dao exception
-     */
-    Order createOrderForClient(Order order) throws DaoException;
-
-    /**
-     * Updates order.
-     *
-     * @param order the order
-     * @return the updated order
-     * @throws DaoException the dao exception
-     */
-    Order updateWorkout(Order order) throws DaoException;
-
-    /**
-     * Deletes order for client by id.
-     *
-     * @param idOrder the id of order
-     * @throws DaoException the dao exception
-     */
-    void deleteOrderForClientById(long idOrder) throws DaoException;
 }

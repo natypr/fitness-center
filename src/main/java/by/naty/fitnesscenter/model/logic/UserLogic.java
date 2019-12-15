@@ -14,29 +14,6 @@ import java.util.regex.Pattern;
 public class UserLogic {
     private final Pattern pattern = Pattern.compile("/jsp.+");
 
-    public void addUser(User user) throws LogicException {
-        UserDao userDAO = new UserDaoImpl();
-        try {
-            user.setPassword(MD5.encrypt(user.getPassword()));
-            userDAO.createUser(user);
-        } catch (DaoException e) {
-            throw new LogicException(e);
-        }
-    }
-
-    public User addUser(String role, String name, String surname, String gender,
-                        byte yearOld, String email, String password) throws LogicException {
-        UserDao userDAO = new UserDaoImpl();
-        try {
-            String encryptedPassword = MD5.encrypt(password);
-            User user = new User(0, role, name, surname, gender, yearOld, email, encryptedPassword, false);
-            userDAO.createUser(user);
-            return user;
-        } catch (DaoException exc) {
-            throw new LogicException(exc);
-        }
-    }
-
     public List<User> findAllUsers() throws LogicException {
         UserDao userDAO = new UserDaoImpl();
         try {
@@ -50,15 +27,6 @@ public class UserLogic {
         UserDao userDAO = new UserDaoImpl();
         try {
             return userDAO.findUserById(id).get();
-        } catch (DaoException e) {
-            throw new LogicException(e);
-        }
-    }
-
-    public User findUserByEmail(String email) throws LogicException {
-        UserDao userDAO = new UserDaoImpl();
-        try {
-            return userDAO.findUserByEmail(email).get();
         } catch (DaoException e) {
             throw new LogicException(e);
         }

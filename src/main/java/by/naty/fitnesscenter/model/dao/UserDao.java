@@ -12,14 +12,6 @@ import java.util.Optional;
 public interface UserDao {
 
     /**
-     * Creates the user.
-     *
-     * @param user the user
-     * @throws DaoException the dao exception
-     */
-    void createUser(User user) throws DaoException;
-
-    /**
      * Finds all users.
      *
      * @return the list of users
@@ -35,15 +27,6 @@ public interface UserDao {
      * @throws DaoException the dao exception
      */
     Optional<User> findUserById(long id) throws DaoException;
-
-    /**
-     * Finds user by email.
-     *
-     * @param email the email of user
-     * @return the optional user
-     * @throws DaoException the dao exception
-     */
-    Optional<User> findUserByEmail(String email) throws DaoException;
 
     /**
      * Finds user by email and password.

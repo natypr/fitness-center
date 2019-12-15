@@ -4,7 +4,6 @@ import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.dao.impl.ClientDaoImpl;
 import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.Order;
-import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class ClientLogic {
 
-    public void addClient(Client client) throws LogicException {
+    public void createClient(Client client) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
             client.setPassword(MD5.encrypt(client.getPassword()));
@@ -50,10 +49,10 @@ public class ClientLogic {
         }
     }
 
-    public User updateClient(Client client) throws LogicException {
+    public void updateClient(Client client) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
-            return clientDAO.updateClient(client);
+            clientDAO.updateClient(client);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
@@ -69,7 +68,7 @@ public class ClientLogic {
     }
 
 
-    public List<Order> findAllOrderForClients(long idClient) throws LogicException {
+    public List<Order> findAllOrderByIdClients(long idClient) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
             return clientDAO.findAllOrderByIdClient(idClient);

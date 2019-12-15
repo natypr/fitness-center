@@ -50,10 +50,9 @@ public interface ClientDao {
      * Updates client.
      *
      * @param client the client
-     * @return the updated client
      * @throws DaoException the dao exception
      */
-    Client updateClient(Client client) throws DaoException;
+    void updateClient(Client client) throws DaoException;
 
     /**
      * Deletes client by id.

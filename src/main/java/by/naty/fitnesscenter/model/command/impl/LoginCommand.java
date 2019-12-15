@@ -81,7 +81,7 @@ public class LoginCommand implements Command {
                                 Client client = clientLogic.findClientByEmail(login);
                                 request.getSession().setAttribute(CLIENT, client);
 
-                                List<Order> orders = clientLogic.findAllOrderForClients(client.getId());
+                                List<Order> orders = clientLogic.findAllOrderByIdClients(client.getId());
                                 request.getSession().setAttribute(ORDERS, orders);
 
                                 page = ConfigurationManager.getProperty("path.page.client.cabinet");

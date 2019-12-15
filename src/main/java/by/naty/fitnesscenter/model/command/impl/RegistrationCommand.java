@@ -36,7 +36,7 @@ public class RegistrationCommand implements Command {
 
     private static boolean checkRegistration(String name, String surname,
                                              String email, String password, String yearOld) {
-        LOG.debug("!!! Check registration: " + name + " " + surname + " " + email + " " + password + " " + yearOld);
+        LOG.debug("Check registration: " + name + " " + surname + " " + email + " " + yearOld);
         return DataValidator.isNameCorrect(name) &&
                 DataValidator.isSurnameCorrect(surname) &&
                 DataValidator.isEmailCorrect(email) &&
@@ -64,7 +64,7 @@ public class RegistrationCommand implements Command {
 
                 request.getSession().setAttribute(CLIENT, client);
                 try {
-                    clientLogic.addClient(client);
+                    clientLogic.createClient(client);
                 } catch (LogicException e) {
                     throw new CommandException(e);
                 }
@@ -75,7 +75,7 @@ public class RegistrationCommand implements Command {
 
                 request.getSession().setAttribute(TRAINER, trainer);
                 try {
-                    trainerLogic.addTrainer(trainer);
+                    trainerLogic.createTrainer(trainer);
                 } catch (LogicException e) {
                     throw new CommandException();
                 }
@@ -83,7 +83,7 @@ public class RegistrationCommand implements Command {
             page = ConfigurationManager.getProperty("path.page.login");
             LOG.info(name + " (" + email + ") is registered now.");
         } else {
-            LOG.debug("Data isn't correct.");
+            LOG.info("Data isn't correct.");
             request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
             page = ConfigurationManager.getProperty("path.page.reg");
         }

@@ -37,7 +37,7 @@ public class AdminBlockUserCommand implements Command {
             if (checkboxUser != null) {
                 for (String s : checkboxUser) {
                     User currentUser = userLogic.findUserById(Long.parseLong(s));
-                    LOG.info("Find user " + currentUser);
+                    LOG.info("Selected user: " + currentUser);
                     usersToProcess.add(currentUser);
                 }
             }
@@ -54,6 +54,7 @@ public class AdminBlockUserCommand implements Command {
                 }
             }
             request.getSession().setAttribute(USERS, userLogic.findAllUsers());
+
             page = ConfigurationManager.getProperty("path.page.admin.cabinet");
             return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
         } catch (LogicException e) {

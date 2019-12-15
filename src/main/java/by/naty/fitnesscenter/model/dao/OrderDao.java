@@ -28,8 +28,9 @@ public interface OrderDao {
     List<Order> findAllOrders() throws DaoException;
 
     /**
-     * Finds all orders by id trainer.
+     * Finds all orders by id trainer. (deprecated)
      *
+     * @param id the id of trainer
      * @return the list of orders by id trainer
      * @throws DaoException the dao exception
      */
@@ -45,22 +46,12 @@ public interface OrderDao {
     Optional<Order> findOrderById(long id) throws DaoException;
 
     /**
-     * Finds order by email of client.
-     *
-     * @param email the email of client
-     * @return the optional order
-     * @throws DaoException the dao exception
-     */
-    Optional<Order> findOrderByEmailClient(String email) throws DaoException;
-
-    /**
-     * Updates order. (deprecated)
+     * Updates order.
      *
      * @param order the order
-     * @return the updated order
      * @throws DaoException the dao exception
      */
-    Order updateOrder(Order order) throws DaoException;
+    void updateOrder(Order order) throws DaoException;
 
     /**
      * Deletes order by id.
@@ -74,8 +65,7 @@ public interface OrderDao {
      * Payment for order.
      *
      * @param order the order
-     * @return the updated order
      * @throws DaoException the dao exception
      */
-    Order payOrder(Order order) throws DaoException;
+    void payOrder(Order order) throws DaoException;
 }

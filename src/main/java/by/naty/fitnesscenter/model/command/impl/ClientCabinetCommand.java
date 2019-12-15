@@ -38,7 +38,7 @@ public class ClientCabinetCommand implements Command {
 
         String page;
         try {
-            List<Order> orders = clientLogic.findAllOrderForClients(client.getId());
+            List<Order> orders = clientLogic.findAllOrderByIdClients(client.getId());
             request.getSession().setAttribute(ORDERS, orders);
 
             if(radioSelectOrder != null) {
@@ -49,7 +49,7 @@ public class ClientCabinetCommand implements Command {
                         LOG.info("User " + client.getEmail() + " deleted workout with id " + order.getId());
                         request.getSession().setAttribute(
                                 ORDER_SUCCESSFULLY_DELETED, MessageManager.getProperty("messages.orderSuccessfullyDeleted"));
-                        List<Order> ordersUpdated = clientLogic.findAllOrderForClients(client.getId());
+                        List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
                         request.getSession().setAttribute(ORDERS, ordersUpdated);
                     }
                 }
@@ -59,7 +59,7 @@ public class ClientCabinetCommand implements Command {
                     orderLogic.payOrder(order);
                     LOG.info("User " + client.getEmail() + " pay for order with id " + order.getId());
 
-                    List<Order> ordersUpdated = clientLogic.findAllOrderForClients(client.getId());
+                    List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
                     request.getSession().setAttribute(ORDERS, ordersUpdated);
                 }
             } else {

@@ -57,7 +57,7 @@ public class Controller extends HttpServlet {
                 LOG.debug("Dispatch type is Redirect.");
                 String defaultPage = ConfigurationManager.getProperty("path.page.index");
                 if (commandRouter.getPage().isEmpty()) {
-                    LOG.info("Null page. Command not transferred.");
+                    LOG.info("Null page, command not transferred.");
                     response.sendRedirect(request.getContextPath() + defaultPage);
                 }
                 String page = commandRouter.getPage();
@@ -65,7 +65,7 @@ public class Controller extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + page);
             }
         } catch (CommandException e) {
-            LOG.error("Command not defined. ", e);
+            LOG.error("Command not defined: ", e);
             String page = ConfigurationManager.getProperty("path.page.error");
             request.getRequestDispatcher(page).forward(request, response);
         }

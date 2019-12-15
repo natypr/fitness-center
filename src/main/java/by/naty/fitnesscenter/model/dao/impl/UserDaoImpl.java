@@ -37,12 +37,6 @@ public class UserDaoImpl implements UserDao {
                     "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
                     "WHERE `user`.id=?;";
 
-    private static final String FIND_USER_BY_EMAIL =
-            "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
-                    "FROM `user` " +
-                    "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
-                    "WHERE `user`.email=?;";
-
     private static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
             "SELECT id, role, `name`, surname, gender, year_old, email, password, blocked " +
                     "FROM `user` " +
@@ -62,26 +56,11 @@ public class UserDaoImpl implements UserDao {
     private static Byte modifyRole(String string) {
         switch (string) {
             case "client":
-                return 2;//String.valueOf(2);
+                return 2;
             case "trainer":
-                return 1;//String.valueOf(1);
+                return 1;
             default:
                 return 3;
-        }
-    }
-
-    private static Byte modifyBlockedToByte(boolean bool) {
-        return bool ? (byte) 1 : (byte) 0;
-    }
-
-    @Override
-    public void createUser(User user) throws DaoException {
-        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
-
-            setPreparedStatement(user, statement);
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
         }
     }
 
@@ -91,10 +70,12 @@ public class UserDaoImpl implements UserDao {
              Statement statement = connection.createStatement()) {
 
             statement.executeQuery(FIND_ALL_USERS);
-            ResultSet resultSet = statement.getResultSet();
-            List<User> users = new ArrayList<>();
-            while (resultSet.next()) {
-                users.add(createUserFromResult(resultSet));
+            List<User> users;
+            try (ResultSet resultSet = statement.getResultSet()) {
+                users = new ArrayList<>();
+                while (resultSet.next()) {
+                    users.add(createUserFromResult(resultSet));
+                }
             }
             return users;
         } catch (SQLException | PoolException e) {
@@ -108,29 +89,13 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID)) {
 
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<User> userOptionalById = Optional.empty();
-            if (resultSet.next()) {
-                User user = createUserFromResult(resultSet);
-                userOptionalById = Optional.of(user);
-            }
-            return userOptionalById;
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public Optional<User> findUserByEmail(String email) throws DaoException {
-        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL)) {
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<User> userOptionalById = Optional.empty();
-            if (resultSet.next()) {
-                User user = createUserFromResult(resultSet);
-                userOptionalById = Optional.of(user);
+            Optional<User> userOptionalById;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                userOptionalById = Optional.empty();
+                if (resultSet.next()) {
+                    User user = createUserFromResult(resultSet);
+                    userOptionalById = Optional.of(user);
+                }
             }
             return userOptionalById;
         } catch (SQLException | PoolException e) {
@@ -146,9 +111,10 @@ public class UserDaoImpl implements UserDao {
             User user = null;
             statement.setString(1, email);
             statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                user = createUserFromResult(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    user = createUserFromResult(resultSet);
+                }
             }
             return user;
         } catch (SQLException | PoolException e) {
@@ -214,9 +180,10 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FROM_USER)) {
 
             setPreparedStatement(user, statement);
-            ResultSet resultSet = preStatement.executeQuery();
-            if (resultSet.next()) {
-                user.setId(resultSet.getLong(1));
+            try (ResultSet resultSet = preStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    user.setId(resultSet.getLong(1));
+                }
             }
             return user;
         } catch (SQLException | PoolException e) {

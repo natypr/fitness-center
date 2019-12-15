@@ -35,14 +35,6 @@ public class OrderDaoImpl implements OrderDao {
             "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
                     "FROM `order` WHERE `order`.id=?;";
 
-    private static final String FIND_ORDER_BY_EMAIL =
-            "SELECT type_of_workout, number_of_workout, email, equipment, description, is_paid " +
-                    "FROM `order` " +
-                    "JOIN `client` ON `client`.`id`=`order`.`id_client` " +
-                    "JOIN `user` ON `user`.`id`=`client`.`id` " +
-                    "JOIN trainer ON `user`.`id`=`trainer`.`id` " +
-                    "WHERE `user`.`email`=?;";
-
     private static final String UPDATE_ORDER =
             "UPDATE order SET id=?, type_of_workout=?, number_of_workout=?, id_trainer=?, " +
                     "equipment=?, description=?, id_client=?, is_paid=? " +
@@ -67,10 +59,12 @@ public class OrderDaoImpl implements OrderDao {
              Statement statement = connection.createStatement()) {
 
             statement.executeQuery(FIND_ALL_ORDERS);
-            ResultSet resultSet = statement.getResultSet();
-            List<Order> orders = new ArrayList<>();
-            while (resultSet.next()) {
-                orders.add(createOrderFromResult(resultSet));
+            List<Order> orders;
+            try (ResultSet resultSet = statement.getResultSet()) {
+                orders = new ArrayList<>();
+                while (resultSet.next()) {
+                    orders.add(createOrderFromResult(resultSet));
+                }
             }
             return orders;
         } catch (SQLException | PoolException e) {
@@ -84,10 +78,12 @@ public class OrderDaoImpl implements OrderDao {
              Statement statement = connection.createStatement()) {
 
             statement.executeQuery(FIND_ALL_ORDERS_BY_ID_TRAINER);
-            ResultSet resultSet = statement.getResultSet();
-            List<Order> orders = new ArrayList<>();
-            while (resultSet.next()) {
-                orders.add(createOrderFromResult(resultSet));
+            List<Order> orders;
+            try (ResultSet resultSet = statement.getResultSet()) {
+                orders = new ArrayList<>();
+                while (resultSet.next()) {
+                    orders.add(createOrderFromResult(resultSet));
+                }
             }
             return orders;
         } catch (SQLException | PoolException e) {
@@ -101,11 +97,13 @@ public class OrderDaoImpl implements OrderDao {
              PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_ID)) {
 
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<Order> orderOptional = Optional.empty();
-            if (resultSet.next()) {
-                Order order = createOrderFromResult(resultSet);
-                orderOptional = Optional.of(order);
+            Optional<Order> orderOptional;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                orderOptional = Optional.empty();
+                if (resultSet.next()) {
+                    Order order = createOrderFromResult(resultSet);
+                    orderOptional = Optional.of(order);
+                }
             }
             return orderOptional;
         } catch (SQLException | PoolException e) {
@@ -114,25 +112,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<Order> findOrderByEmailClient(String email) throws DaoException {
-        try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(FIND_ORDER_BY_EMAIL)) {
-
-            statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            Optional<Order> orderOptional = Optional.empty();
-            if (resultSet.next()) {
-                Order order = createOrderFromResult(resultSet);
-                orderOptional = Optional.of(order);
-            }
-            return orderOptional;
-        } catch (SQLException | PoolException e) {
-            throw new DaoException(e);
-        }
-    }
-
-    @Override
-    public Order updateOrder(Order order) throws DaoException {
+    public void updateOrder(Order order) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER)) {
 
@@ -142,7 +122,6 @@ public class OrderDaoImpl implements OrderDao {
             statement.setLong(4, order.getIdTrainer());
             statement.setLong(5, order.getIdClient());
             statement.executeUpdate();
-            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
@@ -161,29 +140,28 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Order payOrder(Order order) throws DaoException {
+    public void payOrder(Order order) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(PAY_ORDER)) {
 
             statement.setLong(1, order.getId());
             statement.executeUpdate();
-            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
     }
 
-    private Order createOrderWithMaxId(Order order) throws DaoException {
+    private void createOrderWithMaxId(Order order) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_ORDER);
              PreparedStatement preStatement = connection.prepareStatement(SELECT_MAX_ID_FROM_ORDER)) {
 
             setPreparedStatement(order, statement);
-            ResultSet resultSet = preStatement.executeQuery();
-            if (resultSet.next()) {
-                order.setId(resultSet.getLong(1));
+            try (ResultSet resultSet = preStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    order.setId(resultSet.getLong(1));
+                }
             }
-            return order;
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }
@@ -200,7 +178,7 @@ public class OrderDaoImpl implements OrderDao {
         statement.executeUpdate();
     }
 
-    //из бд в с
+    //from db to entity
     private Order createOrderFromResult(ResultSet resultSet) throws SQLException {
         return new Order(resultSet.getLong(ID),
                 resultSet.getString(TYPE_OF_WORKOUT),

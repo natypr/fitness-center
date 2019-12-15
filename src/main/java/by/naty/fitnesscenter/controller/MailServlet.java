@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Properties;
 
-import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.SUCCESSFULLY_UPDATED;
-
 @WebServlet("/mailServlet")
 public class MailServlet extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
@@ -40,7 +38,7 @@ public class MailServlet extends HttpServlet {
 
         LOG.info("Message was sent by email.");
         request.setAttribute(MAIL_SENT_SUCCESSFULLY, MessageManager.getProperty("messages.mailsentsuccessfully"));
-        // go to the page with a proposal to create a new letter
+
         String page = ConfigurationManager.getProperty("path.page.contacts");
         request.getRequestDispatcher(page).forward(request, response);
     }

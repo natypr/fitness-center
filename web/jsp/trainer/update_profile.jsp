@@ -27,28 +27,28 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idName1" name="name" value="${trainer.name}"
-                                   required pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                                   required pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idSurname1"><fmt:message key="text.updateprofile.surname"
-                                                                 bundle="${var}"/></label>
+                            <label for="idSurname1">
+                                <fmt:message key="text.updateprofile.surname" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
                                    value="${trainer.surname}" required
-                                   pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                                   pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idYearOld1"><fmt:message key="text.updateprofile.yearold"
-                                                                 bundle="${var}"/></label>
+                            <label for="idYearOld1">
+                                <fmt:message key="text.updateprofile.yearold" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="number" class="form-control" id="idYearOld1" name="year_old"
@@ -59,32 +59,32 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idEducation1"><fmt:message key="text.updateprofile.education"
-                                                                   bundle="${var}"/></label>
+                            <label for="idEducation1">
+                                <fmt:message key="text.updateprofile.education" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idEducation1" name="education"
                                    value="${trainer.education}" required
-                                   pattern="^([A-Za-z ,-_]{1,29})|([А-Яа-я ,-_]{1,29})$"/>
+                                   pattern="^([A-Za-z ,-_]{2,29})|([А-Яа-я ,-_]{2,29})$"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-3">
-                            <label for="idCostPerOneWorkout1"><fmt:message key="text.updateprofile.costperoneworkout"
-                                                                           bundle="${var}"/></label>
+                            <label for="idCostPerOneWorkout1">
+                                <fmt:message key="text.updateprofile.costperoneworkout" bundle="${var}"/></label>
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idCostPerOneWorkout1"
                                    name="cost_per_one_workout" value="${trainer.costPerOneWorkout}"
-                                   required pattern="^([0-9.,]{1,8})$"/>
+                                   required pattern="^([0-9.]{1,8})$"/>
                         </div>
                     </div>
                 </div>
 
                 <c:if test="${not empty sessionScope.successfullyUpdated}">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-success" role="alert">
                             ${sessionScope.successfullyUpdated}
                     </div>
                 </c:if>

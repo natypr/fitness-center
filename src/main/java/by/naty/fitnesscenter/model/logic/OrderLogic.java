@@ -19,7 +19,7 @@ public class OrderLogic {
         }
     }
 
-    public List<Order> findAllOrders(String email) throws LogicException {
+    public List<Order> findAllOrders() throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
             return orderDAO.findAllOrders();
@@ -46,19 +46,10 @@ public class OrderLogic {
         }
     }
 
-    public Order findOrderByEmailClient(String email) throws LogicException {
+    public void updateOrder(Order order) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
-            return orderDAO.findOrderByEmailClient(email).get();
-        } catch (DaoException e) {
-            throw new LogicException(e);
-        }
-    }
-
-    public Order updateOrder(Order order) throws LogicException {
-        OrderDao orderDAO = new OrderDaoImpl();
-        try {
-            return orderDAO.updateOrder(order);
+            orderDAO.updateOrder(order);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
@@ -73,10 +64,10 @@ public class OrderLogic {
         }
     }
 
-    public Order payOrder(Order order) throws LogicException {
+    public void payOrder(Order order) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
-            return orderDAO.payOrder(order);
+            orderDAO.payOrder(order);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
