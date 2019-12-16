@@ -1,18 +1,23 @@
 package by.naty.fitnesscenter.model.logic;
 
+import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.dao.OrderDao;
 import by.naty.fitnesscenter.model.dao.TrainerDao;
+import by.naty.fitnesscenter.model.dao.impl.ClientDaoImpl;
 import by.naty.fitnesscenter.model.dao.impl.OrderDaoImpl;
 import by.naty.fitnesscenter.model.dao.impl.TrainerDaoImpl;
 import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.LogicException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
 public class OrderLogic {
+    private static final Logger LOG = LogManager.getLogger();
 
     public void createOrder(Order order) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
@@ -68,10 +73,13 @@ public class OrderLogic {
         }
     }
 
-    public void payOrder(Order order) throws LogicException {
+    public void payOrderWithDiscount(Order order, double discount) throws LogicException {
         OrderDao orderDAO = new OrderDaoImpl();
+        ClientDao clientDAO = new ClientDaoImpl();
         try {
+            long idClient = order.getIdClient();
             orderDAO.payOrder(order);
+            clientDAO.updateDiscount(idClient, discount);
         } catch (DaoException e) {
             throw new LogicException(e);
         }
@@ -85,9 +93,10 @@ public class OrderLogic {
 
             long idTrainer = order.getIdTrainer();
             Optional<Trainer> trainer = trainerDAO.findTrainerById(idTrainer);
-//            double costPerOneWorkout = trainer.getCostPerOneWorkout();  //TODO Optional<Trainer>
+            double costPerOneWorkout = trainer.map(Trainer::getCostPerOneWorkout).orElse(10.0);
+            LOG.debug("Cost per one workout (trainer) - " + trainer);
 
-            return numberOfWorkout * 25;//*costPerOneWorkout);
+            return numberOfWorkout * costPerOneWorkout;
         } catch (DaoException e) {
             throw new LogicException(e);
         }

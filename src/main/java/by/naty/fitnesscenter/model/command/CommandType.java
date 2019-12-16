@@ -18,7 +18,7 @@ public enum CommandType {
     ADMIN_BLOCK_USER(new AdminBlockUserCommand(new UserLogic())),
     ORDER(new OrderCommand(new TrainerLogic(), new OrderLogic())),
     SHOW_TRAINER_LIST(new ShowTrainerListCommand(new TrainerLogic())),
-    ORDER_PAYMENT(new OrderPaymentCommand(new ClientLogic(), new TrainerLogic(), new OrderLogic()));
+    ORDER_PAYMENT(new OrderPaymentCommand(new ClientLogic(), new OrderLogic()));
 
     private Command command;
 

@@ -8,7 +8,6 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.logic.OrderLogic;
-import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
@@ -23,12 +22,10 @@ public class OrderPaymentCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
     private ClientLogic clientLogic;
-    private TrainerLogic trainerLogic;
     private OrderLogic orderLogic;
 
-    public OrderPaymentCommand(ClientLogic clientLogic, TrainerLogic trainerLogic, OrderLogic orderLogic) {
+    public OrderPaymentCommand(ClientLogic clientLogic, OrderLogic orderLogic) {
         this.clientLogic = clientLogic;
-        this.trainerLogic = trainerLogic;
         this.orderLogic = orderLogic;
     }
 
@@ -39,7 +36,7 @@ public class OrderPaymentCommand implements Command {
     @Override
     public CommandRouter execute(HttpServletRequest request) throws CommandException {
         String actionPayOrder = request.getParameter(PAY);
-        String actionSelectOrder = request.getParameter(SELECT_ORDER);  //получить id выбраного заказа
+        String actionSelectOrder = request.getParameter(SELECT_ORDER);
 
         Client currentClient = (Client) request.getSession().getAttribute(CLIENT);
         long idClient = currentClient.getId();
@@ -52,8 +49,8 @@ public class OrderPaymentCommand implements Command {
 
             if (actionSelectOrder != null) {
                 long idOrder = Integer.parseInt(actionSelectOrder);
-                LOG.debug("idOrder " + idOrder);
                 Order order = orderLogic.findOrderById(idOrder);
+                request.getSession().setAttribute(ORDER, order);
 
                 double price = orderLogic.calculatePriceByIdOrder(idOrder);
                 request.getSession().setAttribute(PRICE, price);
@@ -64,21 +61,29 @@ public class OrderPaymentCommand implements Command {
                 double totalPrice = calculateTotalPrice(price, newDiscount);
                 request.getSession().setAttribute(TOTAL_PRICE, totalPrice);
 
-                if (actionPayOrder != null) {
-                    orderLogic.payOrder(order);
-                    //TODO установить скидку
-                    currentClient.setDiscount(currentClient.getDiscount() + newDiscount);
+                LOG.debug("Price was calculated.");
+            }
+
+            if (actionPayOrder != null) {
+                LOG.debug("Payment. " + actionPayOrder);
+                try {
+                    Order currentOrder = (Order) request.getSession().getAttribute(ORDER);
+                    long idOrder = currentOrder.getId();
+                    double newDiscount = (double)(request.getSession().getAttribute(NEW_DISCOUNT));
+
+                    orderLogic.payOrderWithDiscount(currentOrder, newDiscount);
+                    currentClient.setDiscount(newDiscount);
                     LOG.info("Client with id " + idClient + " pay for order with id " + idOrder);
 
                     List<Order> unpaidOrdersUpdated = clientLogic.findAllUnpaidOrderByIdClients(idClient);
                     request.getSession().setAttribute(UNPAID_ORDERS, unpaidOrdersUpdated);
 
-                    request.getSession().setAttribute(
-                            ORDER_SUCCESSFULLY_PAID, MessageManager.getProperty("messages.orderSuccessfullyPaid"));
+                }catch (NullPointerException e){
+                    request.setAttribute(
+                            SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
+                    page = ConfigurationManager.getProperty("path.page.client.orderpayment");
+                    return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
                 }
-            } else {
-                request.getSession().setAttribute(
-                        SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
             }
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);

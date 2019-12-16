@@ -89,4 +89,13 @@ public interface ClientDao {
      * @throws DaoException the dao exception
      */
     List<Client> findAllClientsByIdTrainer(long idTrainer) throws DaoException;
+
+    /**
+     * Update discount for client.
+     *
+     * @param idClient the id client
+     * @param discount the discount
+     * @throws DaoException the dao exception
+     */
+    void updateDiscount(long idClient, double discount) throws DaoException;
 }

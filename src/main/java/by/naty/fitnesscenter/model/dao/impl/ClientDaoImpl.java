@@ -72,6 +72,8 @@ public class ClientDaoImpl implements ClientDao {
                     "JOIN `client` ON `client`.`id`=`user`.id " +
                     "WHERE trainer.id=?;";
 
+    private static final String UPDATE_DISCOUNT = "UPDATE `client` SET discount=? WHERE id=?;";
+
     @Override
     public void createClient(Client client) throws DaoException {
         User user = createUserFromClient(client);
@@ -228,6 +230,19 @@ public class ClientDaoImpl implements ClientDao {
                 }
             }
             return clients;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void updateDiscount(long idClient, double discount) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_DISCOUNT)) {
+
+            statement.setDouble(1, discount);
+            statement.setLong(2, idClient);
+            statement.executeUpdate();
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);
         }

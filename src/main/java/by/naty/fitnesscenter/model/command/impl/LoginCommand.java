@@ -69,10 +69,15 @@ public class LoginCommand implements Command {
                                 Trainer trainer = trainerLogic.findTrainerByEmail(login);
                                 request.getSession().setAttribute(TRAINER, trainer);
 
-                                List<Client> listOfAllClientsByIdTrainer = clientLogic.findAllClientsByIdTrainer(trainer.getId());
-                                request.getSession().setAttribute(CLIENTS_OF_TRAINER, listOfAllClientsByIdTrainer);
+                                List<Client> clients1 = clientLogic.findAllClientsByIdTrainer(trainer.getId());
+                                for (Client client : clients1) {
+                                    List<Order> ordersOfClient = clientLogic.findAllOrderByIdClients(client.getId());
+                                    client.setOrderList(ordersOfClient);
+                                }
+                                request.getSession().setAttribute(CLIENTS, clients1);
 
-                                LOG.debug("List of all clients by id trainer: " + listOfAllClientsByIdTrainer);
+
+                                LOG.debug("List of all clients by id trainer: " + clients1);
 
                                 page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                                 LOG.info("  Trainer: " + user.getEmail() + " log in.");
