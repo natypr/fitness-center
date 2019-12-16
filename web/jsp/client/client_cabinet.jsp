@@ -113,8 +113,6 @@
                     </tbody>
                 </table>
 
-                <p><fmt:message key="table.client.text.help.pay" bundle="${var}"/></p>
-
                 <c:if test="${not empty sessionScope.selectOrderRadio}">
                     <div class="alert alert-warning" role="alert">
                             ${sessionScope.selectOrderRadio}
@@ -128,8 +126,8 @@
                 </c:if>
 
                 <div class="text-center">
-                    <button type="submit" class="btn btn btn-outline-success" name="pay">
-                        <fmt:message key="table.client.button.pay" bundle="${var}"/></button>
+                    <a href="${pageContext.request.contextPath}/controller?command=order_payment">
+                        <fmt:message key="table.client.button.gotopay" bundle="${var}"/></a>
 
                     <button type="submit" class="btn btn-outline-danger" name="refuse">
                         <fmt:message key="table.client.button.refuse" bundle="${var}"/></button>

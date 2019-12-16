@@ -73,6 +73,15 @@ public interface ClientDao {
     List<Order> findAllOrderByIdClient(long idClient) throws DaoException;
 
     /**
+     * Finds all unpaid orders by id client.
+     *
+     * @param idClient the id client
+     * @return the list of unpaid orders
+     * @throws DaoException the dao exception
+     */
+    List<Order> findAllUnpaidOrderByIdClient(long idClient) throws DaoException;
+
+    /**
      * Finds all clients by id trainer.
      *
      * @param idTrainer the id trainer

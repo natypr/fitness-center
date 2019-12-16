@@ -57,6 +57,12 @@ public class ClientDaoImpl implements ClientDao {
                     "INNER JOIN user as u ON o.id_trainer=u.id " +
                     "WHERE o.id_client=?;";
 
+    private static final String FIND_ALL_UNPAID_ORDER_BY_ID_CLIENT =
+            "SELECT o.id, o.type_of_workout, o.number_of_workout, o.id_trainer, u.email, o.equipment, o.description, o.id_client, o.is_paid " +
+                    "FROM `order` as o " +
+                    "INNER JOIN user as u ON o.id_trainer=u.id " +
+                    "WHERE o.is_paid=false AND o.id_client=?;";
+
     private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
             "SELECT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
                     "FROM `trainer` " +
@@ -174,6 +180,25 @@ public class ClientDaoImpl implements ClientDao {
     public List<Order> findAllOrderByIdClient(long idClient) throws DaoException {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_ORDER_BY_ID_CLIENT)) {
+
+            statement.setLong(1, idClient);
+            List<Order> orders;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                orders = new ArrayList<>();
+                while (resultSet.next()) {
+                    orders.add(createOrderFromResult(resultSet));
+                }
+            }
+            return orders;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Order> findAllUnpaidOrderByIdClient(long idClient) throws DaoException {
+        try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_UNPAID_ORDER_BY_ID_CLIENT)) {
 
             statement.setLong(1, idClient);
             List<Order> orders;

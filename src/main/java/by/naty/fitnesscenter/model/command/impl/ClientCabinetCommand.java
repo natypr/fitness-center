@@ -34,7 +34,6 @@ public class ClientCabinetCommand implements Command {
         Client client = (Client) request.getSession().getAttribute(CLIENT);
         String radioSelectOrder = request.getParameter(SELECT_ORDER);
         String actionDeleteOrder = request.getParameter(REFUSE);
-        String actionPayOrder = request.getParameter(PAY);
 
         String page;
         try {
@@ -52,15 +51,6 @@ public class ClientCabinetCommand implements Command {
                         List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
                         request.getSession().setAttribute(ORDERS, ordersUpdated);
                     }
-                }
-
-                if (actionPayOrder != null) {
-                    Order order = orderLogic.findOrderById(Long.parseLong(radioSelectOrder));
-                    orderLogic.payOrder(order);
-                    LOG.info("User " + client.getEmail() + " pay for order with id " + order.getId());
-
-                    List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
-                    request.getSession().setAttribute(ORDERS, ordersUpdated);
                 }
             } else {
                 request.getSession().setAttribute(
