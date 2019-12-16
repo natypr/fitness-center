@@ -5,14 +5,14 @@
 <fmt:setBundle basename="messages" var="var"/>
 <%@ taglib prefix="ctg" uri="customtags" %>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark flex-column flex-md-row bg-dark">
     <a class="navbar-brand" href="${pageContext.request.contextPath}/jsp/main.jsp">
         <fmt:message key="text.header.fitnesscenter" bundle="${var}"/></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse " id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath}/controller?command=show_trainer_list">
@@ -43,7 +43,6 @@
                 </c:choose>
             </li>
 
-
             <c:if test="${not empty sessionScope.user}">
                 <%--                <ctg:role user="${sessionScope.user}"/>--%>
                 <li class="nav-item">
@@ -51,26 +50,32 @@
                         <fmt:message key="text.header.logout" bundle="${var}"/></a>
                 </li>
             </c:if>
+        </ul>
 
-            <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
-                <input type="hidden" name="command" value="locale"/>
-                <input type="hidden" name="new_locale" value="ru_RU"/>
-                <input type="image"
-                       src="<fmt:message key="path.to.locale.picture.flag.ru" bundle="${var}"/>"
-                       height="30" width="40"
-                       alt="<fmt:message key="button.locale.language.ru" bundle="${var}"/>">
-            </form>
-            <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
-                <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
-                <input type="hidden" name="command" value="locale"/>
-                <input type="hidden" name="new_locale" value="en_US"/>
-                <input type="image"
-                       src="<fmt:message key="path.to.locale.picture.flag.us" bundle="${var}"/>"
-                       height="30" width="40"
-                       alt="<fmt:message key="button.locale.language.us" bundle="${var}"/>">
-            </form>
 
+        <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item">
+                <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
+                    <input type="hidden" name="command" value="locale"/>
+                    <input type="hidden" name="new_locale" value="ru_RU"/>
+                    <input type="image"
+                           src="<fmt:message key="path.to.locale.picture.flag.ru" bundle="${var}"/>"
+                           height="30" width="40"
+                           alt="<fmt:message key="button.locale.language.ru" bundle="${var}"/>">
+                </form>
+            </li>
+            <li class="nav-item">
+                <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
+                    <input type="hidden" name="command" value="locale"/>
+                    <input type="hidden" name="new_locale" value="en_US"/>
+                    <input type="image"
+                           src="<fmt:message key="path.to.locale.picture.flag.us" bundle="${var}"/>"
+                           height="30" width="40"
+                           alt="<fmt:message key="button.locale.language.us" bundle="${var}"/>">
+                </form>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="#"><ctg:info-time-tag/></a>

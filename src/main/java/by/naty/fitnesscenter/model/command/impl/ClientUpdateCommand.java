@@ -44,13 +44,12 @@ public class ClientUpdateCommand implements Command {
 
                 clientLogic.updateClient(client);
                 LOG.info("Update client " + client.getEmail());
-                request.getSession().setAttribute(
-                        SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
+                request.setAttribute(SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
             }
             request.getSession().setAttribute(CLIENT, client);
 
             page = ConfigurationManager.getProperty("path.page.client.updateprofile");
-            return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
+            return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);
         }

@@ -46,15 +46,19 @@ public class ClientCabinetCommand implements Command {
                     if (!order.isPaid()) {
                         orderLogic.deleteOrderById(order.getId());
                         LOG.info("User " + client.getEmail() + " deleted workout with id " + order.getId());
-                        request.getSession().setAttribute(
-                                ORDER_SUCCESSFULLY_DELETED, MessageManager.getProperty("messages.orderSuccessfullyDeleted"));
                         List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
                         request.getSession().setAttribute(ORDERS, ordersUpdated);
+                    } else {
+                        request.setAttribute(
+                                ORDER_CANNOT_BE_DELETED, MessageManager.getProperty("messages.orderCannotBeDeleted"));
+                        page = ConfigurationManager.getProperty("path.page.client.cabinet");
+                        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
                     }
                 }
             } else {
-                request.getSession().setAttribute(
-                        SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
+                request.setAttribute(SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
+                page = ConfigurationManager.getProperty("path.page.client.cabinet");
+                return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
             }
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);

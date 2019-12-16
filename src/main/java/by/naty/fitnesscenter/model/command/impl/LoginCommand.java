@@ -6,7 +6,6 @@ import by.naty.fitnesscenter.model.entity.*;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.logic.OrderLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.logic.UserLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
@@ -26,14 +25,11 @@ public class LoginCommand implements Command {
     private UserLogic userLogic;
     private ClientLogic clientLogic;
     private TrainerLogic trainerLogic;
-    private OrderLogic orderLogic;
 
-    public LoginCommand(UserLogic userLogic, ClientLogic clientLogic,
-                        TrainerLogic trainerLogic, OrderLogic orderLogic) {
+    public LoginCommand(UserLogic userLogic, ClientLogic clientLogic, TrainerLogic trainerLogic) {
         this.userLogic = userLogic;
         this.clientLogic = clientLogic;
         this.trainerLogic = trainerLogic;
-        this.orderLogic = orderLogic;
     }
 
     @Override
@@ -69,15 +65,12 @@ public class LoginCommand implements Command {
                                 Trainer trainer = trainerLogic.findTrainerByEmail(login);
                                 request.getSession().setAttribute(TRAINER, trainer);
 
-                                List<Client> clients1 = clientLogic.findAllClientsByIdTrainer(trainer.getId());
-                                for (Client client : clients1) {
+                                List<Client> clientsByTrainer = clientLogic.findAllClientsByIdTrainer(trainer.getId());
+                                for (Client client : clientsByTrainer) {
                                     List<Order> ordersOfClient = clientLogic.findAllOrderByIdClients(client.getId());
                                     client.setOrderList(ordersOfClient);
                                 }
-                                request.getSession().setAttribute(CLIENTS, clients1);
-
-
-                                LOG.debug("List of all clients by id trainer: " + clients1);
+                                request.getSession().setAttribute(CLIENTS, clientsByTrainer);
 
                                 page = ConfigurationManager.getProperty("path.page.trainer.cabinet");
                                 LOG.info("  Trainer: " + user.getEmail() + " log in.");
@@ -94,20 +87,23 @@ public class LoginCommand implements Command {
                                 break;
                         }
                     } else {
-                        request.getSession().setAttribute(
+                        request.setAttribute(
                                 ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.userisblocked"));
+                        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
                     }
                 } else {
                     LOG.info("This user does not exist.");
-                    request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+                    request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+                    return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
                 }
             } catch (LogicException e) {
-                request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+                request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
                 throw new CommandException(e);
             }
         } else {
             LOG.info("Password or email isn't valid.");
-            request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.notvalid"));
+            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.notvalid"));
+            return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
         }
         return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
     }

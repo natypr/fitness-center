@@ -65,7 +65,6 @@ public class OrderPaymentCommand implements Command {
             }
 
             if (actionPayOrder != null) {
-                LOG.debug("Payment. " + actionPayOrder);
                 try {
                     Order currentOrder = (Order) request.getSession().getAttribute(ORDER);
                     long idOrder = currentOrder.getId();
@@ -78,11 +77,14 @@ public class OrderPaymentCommand implements Command {
                     List<Order> unpaidOrdersUpdated = clientLogic.findAllUnpaidOrderByIdClients(idClient);
                     request.getSession().setAttribute(UNPAID_ORDERS, unpaidOrdersUpdated);
 
-                }catch (NullPointerException e){
+                    List<Order> orders = clientLogic.findAllOrderByIdClients(idClient);
+                    request.getSession().setAttribute(ORDERS, orders);
+
                     request.setAttribute(
-                            SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
-                    page = ConfigurationManager.getProperty("path.page.client.orderpayment");
-                    return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
+                            ORDER_SUCCESSFULLY_PAID, MessageManager.getProperty("messages.orderSuccessfullyPaid"));
+
+                }catch (NullPointerException e){
+                    request.setAttribute(SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
                 }
             }
         } catch (LogicException e) {
@@ -90,6 +92,6 @@ public class OrderPaymentCommand implements Command {
         }
 
         page = ConfigurationManager.getProperty("path.page.client.orderpayment");
-        return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
+        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
     }
 }

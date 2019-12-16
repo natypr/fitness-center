@@ -42,7 +42,7 @@ public class TrainerCabinetCommand implements Command {
 
         String page;
         try {
-            List<Client> clients = clientLogic.findAllClientsByIdTrainer(trainer.getId());
+            /*List<Client> clients = clientLogic.findAllClientsByIdTrainer(trainer.getId());
             for (Client client : clients) {
                 LOG.debug("Clients: " + clients);
                 List<Order> ordersOfClient = clientLogic.findAllOrderByIdClients(client.getId());
@@ -50,7 +50,7 @@ public class TrainerCabinetCommand implements Command {
                 client.setOrderList(ordersOfClient);
             }
             LOG.debug("Clients: " + clients);
-            request.getSession().setAttribute(CLIENTS, clients);
+            request.getSession().setAttribute(CLIENTS, clients);*/
 
             if (radioSelectOrder != null) {
                 if (actionUpdateOrder != null) {

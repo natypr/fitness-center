@@ -65,10 +65,10 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <input type="number" class="form-control"
+                            <input type="text" class="form-control"
                                    placeholder="<fmt:message key="text.reg.yearold" bundle="${var}"/>" name="year_old"
                                    value="" id="idYearOld1" required
-                                   pattern="^([0-9]{1,2})$"/>
+                                   pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
                 </div>
@@ -89,9 +89,9 @@
                     </small>
                 </div>
 
-                <c:if test="${not empty sessionScope.errorLoginPassMessage}">
+                <c:if test="${not empty errorLoginPassMessage}">
                     <div class="alert alert-danger" role="alert">
-                            ${sessionScope.errorLoginPassMessage}
+                            ${errorLoginPassMessage}
                     </div>
                 </c:if>
 

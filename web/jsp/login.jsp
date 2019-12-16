@@ -31,9 +31,9 @@
                            placeholder="<fmt:message key="text.login.password" bundle="${var}"/>" id="idPassword1">
                 </div>
 
-                <c:if test="${not empty sessionScope.errorLoginPassMessage}">
+                <c:if test="${not empty errorLoginPassMessage}">
                     <div class="alert alert-danger" role="alert">
-                            ${sessionScope.errorLoginPassMessage}
+                            ${errorLoginPassMessage}
                     </div>
                 </c:if>
 

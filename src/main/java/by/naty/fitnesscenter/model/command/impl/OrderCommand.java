@@ -7,6 +7,7 @@ import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
+import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.logic.OrderLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
@@ -16,15 +17,19 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
 public class OrderCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
+    private ClientLogic clientLogic;
     private TrainerLogic trainerLogic;
     private OrderLogic orderLogic;
 
-    public OrderCommand(TrainerLogic trainerLogic, OrderLogic orderLogic) {
+    public OrderCommand(ClientLogic clientLogic, TrainerLogic trainerLogic, OrderLogic orderLogic) {
+        this.clientLogic = clientLogic;
         this.trainerLogic = trainerLogic;
         this.orderLogic = orderLogic;
     }
@@ -38,20 +43,27 @@ public class OrderCommand implements Command {
         Client client = (Client) request.getSession().getAttribute(CLIENT);
         Order order = new Order();
         try {
-            Trainer trainer = trainerLogic.findTrainerByEmail(radioSelectTrainer);
-            order.setTypeOfWorkout(selectTypeOfWorkout);
-            order.setNumberOfWorkout(Integer.parseInt(numberOfWorkout));
-            order.setIdTrainer(trainer.getId());
-            order.setIdClient(client.getId());
-            order.setPaid(false);
-            orderLogic.createOrder(order);
+            if(radioSelectTrainer != null) {
+                Trainer trainer = trainerLogic.findTrainerByEmail(radioSelectTrainer);
+                order.setTypeOfWorkout(selectTypeOfWorkout);
+                order.setNumberOfWorkout(Integer.parseInt(numberOfWorkout));
+                order.setIdTrainer(trainer.getId());
+                order.setIdClient(client.getId());
+                order.setPaid(false);
+                orderLogic.createOrder(order);
 
-            LOG.info("Create order by " + client.getEmail());
-            request.getSession().setAttribute(SUCCESSFUL_ORDER, MessageManager.getProperty("messages.orderdone"));
-            page = ConfigurationManager.getProperty("path.page.client.order");
+                LOG.info("Create order by " + client.getEmail());
+                request.setAttribute(SUCCESSFUL_ORDER, MessageManager.getProperty("messages.orderdone"));
+
+                List<Order> orders = clientLogic.findAllOrderByIdClients(client.getId());
+                request.getSession().setAttribute(ORDERS, orders);
+            } else {
+                request.setAttribute(SELECT_TRAINER_RADIO, MessageManager.getProperty("messages.selectTrainerRadio"));
+            }
         } catch (LogicException e) {
             throw new CommandException(e.getMessage(), e);
         }
-        return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
+        page = ConfigurationManager.getProperty("path.page.client.order");
+        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
     }
 }

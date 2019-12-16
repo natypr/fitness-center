@@ -81,8 +81,12 @@ public class ConstantNameFromJsp {
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
     public static final String ORDER_SUCCESSFULLY_DELETED = "orderSuccessfullyDeleted";
     public static final String SELECT_ORDER_RADIO = "selectOrderRadio";
+    public static final String SELECT_TRAINER_RADIO = "selectTrainerRadio";
     public static final String ORDER_SUCCESSFULLY_UPDATED = "orderSuccessfullyUpdated";
     public static final String ORDER_SUCCESSFULLY_PAID = "orderSuccessfullyPaid";
+    public static final String ORDER_CANNOT_BE_DELETED = "orderCannotBeDeleted";
+    public static final String SELECT_USER_CHECKBOX = "selectUserCheckbox";
+    public static final String ADMIN_CANNOT_BE_BLOCKED = "adminCannotBeBlocked";
 
     private ConstantNameFromJsp(){
 

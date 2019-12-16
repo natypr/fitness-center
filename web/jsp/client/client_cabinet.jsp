@@ -113,15 +113,15 @@
                     </tbody>
                 </table>
 
-                <c:if test="${not empty sessionScope.selectOrderRadio}">
+                <c:if test="${not empty selectOrderRadio}">
                     <div class="alert alert-warning" role="alert">
-                            ${sessionScope.selectOrderRadio}
+                            ${selectOrderRadio}
                     </div>
                 </c:if>
 
-                <c:if test="${not empty sessionScope.orderSuccessfullyDeleted}">
+                <c:if test="${not empty orderCannotBeDeleted}">
                     <div class="alert alert-danger" role="alert">
-                            ${sessionScope.orderSuccessfullyDeleted}
+                            ${orderCannotBeDeleted}
                     </div>
                 </c:if>
 

@@ -17,7 +17,7 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <form name="localeFormOut" method="POST" action="${pageContext.request.contextPath}/controller">
+            <form name="trainerListShow" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="show_trainer_list"/>
 
                 <table class="table table-hover">

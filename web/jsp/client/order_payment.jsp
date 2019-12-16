@@ -96,6 +96,12 @@
                             </div>
                         </c:if>
 
+                        <c:if test="${not empty orderSuccessfullyPaid}">
+                            <div class="alert alert-success" role="alert">
+                                    ${orderSuccessfullyPaid}
+                            </div>
+                        </c:if>
+
                         <div class="text-center">
                             <button type="submit" class="btn btn btn-outline-success" name="pay">
                                 <fmt:message key="table.client.button.pay" bundle="${var}"/></button>

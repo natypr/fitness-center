@@ -34,10 +34,10 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="number" class="form-control"
+                        <input type="text" class="form-control"
                                placeholder="<fmt:message key="text.order.numberofworkout" bundle="${var}"/>"
                                name="number_of_workout"
-                               value="" required pattern="^([0-9]{1,3})$"/>
+                               value="" required pattern="^([1-9][0-9]{1,2})$"/>
                     </div>
                 </div>
 
@@ -73,9 +73,15 @@
                     </tbody>
                 </table>
 
-                <c:if test="${not empty sessionScope.successfulOrder}">
+                <c:if test="${not empty selectTrainerRadio}">
+                    <div class="alert alert-warning" role="alert">
+                            ${selectTrainerRadio}
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty successfulOrder}">
                     <div class="alert alert-success" role="alert">
-                            ${sessionScope.successfulOrder}
+                            ${successfulOrder}
                     </div>
                 </c:if>
 

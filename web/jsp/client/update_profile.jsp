@@ -51,15 +51,15 @@
                                 <fmt:message key="text.updateprofile.yearold" bundle="${var}"/></label>
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" id="idYearOld1" name="year_old"
-                                   value="${client.yearOld}" required pattern="^([0-9]{1,2})$"/>
+                            <input type="text" class="form-control" id="idYearOld1" name="year_old"
+                                   value="${client.yearOld}" required  pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
                 </div>
 
-                <c:if test="${not empty sessionScope.successfullyUpdated}">
+                <c:if test="${not empty successfullyUpdated}">
                     <div class="alert alert-success" role="alert">
-                            ${sessionScope.successfullyUpdated}
+                            ${successfullyUpdated}
                     </div>
                 </c:if>
 

@@ -17,8 +17,8 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <p><fmt:message key="text.main.description1" bundle="${var}"/></p>
-            <p><fmt:message key="text.main.description2" bundle="${var}"/></p>
+            <p><fmt:message key="text.main.description1" bundle="${var}"/>
+                <fmt:message key="text.main.description2" bundle="${var}"/></p>
             <p><fmt:message key="text.main.description3" bundle="${var}"/></p>
 
             <h3><fmt:message key="text.main.advantages" bundle="${var}"/></h3>

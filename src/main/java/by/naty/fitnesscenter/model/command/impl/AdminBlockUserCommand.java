@@ -8,6 +8,7 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.UserLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.resource.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,12 +41,21 @@ public class AdminBlockUserCommand implements Command {
                     LOG.info("Selected user: " + currentUser);
                     usersToProcess.add(currentUser);
                 }
+            } else {
+                request.setAttribute(SELECT_USER_CHECKBOX, MessageManager.getProperty("messages.selectUserCheckbox"));
+                page = ConfigurationManager.getProperty("path.page.admin.cabinet");
+                return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
             }
             for (User user : usersToProcess) {
                 if (actionAdminBlockUser != null) {
                     if (!user.getRole().equals(UserType.ADMIN.getTypeUser())) {
                         userLogic.blockUserById(user.getId());
                         LOG.info("Blocked user: " + user.getEmail());
+                    } else {
+                        request.setAttribute(
+                                ADMIN_CANNOT_BE_BLOCKED, MessageManager.getProperty("messages.adminCannotBeBlocked"));
+                        page = ConfigurationManager.getProperty("path.page.admin.cabinet");
+                        return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
                     }
                 }
                 if (actionAdminUnblockUser != null) {

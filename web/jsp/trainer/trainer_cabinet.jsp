@@ -98,13 +98,12 @@
                         <th scope="col"><fmt:message key="text.trainercabinet.email" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.discount" bundle="${var}"/></th>
 
+                        <th scope="col"><fmt:message key="text.trainercabinet.select" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.equipment" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.description" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.ispaid" bundle="${var}"/></th>
-
-                        <th scope="col"><fmt:message key="text.trainercabinet.select" bundle="${var}"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -116,15 +115,19 @@
                             <td>${client.yearOld}</td>
                             <td>${client.email}</td>
                             <td>${client.discount}</td>
+                            <td></td><td></td>
+                            <td></td><td></td><td></td>
                         </tr>
                         <c:forEach items="${client.orderList}" var="order">
                             <tr>
+                                <td></td><td></td><td></td>
+                                <td></td><td></td><td></td>
+                                <td><input type="radio" name="select_order" value="${order.id}" id="id"/></td>
                                 <td>${order.typeOfWorkout}</td>
                                 <td>${order.numberOfWorkout}</td>
                                 <td>${order.equipment}</td>
                                 <td>${order.description}</td>
                                 <td>${order.paid}</td>
-                                <td><input type="radio" name="select_order" value="${order.id}" id="id"/></td>
                             </tr>
                         </c:forEach>
                     </c:forEach>

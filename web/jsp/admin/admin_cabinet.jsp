@@ -17,7 +17,7 @@
     <div class="row justify-content-md-center">
         <div class="col col-lg-10">
 
-            <a href="${pageContext.request.contextPath}/jsp/admin/all_info.jsp">
+            <a href="${pageContext.request.contextPath}/controller?command=admin_show_info">
                 <fmt:message key="href.admincabinet.showallinfo" bundle="${var}"/></a>
 
             <form name="adminCabinetClients" method="POST" action="${pageContext.request.contextPath}/controller">
@@ -51,6 +51,19 @@
                     </c:forEach>
                     </tbody>
                 </table>
+
+                <c:if test="${not empty selectUserCheckbox}">
+                    <div class="alert alert-warning" role="alert">
+                            ${selectUserCheckbox}
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty adminCannotBeBlocked}">
+                    <div class="alert alert-danger" role="alert">
+                            ${adminCannotBeBlocked}
+                    </div>
+                </c:if>
+
 
                 <div class="text-center">
                     <button type="submit" class="btn btn btn-outline-success" name="button_admin_unblock_user">

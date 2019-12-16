@@ -10,7 +10,6 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.logic.ClientLogic;
 import by.naty.fitnesscenter.model.logic.TrainerLogic;
-import by.naty.fitnesscenter.model.logic.UserLogic;
 import by.naty.fitnesscenter.model.resource.ConfigurationManager;
 import by.naty.fitnesscenter.model.resource.MessageManager;
 import by.naty.fitnesscenter.model.validator.DataValidator;
@@ -26,12 +25,11 @@ public class RegistrationCommand implements Command {
 
     private static final String CLIENT_ROLE = "Client";
 
-    private UserLogic userLogic;
     private ClientLogic clientLogic = new ClientLogic();
     private TrainerLogic trainerLogic = new TrainerLogic();
 
-    public RegistrationCommand(UserLogic userLogic) {
-        this.userLogic = userLogic;
+    public RegistrationCommand() {
+
     }
 
     private static boolean checkRegistration(String name, String surname,
@@ -84,8 +82,9 @@ public class RegistrationCommand implements Command {
             LOG.info(name + " (" + email + ") is registered now.");
         } else {
             LOG.info("Data isn't correct.");
-            request.getSession().setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
+            request.setAttribute(ERROR_LOGIN_PASS_MESSAGE, MessageManager.getProperty("message.login.error"));
             page = ConfigurationManager.getProperty("path.page.reg");
+            return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
         }
         return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
     }
