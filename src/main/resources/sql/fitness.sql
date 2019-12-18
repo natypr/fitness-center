@@ -23,15 +23,14 @@ CREATE TABLE user
     email                VARCHAR(40)           NOT NULL,
     password             VARCHAR(40)           NOT NULL,
     blocked              TINYINT               NOT NULL DEFAULT 0,
-    date_of_registration DATETIME              NOT NULL DEFAULT now(),
+    date_of_registration DATETIME              NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (role_num) REFERENCES role_legend (role_num),
     UNIQUE (email)
 );
 
 INSERT INTO user (id, role_num, name, surname, gender, year_old, email, password, blocked, date_of_registration)
-VALUES (1, 0, 'Админ', 'Админ', 'M', 17, 'admin@gmail.com', '200ceb26807d6bf99fd6f4f0d1ca54d4', 0,
-        '2019-12-01 00:00:00');
+VALUES (1, 0, 'Админ', 'Админ', 'M', 17, 'admin@gmail.com', '200ceb26807d6bf99fd6f4f0d1ca54d4', 0, NOW());
 
 CREATE TABLE client
 (
@@ -58,7 +57,7 @@ CREATE TABLE `order`
     description       VARCHAR(100)          NOT NULL DEFAULT 'for health',
     id_client         BIGINT                NOT NULL,
     is_paid           TINYINT               NOT NULL DEFAULT 0,
-    date_of_order     DATETIME              NOT NULL DEFAULT now(),
+    date_of_order     DATETIME              NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id),
     FOREIGN KEY (id_trainer) REFERENCES trainer (id),
     FOREIGN KEY (id_client) REFERENCES client (id)

@@ -40,7 +40,7 @@
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
                                    value="${client.surname}" required maxlength="30"
-                                   pattern=^([A-Z][a-z]{2,30})|([А-Я][а-я]{2,30})$"/>
+                                   pattern="^([A-Z][a-z]{2,30})|([А-Я][а-я]{2,30})$"/>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idYearOld1" name="year_old"
-                                   value="${client.yearOld}" required maxlength="2"  pattern="^([1-9][0-9]?)$"/>
+                                   value="${client.yearOld}" required maxlength="2" pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
                 </div>

@@ -53,34 +53,33 @@
         </ul>
 
 
-        <ul class="navbar-nav ml-md-auto">
-            <li class="nav-item">
+        <div class="navbar-nav ml-md-auto">
+            <div class="mx-2">
                 <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                     <input type="hidden" name="command" value="locale"/>
                     <input type="hidden" name="new_locale" value="ru_RU"/>
                     <input type="image"
-                           src="<fmt:message key="path.to.locale.picture.flag.ru" bundle="${var}"/>"
+                           src="${pageContext.request.contextPath}/png/ru.png"
                            height="30" width="40"
                            alt="<fmt:message key="button.locale.language.ru" bundle="${var}"/>">
                 </form>
-            </li>
-            <li class="nav-item">
+            </div>
+
+            <div class="mx-2">
                 <form name="localeForm" method="POST" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="page_path" value="${pageContext.request.requestURL}"/>
                     <input type="hidden" name="command" value="locale"/>
                     <input type="hidden" name="new_locale" value="en_US"/>
                     <input type="image"
-                           src="<fmt:message key="path.to.locale.picture.flag.us" bundle="${var}"/>"
+                           src="${pageContext.request.contextPath}/png/us.png"
                            height="30" width="40"
                            alt="<fmt:message key="button.locale.language.us" bundle="${var}"/>">
                 </form>
-            </li>
-
+            </div>
             <li class="nav-item">
                 <a class="nav-link" href="#"><ctg:info-time-tag/></a>
             </li>
-
-        </ul>
+        </div>
     </div>
 </nav>

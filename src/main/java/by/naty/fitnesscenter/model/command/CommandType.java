@@ -12,7 +12,7 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     REGISTRATION(new RegistrationCommand()),
     CLIENT_CABINET(new ClientCabinetCommand(new ClientService(), new OrderService())),
-    TRAINER_CABINET(new TrainerCabinetCommand(new ClientService(), new TrainerService(), new OrderService())),
+    TRAINER_CABINET(new TrainerCabinetCommand(new ClientService(), new OrderService())),
     CLIENT_UPDATE(new ClientUpdateCommand(new ClientService())),
     TRAINER_UPDATE(new TrainerUpdateCommand(new TrainerService())),
     ADMIN_BLOCK_USER(new AdminBlockUserCommand(new UserService())),

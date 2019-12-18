@@ -51,8 +51,8 @@
                                 <fmt:message key="text.updateprofile.yearold" bundle="${var}"/></label>
                         </div>
                         <div class="col">
-                            <input type="number" class="form-control" id="idYearOld1" name="year_old"
-                                   value="${trainer.yearOld}" required maxlength="2"  pattern="^([0-9]{1,2})$"/>
+                            <input type="text" class="form-control" id="idYearOld1" name="year_old"
+                                   value="${trainer.yearOld}" required maxlength="2" pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
                 </div>

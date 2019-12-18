@@ -62,7 +62,7 @@ public class ClientDaoImpl implements ClientDao {
                     "WHERE o.is_paid=false AND o.id_client=?;";
 
     private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =    //FIXME
-            "SELECT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
+            "SELECT DISTINCT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
                     "FROM `trainer` " +
                     "JOIN `order` ON `order`.id_trainer=`trainer`.id " +
                     "JOIN `user` ON `order`.id_client=`user`.id " +

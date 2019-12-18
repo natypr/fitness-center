@@ -3,7 +3,7 @@
     <Properties>
         <property name="LOG_DIR">fitness</property>
         <property name="pattern_file">%d{yyyy-MM-dd HH:mm:ss} %-5level - %logger{-3} - %m%n</property>
-        <property name="pattern_console">%relative %-5level - %logger{1} - %m%n</property>
+        <property name="pattern_console">%d{HH:mm:ss} %-5level - %logger{1} - %m%n</property>
     </Properties>
 
     <Appenders>
@@ -25,7 +25,7 @@
     </Appenders>
 
     <Loggers>
-        <Root level = "debug">
+        <Root level = "info">
             <AppenderRef ref = "Console" level = "debug"/>
             <AppenderRef ref = "File"/>
             <AppenderRef ref="FileRolling"/>

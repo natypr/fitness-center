@@ -27,8 +27,8 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         User user = (User) httpRequest.getSession().getAttribute(USER);
-        String userRole = user.getRole();
-        if (userRole != null) {
+        if (user != null) {
+            String userRole = user.getRole();
             String currentPage = httpRequest.getRequestURL().toString();
 
             if (currentPage.contains("/" + userRole + "/")) {
@@ -41,6 +41,7 @@ public class SecurityFilter implements Filter {
             }
         } else {
             LOG.error("User role is null. ");
+            request.setAttribute(ACCESS_CLOSED, MessageManager.getProperty("message.filter.accessClosedUserNull"));
             String page = ConfigurationManager.getProperty("path.page.error");
             httpRequest.getRequestDispatcher(page).forward(request, response);
         }

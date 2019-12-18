@@ -1,6 +1,8 @@
 package by.naty.fitnesscenter.model.filter;
 
 import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -13,18 +15,18 @@ import java.io.IOException;
  */
 @WebFilter(urlPatterns = {"/*"})
 public class TimeOutFilter implements Filter {
+    private static final Logger LOG = LogManager.getLogger();
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
-
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpSession session = httpRequest.getSession();
-        if (session.isNew()) {
-            String page = ConfigurationManager.getProperty("path.page.main");
-            request.getRequestDispatcher(page).forward(request, response);
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpSession session = request.getSession(false);
+        if (session != null && !session.isNew()) {
+            chain.doFilter(servletRequest, servletResponse);
         } else {
-            chain.doFilter(request, response);
+            request.getRequestDispatcher(ConfigurationManager.getProperty("path.page.index"))
+                    .forward(servletRequest, servletResponse);
         }
     }
 }

@@ -42,7 +42,6 @@ public class ConstantNameFromJsp {
     public static final String NEW_LOCALE = "new_locale";
     public static final String PAGE_PATH = "page_path";
     public static final String RADIO_SELECT_TRAINER = "select_trainer";
-    public static final String SELECT_WORKOUT_RADIO = "select_trainer";
     public static final String SELECT_TYPE_OF_WORKOUT = "select_type_of_workout";
 
     public static final String IS_PAID = "is_paid";
@@ -62,13 +61,15 @@ public class ConstantNameFromJsp {
     public static final String ERROR_LOGIN_PASS_MESSAGE = "errorLoginPassMessage";
     public static final String SELECT_ORDER_RADIO = "selectOrderRadio";
     public static final String SELECT_TRAINER_RADIO = "selectTrainerRadio";
-    public static final String ORDER_SUCCESSFULLY_UPDATED = "orderSuccessfullyUpdated";
     public static final String ORDER_SUCCESSFULLY_PAID = "orderSuccessfullyPaid";
     public static final String ORDER_CANNOT_BE_DELETED = "orderCannotBeDeleted";
     public static final String SELECT_USER_CHECKBOX = "selectUserCheckbox";
     public static final String ADMIN_CANNOT_BE_BLOCKED = "adminCannotBeBlocked";
     public static final String ACCESS_CLOSED = "accessClosed";
     public static final String DATA_IS_NOT_CORRECT = "dataIsNotCorrect";
+    public static final String CANNOT_CHANGE_PAID_ORDER = "cannotChangePaidOrder";
+    public static final String SELECT_WORKOUT_RADIO = "selectWorkoutRadio";
+    public static final String CANNOT_CHANGE_ORDER_OF_ANOTHER_TRAINER = "cannotChangeOrderOfAnotherTrainer";
 
     private ConstantNameFromJsp() {
 

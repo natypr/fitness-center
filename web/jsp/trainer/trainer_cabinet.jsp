@@ -92,14 +92,15 @@
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col"><fmt:message key="text.trainercabinet.name" bundle="${var}"/></th>
-                        <th scope="col"><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></th>
-                        <%--<th scope="col"><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></th>
+                        <%--<th scope="col"><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.email" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.discount" bundle="${var}"/></th>--%>
 
                         <th scope="col"><fmt:message key="text.trainercabinet.select" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.idorder" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainercabinet.idtrainer" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.equipment" bundle="${var}"/></th>
@@ -123,9 +124,9 @@
                         <c:forEach items="${client.orderList}" var="order">
                             <tr>
                                 <td></td>
-                                <td></td>
                                 <td><input type="radio" name="select_order" value="${order.id}" id="id"/></td>
                                 <td>${order.id}</td>
+                                <td>${order.idTrainer}</td>
                                 <td>${order.typeOfWorkout}</td>
                                 <td>${order.numberOfWorkout}</td>
                                 <td>${order.equipment}</td>
@@ -170,15 +171,21 @@
                         </div>
                     </c:if>
 
-                    <c:if test="${not empty selectOrderRadio}">
+                    <c:if test="${not empty selectWorkoutRadio}">
                         <div class="alert alert-warning" role="alert">
-                                ${selectOrderRadio}
+                                ${selectWorkoutRadio}
                         </div>
                     </c:if>
 
-                    <c:if test="${not empty orderSuccessfullyUpdated}">
+                    <c:if test="${not empty cannotChangePaidOrder}">
                         <div class="alert alert-danger" role="alert">
-                                ${orderSuccessfullyUpdated}
+                                ${cannotChangePaidOrder}
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty cannotChangeOrderOfAnotherTrainer}">
+                        <div class="alert alert-danger" role="alert">
+                                ${cannotChangeOrderOfAnotherTrainer}
                         </div>
                     </c:if>
 

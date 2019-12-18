@@ -6,6 +6,8 @@ import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.ProxyConnection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.Optional;
 import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
 public class OrderDaoImpl implements OrderDao {
+    private static final Logger LOG = LogManager.getLogger();
 
     private static final String CREATE_ORDER =
             "INSERT INTO `order` (type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid) " +
@@ -24,18 +27,23 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String FIND_ALL_ORDERS =
             "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
-                    "FROM order ORDER BY id;";
+                    "FROM `order` ORDER BY id;";
 
     private static final String FIND_ALL_ORDERS_BY_ID_TRAINER =
             "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
-                    "FROM order WHERE id_trainer=? " +
+                    "FROM `order` WHERE id_trainer=? " +
+                    "ORDER BY id;";
+
+    private static final String FIND_ORDERS_OF_CLIENTS_BY_ID_TRAINER = //TODO!!!
+            "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
+                    "FROM `order` WHERE id_client=? AND id_trainer=? " +
                     "ORDER BY id;";
 
     private static final String FIND_ORDER_BY_ID =
             "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
                     "FROM `order` WHERE `order`.id=?;";
 
-    private static final String UPDATE_ORDER = "UPDATE order SET equipment=?, description=? WHERE id=?;";
+    private static final String UPDATE_ORDER = "UPDATE `order` SET equipment=?, description=? WHERE id=?;";
 
     private static final String DELETE_ORDER_BY_ID = "DELETE FROM `order` WHERE `order`.id=?;";
 
@@ -87,6 +95,55 @@ public class OrderDaoImpl implements OrderDao {
             throw new DaoException(e);
         }
     }
+
+    /*@Override
+    public List<Order> findOrdersOfClientsByIdTrainer(long idClient, long idTrainer) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_OF_CLIENTS_BY_ID_TRAINER)) {
+
+            statement.setLong(1, idClient);
+            statement.setLong(2, idTrainer);
+            //statement.executeQuery(FIND_ORDERS_OF_CLIENTS_BY_ID_TRAINER);
+            List<Order> orders;
+            try (ResultSet resultSet = statement.getResultSet()) {
+                orders = new ArrayList<>();
+                try {
+                    while (resultSet.next()) {
+                        orders.add(createOrderFromResult(resultSet));
+                    }
+                } catch (NullPointerException e){
+                    LOG.debug("Null.." + e);
+                }
+
+            }
+            return orders;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+*/
+/*
+    @Override
+    public Optional<List<Order>> findOrdersOfClientsByIdTrainer(long idClient, long idTrainer) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_ORDERS_OF_CLIENTS_BY_ID_TRAINER)) {
+
+            statement.setLong(1, idClient);
+            statement.setLong(2, idTrainer);
+            Optional<List<Order>> ordersOptional;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ordersOptional = Optional.empty();
+                if (resultSet.next()) {
+                    Order order = createOrderFromResult(resultSet);
+                    ordersOptional = Optional.of(order);
+                }
+            }
+            return orderOptional;
+        } catch (SQLException | PoolException e) {
+            throw new DaoException(e);
+        }
+    }
+*/
 
     @Override
     public Optional<Order> findOrderById(long id) throws DaoException {
