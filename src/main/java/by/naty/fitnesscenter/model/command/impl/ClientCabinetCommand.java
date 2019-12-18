@@ -6,10 +6,10 @@ import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.logic.OrderLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.service.ClientService;
+import by.naty.fitnesscenter.model.service.OrderService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,12 +21,12 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class ClientCabinetCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private ClientLogic clientLogic;
-    private OrderLogic orderLogic;
+    private ClientService clientService;
+    private OrderService orderService;
 
-    public ClientCabinetCommand(ClientLogic clientLogic, OrderLogic orderLogic) {
-        this.clientLogic = clientLogic;
-        this.orderLogic = orderLogic;
+    public ClientCabinetCommand(ClientService clientService, OrderService orderService) {
+        this.clientService = clientService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -37,16 +37,16 @@ public class ClientCabinetCommand implements Command {
 
         String page;
         try {
-            List<Order> orders = clientLogic.findAllOrderByIdClients(client.getId());
+            List<Order> orders = clientService.findAllOrderByIdClients(client.getId());
             request.getSession().setAttribute(ORDERS, orders);
 
-            if(radioSelectOrder != null) {
+            if (radioSelectOrder != null) {
                 if (actionDeleteOrder != null) {
-                    Order order = orderLogic.findOrderById(Long.parseLong(radioSelectOrder));
+                    Order order = orderService.findOrderById(Long.parseLong(radioSelectOrder));
                     if (!order.isPaid()) {
-                        orderLogic.deleteOrderById(order.getId());
+                        orderService.deleteOrderById(order.getId());
                         LOG.info("User " + client.getEmail() + " deleted workout with id " + order.getId());
-                        List<Order> ordersUpdated = clientLogic.findAllOrderByIdClients(client.getId());
+                        List<Order> ordersUpdated = clientService.findAllOrderByIdClients(client.getId());
                         request.getSession().setAttribute(ORDERS, ordersUpdated);
                     } else {
                         request.setAttribute(

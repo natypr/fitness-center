@@ -1,4 +1,4 @@
-package by.naty.fitnesscenter.model.logic;
+package by.naty.fitnesscenter.model.service;
 
 import by.naty.fitnesscenter.model.dao.TrainerDao;
 import by.naty.fitnesscenter.model.dao.impl.TrainerDaoImpl;
@@ -9,7 +9,7 @@ import by.naty.fitnesscenter.model.util.MD5;
 
 import java.util.List;
 
-public class TrainerLogic {
+public class TrainerService {
 
     public void createTrainer(Trainer trainer) throws LogicException {
         TrainerDao trainerDAO = new TrainerDaoImpl();

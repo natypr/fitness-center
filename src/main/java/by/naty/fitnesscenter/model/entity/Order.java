@@ -1,5 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
+import java.util.Objects;
+
 public class Order {
     private long id;
     private String typeOfWorkout;
@@ -13,8 +15,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(long id, String typeOfWorkout,
-                 int numberOfWorkout, long idTrainer, long idClient) {
+    public Order(long id, String typeOfWorkout, int numberOfWorkout, long idTrainer, long idClient) {
         this.id = id;
         this.typeOfWorkout = typeOfWorkout;
         this.numberOfWorkout = numberOfWorkout;
@@ -123,10 +124,10 @@ public class Order {
         if (idTrainer != order.idTrainer) return false;
         if (idClient != order.idClient) return false;
         if (paid != order.paid) return false;
-        if (typeOfWorkout != null ? !typeOfWorkout.equals(order.typeOfWorkout) : order.typeOfWorkout != null)
+        if (!Objects.equals(typeOfWorkout, order.typeOfWorkout))
             return false;
-        if (equipment != null ? !equipment.equals(order.equipment) : order.equipment != null) return false;
-        return description != null ? description.equals(order.description) : order.description == null;
+        if (!Objects.equals(equipment, order.equipment)) return false;
+        return Objects.equals(description, order.description);
     }
 
     @Override

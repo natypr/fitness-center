@@ -5,23 +5,24 @@ import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.service.ClientService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
+import static by.naty.fitnesscenter.model.validator.DataValidator.*;
 
 public class ClientUpdateCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private ClientLogic clientLogic;
+    private ClientService clientService;
 
-    public ClientUpdateCommand(ClientLogic clientLogic) {
-        this.clientLogic = clientLogic;
+    public ClientUpdateCommand(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @Override
@@ -37,14 +38,21 @@ public class ClientUpdateCommand implements Command {
                 String surname = request.getParameter(SURNAME);
                 String yearOld = request.getParameter(YEAR_OLD);
 
-                client = clientLogic.findClientById(currentClient.getId());
-                client.setName(name);
-                client.setSurname(surname);
-                client.setYearOld(Byte.parseByte(yearOld));
+                if (isNameCorrect(name) && isSurnameCorrect(surname) && isYearsOldCorrect(yearOld)) {
+                    client = clientService.findClientById(currentClient.getId());
+                    client.setName(name);
+                    client.setSurname(surname);
+                    client.setYearOld(Byte.parseByte(yearOld));
 
-                clientLogic.updateClient(client);
-                LOG.info("Update client " + client.getEmail());
-                request.setAttribute(SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
+                    clientService.updateClient(client);
+                    LOG.info("Update client " + client.getEmail());
+                    request.setAttribute(SUCCESSFULLY_UPDATED, MessageManager.getProperty("messages.successfullyupdated"));
+                } else {
+                    LOG.info("Data isn't correct.");
+                    request.setAttribute(DATA_IS_NOT_CORRECT, MessageManager.getProperty("message.dataIsNotCorrect"));
+                    page = ConfigurationManager.getProperty("path.page.client.updateprofile");
+                    return new CommandRouter(CommandRouter.DispatchType.FORWARD, page);
+                }
             }
             request.getSession().setAttribute(CLIENT, client);
 

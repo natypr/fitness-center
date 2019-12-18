@@ -21,8 +21,7 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 
 public class ClientDaoImpl implements ClientDao {
 
-    private static final String CREATE_CLIENT =
-            "INSERT INTO client (`id`, `discount`) VALUES (?, ?);";
+    private static final String CREATE_CLIENT = "INSERT INTO client (`id`, `discount`) VALUES (?, ?);";
 
     private static final String FIND_ALL_CLIENTS =
             "SELECT `user`.id, role, `name`, surname, gender, year_old, email, password, discount " +
@@ -44,8 +43,7 @@ public class ClientDaoImpl implements ClientDao {
                     "JOIN `client` ON `user`.id=client.id " +
                     "WHERE email=?;";
 
-    private static final String UPDATE_CLIENT =
-            "UPDATE client SET discount=? WHERE client.id=?;";
+    private static final String UPDATE_CLIENT = "UPDATE client SET discount=? WHERE client.id=?;";
 
     private static final String SELECT_USER_FROM_CLIENT_TABLE = "SELECT `user`.id FROM client WHERE client.id=?;";
 
@@ -63,7 +61,7 @@ public class ClientDaoImpl implements ClientDao {
                     "INNER JOIN user as u ON o.id_trainer=u.id " +
                     "WHERE o.is_paid=false AND o.id_client=?;";
 
-    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =
+    private static final String FIND_ALL_CLIENTS_BY_ID_TRAINER =    //FIXME
             "SELECT `user`.`id`, role, `name`, surname, gender, year_old, email, password, discount " +
                     "FROM `trainer` " +
                     "JOIN `order` ON `order`.id_trainer=`trainer`.id " +

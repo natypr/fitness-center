@@ -35,10 +35,7 @@ public class OrderDaoImpl implements OrderDao {
             "SELECT id, type_of_workout, number_of_workout, id_trainer, equipment, description, id_client, is_paid " +
                     "FROM `order` WHERE `order`.id=?;";
 
-    private static final String UPDATE_ORDER =
-            "UPDATE order SET id=?, type_of_workout=?, number_of_workout=?, id_trainer=?, " +
-                    "equipment=?, description=?, id_client=?, is_paid=? " +
-                    "WHERE id=?;";
+    private static final String UPDATE_ORDER = "UPDATE order SET equipment=?, description=? WHERE id=?;";
 
     private static final String DELETE_ORDER_BY_ID = "DELETE FROM `order` WHERE `order`.id=?;";
 
@@ -116,11 +113,9 @@ public class OrderDaoImpl implements OrderDao {
         try (ProxyConnection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER)) {
 
-            statement.setLong(1, order.getId());
-            statement.setString(2, order.getTypeOfWorkout());
-            statement.setInt(3, order.getNumberOfWorkout());
-            statement.setLong(4, order.getIdTrainer());
-            statement.setLong(5, order.getIdClient());
+            statement.setString(1, order.getEquipment());
+            statement.setString(2, order.getDescription());
+            statement.setLong(3, order.getId());
             statement.executeUpdate();
         } catch (SQLException | PoolException e) {
             throw new DaoException(e);

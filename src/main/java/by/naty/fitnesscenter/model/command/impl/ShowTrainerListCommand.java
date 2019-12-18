@@ -5,8 +5,8 @@ import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.TrainerLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.service.TrainerService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,10 +18,10 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.TRAINERS;
 public class ShowTrainerListCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private TrainerLogic trainerLogic;
+    private TrainerService trainerService;
 
-    public ShowTrainerListCommand(TrainerLogic trainerLogic) {
-        this.trainerLogic = trainerLogic;
+    public ShowTrainerListCommand(TrainerService trainerService) {
+        this.trainerService = trainerService;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class ShowTrainerListCommand implements Command {
 
         String page;
         try {
-            List<Trainer> trainers = trainerLogic.findAllTrainers();
+            List<Trainer> trainers = trainerService.findAllTrainers();
             request.getSession().setAttribute(TRAINERS, trainers);
             LOG.info("List of trainers was shown.");
         } catch (LogicException e) {

@@ -1,5 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
+import java.util.Objects;
+
 public class User {
     private long id;
     private String role;
@@ -120,12 +122,12 @@ public class User {
         if (id != user.id) return false;
         if (yearOld != user.yearOld) return false;
         if (blocked != user.blocked) return false;
-        if (role != null ? !role.equals(user.role) : user.role != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
-        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        return password != null ? password.equals(user.password) : user.password == null;
+        if (!Objects.equals(role, user.role)) return false;
+        if (!Objects.equals(name, user.name)) return false;
+        if (!Objects.equals(surname, user.surname)) return false;
+        if (!Objects.equals(gender, user.gender)) return false;
+        if (!Objects.equals(email, user.email)) return false;
+        return Objects.equals(password, user.password);
     }
 
     @Override

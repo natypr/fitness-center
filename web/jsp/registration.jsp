@@ -38,14 +38,14 @@
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="text.reg.firstname" bundle="${var}"/>" name="name"
                                value=""
-                               id="idName1" required
-                               pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                               id="idName1" required maxlength="20"
+                               pattern="^([A-Z][a-z]{2,20})|([А-Я][а-я]{2,20})$"/>
                     </div>
                     <div class="col">
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="text.reg.lastname" bundle="${var}"/>" name="surname"
-                               value="" id="idSurname1" required
-                               pattern="^([A-Z][a-z]{1,19})|([А-Я][а-я]{1,19})$"/>
+                               value="" id="idSurname1" required maxlength="30"
+                               pattern="^([A-Z][a-z]{2,30})|([А-Я][а-я]{2,30})$"/>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                         <div class="form-group">
                             <input type="text" class="form-control"
                                    placeholder="<fmt:message key="text.reg.yearold" bundle="${var}"/>" name="year_old"
-                                   value="" id="idYearOld1" required
+                                   value="" id="idYearOld1" required maxlength="2"
                                    pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
@@ -76,13 +76,13 @@
                 <div class="form-group">
                     <input type="text" class="form-control"
                            placeholder="<fmt:message key="text.reg.email" bundle="${var}"/>" name="email" value=""
-                           id="idEmail1" required
+                           id="idEmail1" required maxlength="40"
                            pattern="^([a-z0-9_.-]+)@([a-z0-9_.-]+)\.([a-z]{2,5})$"/>
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control"
                            placeholder="<fmt:message key="text.reg.password" bundle="${var}"/>" name="password" value=""
-                           required aria-describedby="passwordHelpBlock"
+                           required aria-describedby="passwordHelpBlock" maxlength="40"
                            pattern="^([A-Za-z0-9_-]{8,40})$"/>
                     <small id="passwordHelpBlock" class="form-text text-muted">
                         <fmt:message key="text.reg.passwordhelp" bundle="${var}"/>

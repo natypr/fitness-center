@@ -15,7 +15,7 @@
     <h1><fmt:message key="text.trainercabinet.cabinet" bundle="${var}"/></h1>
 
     <div class="row justify-content-md-center">
-        <div class="col col-lg-10">
+        <div class="col col-lg-11">
 
             <div class="form-group">
                 <div class="row">
@@ -93,12 +93,13 @@
                     <tr>
                         <th scope="col"><fmt:message key="text.trainercabinet.name" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.surname" bundle="${var}"/></th>
-                        <th scope="col"><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></th>
+                        <%--<th scope="col"><fmt:message key="text.trainercabinet.gender" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.yearold" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="text.trainercabinet.email" bundle="${var}"/></th>
-                        <th scope="col"><fmt:message key="text.trainercabinet.discount" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainercabinet.discount" bundle="${var}"/></th>--%>
 
                         <th scope="col"><fmt:message key="text.trainercabinet.select" bundle="${var}"/></th>
+                        <th scope="col"><fmt:message key="text.trainercabinet.idorder" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.typeofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.numberofworkout" bundle="${var}"/></th>
                         <th scope="col"><fmt:message key="table.client.equipment" bundle="${var}"/></th>
@@ -115,14 +116,16 @@
                             <td>${client.yearOld}</td>
                             <td>${client.email}</td>
                             <td>${client.discount}</td>
-                            <td></td><td></td>
-                            <td></td><td></td><td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <c:forEach items="${client.orderList}" var="order">
                             <tr>
-                                <td></td><td></td><td></td>
-                                <td></td><td></td><td></td>
+                                <td></td>
+                                <td></td>
                                 <td><input type="radio" name="select_order" value="${order.id}" id="id"/></td>
+                                <td>${order.id}</td>
                                 <td>${order.typeOfWorkout}</td>
                                 <td>${order.numberOfWorkout}</td>
                                 <td>${order.equipment}</td>
@@ -134,42 +137,48 @@
                     </tbody>
                 </table>
 
-                <div class="col col-lg-7 text-center">
+                <div class="col col-lg text-center">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <label for="idEquipment1">
                                     <fmt:message key="text.trainercabinet.equipment" bundle="${var}"/></label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="idEquipment1" name="equipment" value=""
-                                       required pattern="^([A-Za-z ,-_]{1,40})|([А-Яа-я ,-_]{1,40})$"/>
+                                       required maxlength="40" pattern="^([A-Za-z ,-_]{3,40})|([А-Яа-я ,-_]{3,40})$"/>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <label for="idDescription1">
                                     <fmt:message key="text.trainercabinet.description" bundle="${var}"/></label>
                             </div>
                             <div class="col">
                                 <input type="text" class="form-control" id="idDescription1" name="description"
-                                       value=""
-                                       required pattern="^([A-Za-z ,-_]{1,100})|([А-Яа-я ,-_]{1,100})$"/>
+                                       value="" required
+                                       maxlength="100" pattern="^([A-Za-z ,-_]{3,100})|([А-Яа-я ,-_]{3,100})$"/>
                             </div>
                         </div>
                     </div>
 
-                    <c:if test="${not empty sessionScope.selectOrderRadio}">
-                        <div class="alert alert-warning" role="alert">
-                                ${sessionScope.selectOrderRadio}
+                    <c:if test="${not empty dataIsNotCorrect}">
+                        <div class="alert alert-danger" role="alert">
+                                ${dataIsNotCorrect}
                         </div>
                     </c:if>
 
-                    <c:if test="${not empty sessionScope.orderSuccessfullyUpdated}">
+                    <c:if test="${not empty selectOrderRadio}">
+                        <div class="alert alert-warning" role="alert">
+                                ${selectOrderRadio}
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty orderSuccessfullyUpdated}">
                         <div class="alert alert-danger" role="alert">
-                                ${sessionScope.orderSuccessfullyUpdated}
+                                ${orderSuccessfullyUpdated}
                         </div>
                     </c:if>
 

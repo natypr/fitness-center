@@ -31,7 +31,7 @@ public interface UserDao {
     /**
      * Finds user by email and password.
      *
-     * @param email the email of user
+     * @param email    the email of user
      * @param password the password of user
      * @return the user
      * @throws DaoException the dao exception

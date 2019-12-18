@@ -27,7 +27,7 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idName1" name="name" value="${trainer.name}"
-                                   required pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
+                                   required maxlength="20" pattern="^([A-Z][a-z]{2,20})|([А-Я][а-я]{2,20})$"/>
                         </div>
                     </div>
                 </div>
@@ -39,8 +39,8 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
-                                   value="${trainer.surname}" required
-                                   pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
+                                   value="${trainer.surname}" required maxlength="30"
+                                   pattern="^([A-Z][a-z]{2,30})|([А-Я][а-я]{2,30})$"/>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                         </div>
                         <div class="col">
                             <input type="number" class="form-control" id="idYearOld1" name="year_old"
-                                   value="${trainer.yearOld}" required pattern="^([0-9]{1,2})$"/>
+                                   value="${trainer.yearOld}" required maxlength="2"  pattern="^([0-9]{1,2})$"/>
                         </div>
                     </div>
                 </div>
@@ -64,8 +64,8 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idEducation1" name="education"
-                                   value="${trainer.education}" required
-                                   pattern="^([A-Za-z ,-_]{2,29})|([А-Яа-я ,-_]{2,29})$"/>
+                                   value="${trainer.education}" required maxlength="30"
+                                   pattern="^([A-Za-z ,-_]{3,30})|([А-Яа-я ,-_]{3,30})$"/>
                         </div>
                     </div>
                 </div>
@@ -78,14 +78,20 @@
                         <div class="col">
                             <input type="text" class="form-control" id="idCostPerOneWorkout1"
                                    name="cost_per_one_workout" value="${trainer.costPerOneWorkout}"
-                                   required pattern="^([0-9.]{1,8})$"/>
+                                   required maxlength="8" pattern="^([0-9.]{1,8})$"/>
                         </div>
                     </div>
                 </div>
 
-                <c:if test="${not empty sessionScope.successfullyUpdated}">
+                <c:if test="${not empty dataIsNotCorrect}">
+                    <div class="alert alert-danger" role="alert">
+                            ${dataIsNotCorrect}
+                    </div>
+                </c:if>
+
+                <c:if test="${not empty successfullyUpdated}">
                     <div class="alert alert-success" role="alert">
-                            ${sessionScope.successfullyUpdated}
+                            ${successfullyUpdated}
                     </div>
                 </c:if>
 

@@ -1,5 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
+import java.util.Objects;
+
 public class Trainer extends User {
     private long id;
     private String education;
@@ -12,7 +14,7 @@ public class Trainer extends User {
         super(user.getRole(), user.getName(), user.getSurname(), user.getGender(), user.getYearOld(),
                 user.getEmail(), user.getPassword());
         this.education = "master";
-        this.costPerOneWorkout = 0.0;
+        this.costPerOneWorkout = 10.0;
     }
 
     public Trainer(User user, String education, double costPerOneWorkout) {
@@ -66,7 +68,7 @@ public class Trainer extends User {
 
         if (id != trainer.id) return false;
         if (Double.compare(trainer.costPerOneWorkout, costPerOneWorkout) != 0) return false;
-        return education != null ? education.equals(trainer.education) : trainer.education == null;
+        return Objects.equals(education, trainer.education);
     }
 
     @Override

@@ -3,7 +3,7 @@ package by.naty.fitnesscenter.model.command.impl;
 import by.naty.fitnesscenter.model.command.Command;
 import by.naty.fitnesscenter.model.command.CommandRouter;
 import by.naty.fitnesscenter.model.entity.User;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

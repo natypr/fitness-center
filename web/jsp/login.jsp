@@ -22,12 +22,12 @@
                 <div class="form-group">
                     <input type="text" name="login" class="form-control"
                            placeholder="<fmt:message key="text.login.login" bundle="${var}"/>"
-                           aria-describedby="emailHelp">
+                           aria-describedby="emailHelp" maxlength="40">
                     <small id="emailHelp" class="form-text text-muted"><fmt:message key="text.login.helptext"
                                                                                     bundle="${var}"/></small>
                 </div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control"
+                    <input type="password" name="password" class="form-control" maxlength="40"
                            placeholder="<fmt:message key="text.login.password" bundle="${var}"/>" id="idPassword1">
                 </div>
 

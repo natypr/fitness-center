@@ -6,9 +6,9 @@ import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.entity.UserType;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.UserLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.service.UserService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,10 +20,10 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class AdminBlockUserCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private UserLogic userLogic;
+    private UserService userService;
 
-    public AdminBlockUserCommand(UserLogic userLogic) {
-        this.userLogic = userLogic;
+    public AdminBlockUserCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AdminBlockUserCommand implements Command {
         try {
             if (checkboxUser != null) {
                 for (String s : checkboxUser) {
-                    User currentUser = userLogic.findUserById(Long.parseLong(s));
+                    User currentUser = userService.findUserById(Long.parseLong(s));
                     LOG.info("Selected user: " + currentUser);
                     usersToProcess.add(currentUser);
                 }
@@ -49,7 +49,7 @@ public class AdminBlockUserCommand implements Command {
             for (User user : usersToProcess) {
                 if (actionAdminBlockUser != null) {
                     if (!user.getRole().equals(UserType.ADMIN.getTypeUser())) {
-                        userLogic.blockUserById(user.getId());
+                        userService.blockUserById(user.getId());
                         LOG.info("Blocked user: " + user.getEmail());
                     } else {
                         request.setAttribute(
@@ -59,11 +59,11 @@ public class AdminBlockUserCommand implements Command {
                     }
                 }
                 if (actionAdminUnblockUser != null) {
-                    userLogic.unblockUserById(user.getId());
+                    userService.unblockUserById(user.getId());
                     LOG.info("Unblocked user: " + user.getEmail());
                 }
             }
-            request.getSession().setAttribute(USERS, userLogic.findAllUsers());
+            request.getSession().setAttribute(USERS, userService.findAllUsers());
 
             page = ConfigurationManager.getProperty("path.page.admin.cabinet");
             return new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);

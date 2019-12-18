@@ -1,4 +1,4 @@
-package by.naty.fitnesscenter.model.logic;
+package by.naty.fitnesscenter.model.service;
 
 import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.dao.OrderDao;
@@ -9,14 +9,11 @@ import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.DaoException;
 import by.naty.fitnesscenter.model.exception.LogicException;
 import by.naty.fitnesscenter.model.util.MD5;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
 
-public class ClientLogic {
-    private static final Logger LOG = LogManager.getLogger();
+public class ClientService {
 
     public void createClient(Client client) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
@@ -73,18 +70,6 @@ public class ClientLogic {
         }
     }
 
-/*
-    public void updateDiscount(Client client, double discount) throws LogicException {
-        ClientDao clientDao = new ClientDaoImpl();
-        try {
-            clientDao.updateDiscount(client, discount);
-        } catch (DaoException e) {
-            throw new LogicException(e);
-        }
-    }
-*/
-
-
     public List<Order> findAllOrderByIdClients(long idClient) throws LogicException {
         ClientDao clientDAO = new ClientDaoImpl();
         try {
@@ -133,14 +118,10 @@ public class ClientLogic {
         OrderDao orderDAO = new OrderDaoImpl();
         try {
             Optional<Order> order = orderDAO.findOrderById(idOrder);
-            LOG.debug("numberOfWorkout. -> " + order);
             int numberOfWorkout = order.map(Order::getNumberOfWorkout).orElse(1);
-            LOG.debug("numberOfWorkout -> " + numberOfWorkout);
-          //  int numberOfWorkout = 70;   //TODO Optional<Order>
             return numberOfWorkout / 10;
         } catch (DaoException e) {
             throw new LogicException(e);
         }
-
     }
 }

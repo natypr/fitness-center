@@ -27,7 +27,7 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idName1" name="name" value="${client.name}"
-                                   required pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
+                                   required maxlength="20" pattern="^([A-Z][a-z]{2,20})|([А-Я][а-я]{2,20})$"/>
                         </div>
                     </div>
                 </div>
@@ -39,8 +39,8 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idSurname1" name="surname"
-                                   value="${client.surname}" required
-                                   pattern="^([A-Z][a-z]{2,19})|([А-Я][а-я]{2,19})$"/>
+                                   value="${client.surname}" required maxlength="30"
+                                   pattern=^([A-Z][a-z]{2,30})|([А-Я][а-я]{2,30})$"/>
                         </div>
                     </div>
                 </div>
@@ -52,10 +52,16 @@
                         </div>
                         <div class="col">
                             <input type="text" class="form-control" id="idYearOld1" name="year_old"
-                                   value="${client.yearOld}" required  pattern="^([1-9][0-9]?)$"/>
+                                   value="${client.yearOld}" required maxlength="2"  pattern="^([1-9][0-9]?)$"/>
                         </div>
                     </div>
                 </div>
+
+                <c:if test="${not empty dataIsNotCorrect}">
+                    <div class="alert alert-danger" role="alert">
+                            ${dataIsNotCorrect}
+                    </div>
+                </c:if>
 
                 <c:if test="${not empty successfullyUpdated}">
                     <div class="alert alert-success" role="alert">

@@ -1,6 +1,7 @@
 package by.naty.fitnesscenter.model.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Client extends User {
     private long id;
@@ -68,7 +69,7 @@ public class Client extends User {
 
         if (id != client.id) return false;
         if (Double.compare(client.discount, discount) != 0) return false;
-        return orderList != null ? orderList.equals(client.orderList) : client.orderList == null;
+        return Objects.equals(orderList, client.orderList);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package by.naty.fitnesscenter.model.logic;
+package by.naty.fitnesscenter.model.service;
 
 import by.naty.fitnesscenter.model.dao.ClientDao;
 import by.naty.fitnesscenter.model.dao.OrderDao;
@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
-public class OrderLogic {
+public class OrderService {
     private static final Logger LOG = LogManager.getLogger();
 
     public void createOrder(Order order) throws LogicException {

@@ -8,10 +8,10 @@ import by.naty.fitnesscenter.model.entity.User;
 import by.naty.fitnesscenter.model.entity.UserType;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.logic.TrainerLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.service.ClientService;
+import by.naty.fitnesscenter.model.service.TrainerService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.MessageManager;
 import by.naty.fitnesscenter.model.validator.DataValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,8 +25,8 @@ public class RegistrationCommand implements Command {
 
     private static final String CLIENT_ROLE = "Client";
 
-    private ClientLogic clientLogic = new ClientLogic();
-    private TrainerLogic trainerLogic = new TrainerLogic();
+    private ClientService clientService = new ClientService();
+    private TrainerService trainerService = new TrainerService();
 
     public RegistrationCommand() {
 
@@ -62,7 +62,7 @@ public class RegistrationCommand implements Command {
 
                 request.getSession().setAttribute(CLIENT, client);
                 try {
-                    clientLogic.createClient(client);
+                    clientService.createClient(client);
                 } catch (LogicException e) {
                     throw new CommandException(e);
                 }
@@ -73,7 +73,7 @@ public class RegistrationCommand implements Command {
 
                 request.getSession().setAttribute(TRAINER, trainer);
                 try {
-                    trainerLogic.createTrainer(trainer);
+                    trainerService.createTrainer(trainer);
                 } catch (LogicException e) {
                     throw new CommandException();
                 }

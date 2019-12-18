@@ -6,9 +6,9 @@ import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.Trainer;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.logic.TrainerLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.service.ClientService;
+import by.naty.fitnesscenter.model.service.TrainerService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,12 +21,12 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.TRAINERS;
 public class AdminShowInfoCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private ClientLogic clientLogic;
-    private TrainerLogic trainerLogic;
+    private ClientService clientService;
+    private TrainerService trainerService;
 
-    public AdminShowInfoCommand(ClientLogic clientLogic, TrainerLogic trainerLogic) {
-        this.clientLogic = clientLogic;
-        this.trainerLogic = trainerLogic;
+    public AdminShowInfoCommand(ClientService clientService, TrainerService trainerService) {
+        this.clientService = clientService;
+        this.trainerService = trainerService;
     }
 
     @Override
@@ -34,10 +34,10 @@ public class AdminShowInfoCommand implements Command {
 
         String page;
         try {
-            List<Client> clients = clientLogic.findAllClients();
+            List<Client> clients = clientService.findAllClients();
             request.getSession().setAttribute(CLIENTS, clients);
 
-            List<Trainer> trainers = trainerLogic.findAllTrainers();
+            List<Trainer> trainers = trainerService.findAllTrainers();
             request.getSession().setAttribute(TRAINERS, trainers);
             LOG.info("List of clients and trainers was shown.");
         } catch (LogicException e) {

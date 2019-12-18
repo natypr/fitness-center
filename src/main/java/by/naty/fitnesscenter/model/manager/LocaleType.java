@@ -1,4 +1,4 @@
-package by.naty.fitnesscenter.model.resource;
+package by.naty.fitnesscenter.model.manager;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

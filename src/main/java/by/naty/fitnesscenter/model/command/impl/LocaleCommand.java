@@ -2,7 +2,7 @@ package by.naty.fitnesscenter.model.command.impl;
 
 import by.naty.fitnesscenter.model.command.Command;
 import by.naty.fitnesscenter.model.command.CommandRouter;
-import by.naty.fitnesscenter.model.logic.UserLogic;
+import by.naty.fitnesscenter.model.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,10 +13,10 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class LocaleCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private UserLogic userLogic;
+    private UserService userService;
 
-    public LocaleCommand(UserLogic userLogic) {
-        this.userLogic = userLogic;
+    public LocaleCommand(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class LocaleCommand implements Command {
         CommandRouter commandRouter = new CommandRouter(CommandRouter.DispatchType.REDIRECT, page);
 
         commandRouter.setDispatchType(CommandRouter.DispatchType.REDIRECT);
-        commandRouter.setPage(userLogic.returnSamePage(page));
+        commandRouter.setPage(userService.returnSamePage(page));
 
         LOG.info("Changing language. Now " + locale);
         return commandRouter;

@@ -60,6 +60,12 @@
                 </div>
             </div>
 
+            <c:if test="${not empty accessClosed}">
+                <div class="alert alert-danger" role="alert">
+                        ${accessClosed}
+                </div>
+            </c:if>
+
             <a href="${pageContext.request.contextPath}/index.jsp">
                 <fmt:message key="bt.main.return" bundle="${var}"/></a>
         </div>

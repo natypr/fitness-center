@@ -6,10 +6,10 @@ import by.naty.fitnesscenter.model.entity.Client;
 import by.naty.fitnesscenter.model.entity.Order;
 import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.LogicException;
-import by.naty.fitnesscenter.model.logic.ClientLogic;
-import by.naty.fitnesscenter.model.logic.OrderLogic;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
-import by.naty.fitnesscenter.model.resource.MessageManager;
+import by.naty.fitnesscenter.model.service.ClientService;
+import by.naty.fitnesscenter.model.service.OrderService;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,12 +21,12 @@ import static by.naty.fitnesscenter.model.constant.ConstantNameFromJsp.*;
 public class OrderPaymentCommand implements Command {
     private static final Logger LOG = LogManager.getLogger();
 
-    private ClientLogic clientLogic;
-    private OrderLogic orderLogic;
+    private ClientService clientService;
+    private OrderService orderService;
 
-    public OrderPaymentCommand(ClientLogic clientLogic, OrderLogic orderLogic) {
-        this.clientLogic = clientLogic;
-        this.orderLogic = orderLogic;
+    public OrderPaymentCommand(ClientService clientService, OrderService orderService) {
+        this.clientService = clientService;
+        this.orderService = orderService;
     }
 
     private double calculateTotalPrice(double price, double discount) {
@@ -43,19 +43,19 @@ public class OrderPaymentCommand implements Command {
 
         String page;
         try {
-            List<Order> unpaidOrders = clientLogic.findAllUnpaidOrderByIdClients(idClient);
+            List<Order> unpaidOrders = clientService.findAllUnpaidOrderByIdClients(idClient);
             request.getSession().setAttribute(UNPAID_ORDERS, unpaidOrders);
             LOG.debug("List of unpaid orders was shown.");
 
             if (actionSelectOrder != null) {
                 long idOrder = Integer.parseInt(actionSelectOrder);
-                Order order = orderLogic.findOrderById(idOrder);
+                Order order = orderService.findOrderById(idOrder);
                 request.getSession().setAttribute(ORDER, order);
 
-                double price = orderLogic.calculatePriceByIdOrder(idOrder);
+                double price = orderService.calculatePriceByIdOrder(idOrder);
                 request.getSession().setAttribute(PRICE, price);
 
-                double newDiscount = clientLogic.calculateNewDiscountByIdClient(idClient, idOrder);
+                double newDiscount = clientService.calculateNewDiscountByIdClient(idClient, idOrder);
                 request.getSession().setAttribute(NEW_DISCOUNT, newDiscount);
 
                 double totalPrice = calculateTotalPrice(price, newDiscount);
@@ -68,22 +68,22 @@ public class OrderPaymentCommand implements Command {
                 try {
                     Order currentOrder = (Order) request.getSession().getAttribute(ORDER);
                     long idOrder = currentOrder.getId();
-                    double newDiscount = (double)(request.getSession().getAttribute(NEW_DISCOUNT));
+                    double newDiscount = (double) (request.getSession().getAttribute(NEW_DISCOUNT));
 
-                    orderLogic.payOrderWithDiscount(currentOrder, newDiscount);
+                    orderService.payOrderWithDiscount(currentOrder, newDiscount);
                     currentClient.setDiscount(newDiscount);
                     LOG.info("Client with id " + idClient + " pay for order with id " + idOrder);
 
-                    List<Order> unpaidOrdersUpdated = clientLogic.findAllUnpaidOrderByIdClients(idClient);
+                    List<Order> unpaidOrdersUpdated = clientService.findAllUnpaidOrderByIdClients(idClient);
                     request.getSession().setAttribute(UNPAID_ORDERS, unpaidOrdersUpdated);
 
-                    List<Order> orders = clientLogic.findAllOrderByIdClients(idClient);
+                    List<Order> orders = clientService.findAllOrderByIdClients(idClient);
                     request.getSession().setAttribute(ORDERS, orders);
 
                     request.setAttribute(
                             ORDER_SUCCESSFULLY_PAID, MessageManager.getProperty("messages.orderSuccessfullyPaid"));
 
-                }catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     request.setAttribute(SELECT_ORDER_RADIO, MessageManager.getProperty("messages.selectOrderRadio"));
                 }
             }

@@ -1,4 +1,4 @@
-package by.naty.fitnesscenter.model.logic;
+package by.naty.fitnesscenter.model.service;
 
 import by.naty.fitnesscenter.model.dao.UserDao;
 import by.naty.fitnesscenter.model.dao.impl.UserDaoImpl;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserLogic {
+public class UserService {
     private final Pattern pattern = Pattern.compile("/jsp.+");
 
     public List<User> findAllUsers() throws LogicException {

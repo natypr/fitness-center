@@ -43,9 +43,7 @@ public class UserDaoImpl implements UserDao {
                     "JOIN role_legend ON `user`.role_num=role_legend.role_num " +
                     "WHERE email=? AND password=?;";
 
-    private static final String UPDATE_USER =
-            "UPDATE `user` SET `name`=?, surname=?, year_old=? " +
-                    "WHERE id=?;";
+    private static final String UPDATE_USER = "UPDATE `user` SET `name`=?, surname=?, year_old=? WHERE id=?;";
 
     private static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id=?;";
 

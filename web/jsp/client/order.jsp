@@ -37,7 +37,7 @@
                         <input type="text" class="form-control"
                                placeholder="<fmt:message key="text.order.numberofworkout" bundle="${var}"/>"
                                name="number_of_workout"
-                               value="" required pattern="^([1-9][0-9]{1,2})$"/>
+                               value="" required maxlength="3" pattern="^([1-9][0-9]{1,2})$"/>
                     </div>
                 </div>
 
@@ -72,6 +72,12 @@
                     </c:forEach>
                     </tbody>
                 </table>
+
+                <c:if test="${not empty dataIsNotCorrect}">
+                    <div class="alert alert-danger" role="alert">
+                            ${dataIsNotCorrect}
+                    </div>
+                </c:if>
 
                 <c:if test="${not empty selectTrainerRadio}">
                     <div class="alert alert-warning" role="alert">

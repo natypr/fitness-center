@@ -8,7 +8,7 @@ import by.naty.fitnesscenter.model.exception.CommandException;
 import by.naty.fitnesscenter.model.exception.PoolException;
 import by.naty.fitnesscenter.model.pool.ConnectionPool;
 import by.naty.fitnesscenter.model.pool.PoolConfig;
-import by.naty.fitnesscenter.model.resource.ConfigurationManager;
+import by.naty.fitnesscenter.model.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
