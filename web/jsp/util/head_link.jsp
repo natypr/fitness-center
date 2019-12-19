@@ -12,3 +12,10 @@
 <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap&subset=cyrillic,latin-ext"
       rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/datatables.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mdb.min.css">
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+</script>

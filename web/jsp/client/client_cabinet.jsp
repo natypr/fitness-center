@@ -85,7 +85,7 @@
             <form name="clientCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="client_cabinet"/>
 
-                <table class="table table-hover">
+                <table id="idTable" class="table table-hover">
                     <caption><fmt:message key="text.client.orderlist" bundle="${var}"/></caption>
                     <thead class="thead-dark">
                     <tr>

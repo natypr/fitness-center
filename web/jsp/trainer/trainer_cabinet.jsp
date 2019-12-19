@@ -87,7 +87,7 @@
             <form name="trainerCabinet" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="trainer_cabinet"/>
 
-                <table class="table table-hover">
+                <table id="idTable" class="table table-hover">
                     <caption><fmt:message key="text.trainercabinet.listofclientswithorders" bundle="${var}"/></caption>
                     <thead class="thead-dark">
                     <tr>

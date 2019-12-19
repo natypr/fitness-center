@@ -20,7 +20,7 @@
             <form name="trainerListShow" method="POST" action="${pageContext.request.contextPath}/controller">
                 <input type="hidden" name="command" value="show_trainer_list"/>
 
-                <table class="table table-hover">
+                <table id="idTable" class="table table-hover">
                     <caption><fmt:message key="text.trainerlist.trainerlist" bundle="${var}"/></caption>
                     <thead class="thead-dark">
                     <tr>

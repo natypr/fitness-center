@@ -22,7 +22,7 @@
 
                 <p><fmt:message key="table.client.text.help.pay" bundle="${var}"/></p>
 
-                <table class="table table-hover">
+                <table id="idTable" class="table table-hover">
                     <caption><fmt:message key="text.client.orderlist" bundle="${var}"/></caption>
                     <thead class="thead-dark">
                     <tr>

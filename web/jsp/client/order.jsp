@@ -42,7 +42,7 @@
                 </div>
 
                 <h3><fmt:message key="text.order.trainerlist" bundle="${var}"/></h3>
-                <table class="table table-hover">
+                <table id="idTable" class="table table-hover">
                     <caption><fmt:message key="text.order.trainerlist" bundle="${var}"/></caption>
                     <thead class="thead-dark">
                     <tr>
